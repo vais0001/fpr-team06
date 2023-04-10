@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('/', RoomController::class);
 Route::get('/{index}', [RoomController::class, 'show'])->name('rooms.show');
+Route::resource('/rooms', RoomController::class);
