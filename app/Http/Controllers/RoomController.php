@@ -12,9 +12,11 @@ class RoomController extends Controller
         $rooms = Room::all();
         return view('rooms.index', compact('rooms'));
     }
-    public function show()
+    public function show($index)
     {
-        return view('rooms.show');
+        $rooms = Room::all();
+        $selectedRoom = Room::find($index);
+        return view('rooms.show', compact('rooms', 'selectedRoom'));
     }
     public function create()
     {
