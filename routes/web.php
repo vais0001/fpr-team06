@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('/', RoomController::class);
+Route::resource('/rooms', RoomController::class);

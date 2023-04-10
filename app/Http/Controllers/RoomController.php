@@ -22,6 +22,7 @@ class RoomController extends Controller
     }
     public function store()
     {
+
         return redirect()->route('rooms.index');
     }
     public function edit()
