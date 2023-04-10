@@ -16,7 +16,7 @@
 
             input[type=submit] {
                 width: 100%;
-                background-color: #4CAF50;
+                background-color: #0d6efd;
                 color: white;
                 padding: 14px 20px;
                 margin: 8px 0;
@@ -39,13 +39,37 @@
                 width: 75%;
                 margin-top: 6px;
             }
+            .blockCancel {
+                display: block;
+                width: 100%;
+                border: none;
+                background-color: #dc3545;
+                padding: 14px 28px;
+                font-size: 16px;
+                cursor: pointer;
+                text-align: center;
+                margin: 8px 0;
+                border-radius: 4px;
+            }
+            .blockReset {
+                display: block;
+                width: 100%;
+                border: none;
+                background-color: lightgrey;
+                padding: 14px 28px;
+                font-size: 16px;
+                cursor: pointer;
+                text-align: center;
+                margin: 8px 0;
+                border-radius: 4px;
+            }
         </style>
 
         <section class="section">
             <div class="container">
                 <div class="columns">
                     <div class="column is-12">
-                        <form method="post" action="/houses">
+                        <form method="post" action="/rooms">
                             @csrf
                             <div class="card">
                                 <header class="card-header">
@@ -108,11 +132,17 @@
                                             <div class="control">
                                                 <input type="submit" value="Save">
                                             </div>
+                                            <div class="field is-grouped">
+                                                <div class="center">
+                                                    <a type="reset" class="blockReset">Reset</a>
+                                                </div>
+                                                </div>
+                                            <div class="field is-grouped">
                                             <div class="control">
-                                                <button type="reset" class="button is-warning">Reset</button>
+                                                <div class="center">
+                                                    <a type="button" href="/rooms" class="blockCancel">Cancel</a>
+                                                </div>
                                             </div>
-                                            <div class="control">
-                                                <a type="button" href="/houses" class="button is-light">Cancel</a>
                                             </div>
                                         </div>
                                     </div>
