@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
+    protected $fillable = [
+        'name',
+        'floor',
+        'temperature',
+        'co2',
+        'energyStatus',
+    ];
     use HasFactory;
 }
