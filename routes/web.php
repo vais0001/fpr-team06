@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/model', function () {
+    return view('model');
+});
 
 Route::resource('/', RoomController::class);
 Route::get('/{index}', [RoomController::class, 'show'])->name('rooms.show');
