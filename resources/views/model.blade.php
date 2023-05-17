@@ -25,9 +25,10 @@
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <div class="button-container">
-        <div class="button" value="1">Floor 1</div>
-        <div class="button" value="2">Floor 2</div>
-        <div class="button" value="3">Floor 3</div>
+        <button class="button" value="ground">Ground Floor</button>
+        <button class="button" value="1">Floor 1</button>
+        <button class="button" value="2">Floor 2</button>
+        <button class="button" value="3">Floor 3</button>
     </div>
 </head>
 <body>
