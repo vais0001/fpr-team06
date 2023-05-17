@@ -163,8 +163,6 @@ function animate() {
     controls.update()
 
     render()
-
-    stats.update()
 }
 
 function render() {
