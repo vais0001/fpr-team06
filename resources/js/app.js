@@ -15,6 +15,15 @@ scene.add(light)
 const ambientLight = new THREE.AmbientLight()
 scene.add(ambientLight)
 
+//to get the value of a button
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => {
+        const fired_button = button.value;
+        console.log(fired_button);
+
+    });
+});
+
 const camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -60,6 +69,14 @@ fbxLoader.load(
         console.log(error)
     }
 )
+
+const map = new THREE.TextureLoader().load( 'images/temperature-green.png' );
+const material = new THREE.SpriteMaterial( { map: map, color: 0xffffff } );
+
+const sprite = new THREE.Sprite( material );
+sprite.scale.set(100, 200, 1)
+sprite.position.set(-800, 1200, 800)
+scene.add( sprite );
 
 window.addEventListener('resize', onWindowResize, false)
 function onWindowResize() {
