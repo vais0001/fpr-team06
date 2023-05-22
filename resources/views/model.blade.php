@@ -76,7 +76,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         }
 
         .icon {
-            width: 50%;
+            width: 75%;
             margin-bottom: 0;
             display: block;
             margin-left: auto;
@@ -86,7 +86,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         .weather-status {
             color: #fff;
             text-align: center;
-            margin-top: 0;
+            margin-top: -30px;
         }
 
         .widget .right .city {
@@ -116,8 +116,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
 <div class="outside-temperature-container">
     <div class="widget">
         <div class="left">
-{{--            <img src="<?php echo $iconUrl; ?>" class="icon" alt="Weather Icon">--}}
-            <img src="public/images/temperature-green.png" class="icon" alt="Weather Icon">
+            <img src="{{ asset('images/cloudy.svg') }}" class="icon" alt="Weather Icon">
             <h5 class="weather-status"><?php echo $description; ?></h5>
         </div>
         <div class="right">
