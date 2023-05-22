@@ -52,6 +52,66 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
             height: 50px;
             width: 50px;
         }
+
+        {{--Weather Widget--}}
+.outside-temperature-container {
+            position: absolute;
+            right: 1%;
+            top: 85%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .widget {
+            width: 400px;
+            height: 200px;
+            border-radius: 20px;
+            background: rgba(299, 299, 299, 0.4);
+        }
+
+        .widget .left {
+            position: absolute;
+            left: 0;
+            width: 200px;
+        }
+
+        .widget .right {
+            position: absolute;
+            right: 0;
+            width: 200px;
+            color: #fff;
+            margin: 50px 0;
+        }
+
+        .icon {
+            width: 75%;
+            margin-bottom: 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .weather-status {
+            color: #fff;
+            text-align: center;
+            margin-top: -30px;
+        }
+
+        .widget .right .city {
+            font-size: 1em;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 5px #707070;
+        }
+
+        .widget .right .degree {
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+            text-shadow: 1px 1px 5px #707070;
+        }
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
