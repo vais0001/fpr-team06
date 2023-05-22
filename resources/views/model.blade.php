@@ -97,7 +97,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         }
 
         .widget .right .degree {
-            font-size: 2em;
+            font-size: 3em;
             font-weight: bold;
             text-align: center;
             margin: 0;
