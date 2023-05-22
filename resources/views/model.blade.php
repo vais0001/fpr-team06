@@ -116,7 +116,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
 <div class="outside-temperature-container">
     <div class="widget">
         <div class="left">
-            <img src="{{ asset('images/cloudy.svg') }}" class="icon" alt="Weather Icon">
+            <img src="{{ asset('images/cloudy-day-3.svg') }}" class="icon" alt="Weather Icon">
             <h5 class="weather-status"><?php echo $description; ?></h5>
         </div>
         <div class="right">
