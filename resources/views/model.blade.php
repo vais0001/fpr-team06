@@ -44,73 +44,49 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
             border: 1px solid #ccc;
             cursor: pointer;
         }
-        {{--Weather Widget--}}
-        .outside-temperature-container {
-            position: absolute;
-            right: 1%;
-            top: 85%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .widget {
-            width: 400px;
-            height: 200px;
-            border-radius: 20px;
-            background: rgba(299, 299, 299, 0.4);
-        }
-
-        .widget .left {
-            position: absolute;
-            left: 0;
+        #jrczimg {
+            height: 120px;
             width: 200px;
         }
-
-        .widget .right {
-            position: absolute;
-            right: 0;
-            width: 200px;
-            color: #fff;
-            margin: 50px 0;
+        .logo {
+            height: 50px;
+            width: 50px;
         }
-
-        .icon {
-            width: 75%;
-            margin-bottom: 0;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .weather-status {
-            color: #fff;
-            text-align: center;
-            margin-top: -30px;
-        }
-
-        .widget .right .city {
-            font-size: 1em;
-            text-align: center;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 5px #707070;
-        }
-
-        .widget .right .degree {
-            font-size: 3em;
-            font-weight: bold;
-            text-align: center;
-            margin: 0;
-            text-shadow: 1px 1px 5px #707070;
-        }
-
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<div class="button-container">
-        <div class="button" value="1">Floor 1</div>
-        <div class="button" value="2">Floor 2</div>
-        <div class="button" value="3">Floor 3</div>
+<body class="antialiased d-flex flex-column">
+<nav class="navbar navbar-expand-lg flex-wrap navbar-light bg-light">
+    <img id='jrczimg' src="{{ asset('images/jrcz.png') }}" alt="JRCZ-logo" class="">
+    <ul class="navbar-nav d-flex flex-grow-1 justify-content-left">
+        <li class="nav-item active">
+            Welcome, [Person]!
+        </li>
+    </ul>
+    <ul class="navbar-nav d-flex flex-grow-1 justify-content-left">
+        <li class="nav-item active ">
+            Room Number
+        </li>
+    </ul>
+    <ul class="navbar-nav d-flex flex-grow-3 justify-content-right">
+        <li class="nav-item active ">
+            <a class="nav-link text-primary" href="#"> Upload </a>
+        </li>
+    </ul>
+    <ul class="navbar-nav d-flex flex-grow-3 justify-content-right">
+        <li class="nav-item d-flex gap-1" style="margin-left: auto">
+            <a class="nav-link" href="#"><img  src="{{ asset('images/internet.png') }}" alt="internet-logo" class="logo"></a>
+            <a class="nav-link" href="#"><img  src="{{ asset('images/bell.png') }}" alt="bell-logo" class="logo"></a>
+            <a class="nav-link" href="#"><img  src="{{ asset('images/user.png') }}" alt="user-logo" class="logo"></a>
+        </li>
+    </ul>
+</nav>
+
+    <div class="button-container">
+        <button class="button" value="ground">Ground Floor</button>
+        <button class="button" value="1">Floor 1</button>
+        <button class="button" value="2">Floor 2</button>
+        <button class="button" value="3">Floor 3</button>
     </div>
 {{--Weather Widget--}}
 <div class="outside-temperature-container">
@@ -127,6 +103,5 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
 </div>
 
 </head>
-<body>
 </body>
 </html>
