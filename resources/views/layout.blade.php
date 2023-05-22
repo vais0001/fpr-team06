@@ -1,5 +1,19 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<?php
+$apiKey = 'cc610a4c33d0a351eaaf995a8262866f';
+$place = 'Middelburg, Netherlands';
+$url = "https://api.openweathermap.org/data/2.5/weather?q=$place&units=metric&APPID=$apiKey";
+$data = file_get_contents($url);
+$json = json_decode($data);
+
+$temperature = $json->main->temp;
+$description = $json->weather[0]->description;
+$iconCode = $json->weather[0]->icon;
+$iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
+?>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -68,6 +82,41 @@
     <div class="b-example-divider b-example-vr"></div>
 
     @yield('content')
+</div>
+
+<div class="d-flex flex-column flex-grow-1" style="background-color: rgba(224,228,236,0.75);">
+    <div class="d-flex justify-content-center">
+        <h1>Outside Building</h1>
+    </div>
+
+    <section class="flex-grow-1 d-flex justify-content-center align-items-center" style="background-color: #e0e4ec; padding: 0 200px">
+        <div class="container py-5 d-flex justify-content-center align-items-center">
+
+            <div class="row d-flex justify-content-center align-items-center    ">
+                <div>
+
+                    <div class="card shadow" style="color: #4B515D; border-radius: 35px; width: 300px">
+                        <div class="card-body p-4">
+
+                            <div class="d-flex flex-column text-center mt-2 mb-4">
+                                <h6 style="color: #1C2331;"> Current Temperature: <?php echo $temperature; ?> &deg;C</h6>
+                                <p>Description: <?php echo $description; ?></p>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1" style="font-size: 1rem;">
+                                    <div><span class="ms-5 d-flex flex-grow-1 justify-content-center align-items-center"> <img src="<?php echo $iconUrl; ?>" alt="Weather Icon"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 <footer class="mt-auto d-flex flex-grow-1 justify-content-center align-items-center" style="background-color: #ffffff">
     <h6>
