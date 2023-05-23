@@ -57,7 +57,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         .outside-temperature-container {
             position: absolute;
             right: 1%;
-            top: 96%;
+            top: 85%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
