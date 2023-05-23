@@ -54,17 +54,17 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         }
 
         {{--Weather Widget--}}
-.outside-temperature-container {
+        .outside-temperature-container {
             position: absolute;
             right: 1%;
-            top: 85%;
+            top: 96%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
         }
 
         .widget {
-            width: 400px;
+            width: 200px;
             height: 200px;
             border-radius: 20px;
             background: rgba(299, 299, 299, 0.4);
@@ -72,8 +72,9 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
 
         .widget .left {
             position: absolute;
-            left: 0;
+            right: 0;
             width: 200px;
+            margin-top: 85px;
         }
 
         .widget .right {
@@ -81,11 +82,11 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
             right: 0;
             width: 200px;
             color: #fff;
-            margin: 50px 0;
+            margin: 20px 0;
         }
 
         .icon {
-            width: 75%;
+            width: 50%;
             margin-bottom: 0;
             display: block;
             margin-left: auto;
@@ -95,7 +96,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         .weather-status {
             color: #fff;
             text-align: center;
-            margin-top: -30px;
+            margin: -30px 0 0;
         }
 
         .widget .right .city {
@@ -106,7 +107,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         }
 
         .widget .right .degree {
-            font-size: 3em;
+            font-size: 2.5em;
             font-weight: bold;
             text-align: center;
             margin: 0;
@@ -157,7 +158,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         </div>
         <div class="right">
             <h5 class="city">Middelburg</h5>
-            <h5 class="degree"><?php echo $temperature; ?>&deg;C</h5>
+            <h5 class="degree"><?php echo round($temperature); ?>&deg;C</h5>
         </div>
     </div>
 </div>
