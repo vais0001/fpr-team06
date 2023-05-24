@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
+class RoomTime extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'room_id',
+        'time',
+        'co2',
+        'temperature',
     ];
-
-    public function roomTime()
-    {
-        return $this->hasMany(RoomTime::class);
-    }
 }

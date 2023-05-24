@@ -1,16 +1,3 @@
-body {
-    height: 100vh;
-}
-
-.nav-item {
-    font-size: 20px;
-    margin: 20px;
-}
-
-.flex-column {
-    display: inline-flex;
-}
-
-h6, span {
-    text-align: center;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
