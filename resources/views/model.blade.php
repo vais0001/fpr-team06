@@ -120,12 +120,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
     <img id='jrczimg' src="{{ asset('images/jrcz.png') }}" alt="JRCZ-logo" class="">
     <ul class="navbar-nav d-flex flex-grow-1 justify-content-left">
         <li class="nav-item active">
-            Welcome, [Person]!
-        </li>
-    </ul>
-    <ul class="navbar-nav d-flex flex-grow-1 justify-content-left">
-        <li class="nav-item active ">
-            Room Number
+            Welcome, {{ Auth::user()->name }}!
         </li>
     </ul>
     <ul class="navbar-nav d-flex flex-grow-3 justify-content-right">
@@ -137,7 +132,15 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         <li class="nav-item d-flex gap-1" style="margin-left: auto">
             <a class="nav-link" href="#"><img  src="{{ asset('images/internet.png') }}" alt="internet-logo" class="logo"></a>
             <a class="nav-link" href="#"><img  src="{{ asset('images/bell.png') }}" alt="bell-logo" class="logo"></a>
-            <a class="nav-link" href="#"><img  src="{{ asset('images/user.png') }}" alt="user-logo" class="logo"></a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <x-dropdown-link :href="route('logout')"
+                                 onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                    <img  src="{{ asset('images/user.png') }}" alt="user-logo" class="logo">
+                </x-dropdown-link>
+            </form>
         </li>
     </ul>
 </nav>
