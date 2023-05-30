@@ -10,6 +10,36 @@ $json = json_decode($data);
 
 $temperature = $json->main->temp;
 $description = $json->weather[0]->description;
+$imgPath='';
+switch ($description){
+    case 'clear sky':
+        $imgPath='images/day.svg';
+        break;
+    case 'few clouds':
+        $imgPath='images/cloudy-day-1.svg';
+        break;
+    case 'scattered clouds':
+        $imgPath='images/cloudy.svg';
+        break;
+    case 'broken clouds':
+        $imgPath='images/cloudy.svg';
+        break;
+    case 'shower rain':
+        $imgPath='images/rainy-3.svg';
+        break;
+    case 'rain':
+        $imgPath='images/rainy-7.svg';
+        break;
+    case 'thunderstorm':
+        $imgPath='images/thunder.svg';
+        break;
+    case 'snow':
+        $imgPath='images/snowy-6.svg';
+        break;
+    case 'mist':
+        $imgPath='images/cloudy.svg';
+        break;
+}
 $iconCode = $json->weather[0]->icon;
 $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
 ?>
@@ -19,6 +49,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <title>My first three.js app</title>
+    <script src="../js/weather-widget.js" ></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;600&display=swap');
         body {
@@ -54,7 +85,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         }
 
         {{--Weather Widget--}}
-.outside-temperature-container {
+        .outside-temperature-container {
             position: absolute;
             right: 1%;
             top: 85%;
@@ -64,16 +95,17 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         }
 
         .widget {
-            width: 400px;
-            height: 200px;
+            width: 200px;
+            height: 225px;
             border-radius: 20px;
             background: rgba(299, 299, 299, 0.4);
         }
 
         .widget .left {
             position: absolute;
-            left: 0;
+            right: 0;
             width: 200px;
+            margin-top: 85px;
         }
 
         .widget .right {
@@ -81,11 +113,11 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
             right: 0;
             width: 200px;
             color: #fff;
-            margin: 50px 0;
+            margin: 20px 0;
         }
 
         .icon {
-            width: 75%;
+            width: 50%;
             margin-bottom: 0;
             display: block;
             margin-left: auto;
@@ -95,7 +127,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         .weather-status {
             color: #fff;
             text-align: center;
-            margin-top: -30px;
+            margin: -10px 0 0;
         }
 
         .widget .right .city {
@@ -106,7 +138,7 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
         }
 
         .widget .right .degree {
-            font-size: 3em;
+            font-size: 2.5em;
             font-weight: bold;
             text-align: center;
             margin: 0;
@@ -152,12 +184,12 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
 <div class="outside-temperature-container">
     <div class="widget">
         <div class="left">
-            <img src="{{ asset('images/cloudy-day-3.svg') }}" class="icon" alt="Weather Icon">
+            <img src="{{ asset($imgPath) }}" class="icon" alt="Weather Icon">
             <h5 class="weather-status"><?php echo $description; ?></h5>
         </div>
         <div class="right">
             <h5 class="city">Middelburg</h5>
-            <h5 class="degree"><?php echo $temperature; ?>&deg;C</h5>
+            <h5 class="degree"><?php echo round($temperature); ?>&deg;C</h5>
         </div>
     </div>
 </div>
