@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Room;
 use App\Models\RoomTime;
 use Illuminate\Http\Request;
 use App\Imports\RoomTimesImport;
@@ -20,8 +21,8 @@ class RoomTimeController extends Controller
     }
     public function index()
     {
-        $room_times = RoomTime::all();
-        return view('room_time.index', compact('room_times'));
+        $rooms = Room::with('roomTime')->get();
+        return view('import', compact('rooms'));
     }
     public function show(RoomTime $room_time)
     {

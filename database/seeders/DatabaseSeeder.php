@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoomTimeSeeder::class,
             RoomSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

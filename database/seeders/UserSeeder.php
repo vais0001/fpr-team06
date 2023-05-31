@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\RoomTime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class RoomTimeSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-//        RoomTime::factory()->count(10)->create();
+        DB::table('users')->insert(['name' => 'test', 'email' => 'test@gmail.com', 'password' => 'test']);
     }
 }
