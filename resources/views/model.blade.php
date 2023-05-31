@@ -30,6 +30,9 @@ switch ($description){
     case 'rain':
         $imgPath='images/rainy-7.svg';
         break;
+    case 'light rain':
+        $imgPath='images/rainy-7.svg';
+        break;
     case 'thunderstorm':
         $imgPath='images/thunder.svg';
         break;
