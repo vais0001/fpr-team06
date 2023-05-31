@@ -116,34 +116,34 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 <body class="antialiased d-flex flex-column">
-<nav class="navbar navbar-expand-lg flex-wrap navbar-light bg-light">
-    <img id='jrczimg' src="{{ asset('images/jrcz.png') }}" alt="JRCZ-logo" class="">
-    <ul class="navbar-nav d-flex flex-grow-1 justify-content-left">
-        <li class="nav-item active">
-            Welcome, {{ Auth::user()->name }}!
-        </li>
-    </ul>
-    <ul class="navbar-nav d-flex flex-grow-3 justify-content-right">
-        <li class="nav-item active ">
-            <a class="nav-link text-primary" href="#"> Upload </a>
-        </li>
-    </ul>
-    <ul class="navbar-nav d-flex flex-grow-3 justify-content-right">
-        <li class="nav-item d-flex gap-1" style="margin-left: auto">
-            <a class="nav-link" href="#"><img  src="{{ asset('images/internet.png') }}" alt="internet-logo" class="logo"></a>
-            <a class="nav-link" href="#"><img  src="{{ asset('images/bell.png') }}" alt="bell-logo" class="logo"></a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
+{{--<nav class="navbar navbar-expand-lg flex-wrap navbar-light bg-light">--}}
+{{--    <img id='jrczimg' src="{{ asset('images/jrcz.png') }}" alt="JRCZ-logo" class="">--}}
+{{--    <ul class="navbar-nav d-flex flex-grow-1 justify-content-left">--}}
+{{--        <li class="nav-item active">--}}
+{{--            Welcome, {{ Auth::user()->name }}!--}}
+{{--        </li>--}}
+{{--    </ul>--}}
+{{--    <ul class="navbar-nav d-flex flex-grow-3 justify-content-right">--}}
+{{--        <li class="nav-item active ">--}}
+{{--            <a class="nav-link text-primary" href="#"> Upload </a>--}}
+{{--        </li>--}}
+{{--    </ul>--}}
+{{--    <ul class="navbar-nav d-flex flex-grow-3 justify-content-right">--}}
+{{--        <li class="nav-item d-flex gap-1" style="margin-left: auto">--}}
+{{--            <a class="nav-link" href="#"><img  src="{{ asset('images/internet.png') }}" alt="internet-logo" class="logo"></a>--}}
+{{--            <a class="nav-link" href="#"><img  src="{{ asset('images/bell.png') }}" alt="bell-logo" class="logo"></a>--}}
+{{--            <form method="POST" action="{{ route('logout') }}">--}}
+{{--                @csrf--}}
 
-                <x-dropdown-link :href="route('logout')"
-                                 onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                    <img  src="{{ asset('images/user.png') }}" alt="user-logo" class="logo">
-                </x-dropdown-link>
-            </form>
-        </li>
-    </ul>
-</nav>
+{{--                <x-dropdown-link :href="route('logout')"--}}
+{{--                                 onclick="event.preventDefault();--}}
+{{--                                                this.closest('form').submit();">--}}
+{{--                    <img  src="{{ asset('images/user.png') }}" alt="user-logo" class="logo">--}}
+{{--                </x-dropdown-link>--}}
+{{--            </form>--}}
+{{--        </li>--}}
+{{--    </ul>--}}
+{{--</nav>--}}
 
     <div class="button-container">
         <button class="button" value="ground">Ground Floor</button>
