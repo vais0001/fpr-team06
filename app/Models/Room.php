@@ -12,6 +12,7 @@ class Room extends Model
     protected $fillable = [
         'name',
         'floor',
+        'updated_at'
     ];
 
     public function roomTime()

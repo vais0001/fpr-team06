@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Room;
 use App\Models\RoomTime;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -17,6 +18,7 @@ class RoomTimesImport implements ToModel, WithStartRow
      */
     public function model(array $row): \Illuminate\Database\Eloquent\Model|RoomTime|null
     {
+
         return new RoomTime([
             'room_id' => request('set_room'),
             'time' => $row[0],

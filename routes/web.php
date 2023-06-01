@@ -24,6 +24,8 @@ Route::get('import', [RoomTimeController::class, 'index'])->name('importPage');
 
 Route::post('import', [RoomTimeController::class, 'import'])->name('import');
 
+Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
+
 Route::get('/dashboard', [RoomController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
