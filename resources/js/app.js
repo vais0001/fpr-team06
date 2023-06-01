@@ -9,7 +9,7 @@ Alpine.start();
 
 window.onload = function () {
     const url = window.location.href;
-    if(url.includes('import')) {
+    if(url.includes('rooms')) {
         loadRoomsImport();
     }
 }
@@ -25,8 +25,8 @@ function loadRoomsImport() {
                 roomSpecificContainer.lastChild.remove();
             }
             tableBody.innerHTML = '';
-
             console.log(event.target.id);
+            console.log(rooms[event.target.parentNode.id-1]);
             if(event.target.id === 'roomName'){
 
                 let result = '';
@@ -44,18 +44,32 @@ function loadRoomsImport() {
             const roomButtonsContainer = document.createElement('div');
             roomButtonsContainer.id = 'roomButtonsContainer';
             roomButtonsContainer.className = 'flex flex-row justify-center absolute';
-            roomButtonsContainer.style.marginLeft = '-50px';
+            roomButtonsContainer.style.marginLeft = '-65px';
             roomSpecificContainer.appendChild(roomButtonsContainer);
 
-            const deleteButton = document.createElement('button');
-            deleteButton.id = 'deleteButton';
-            deleteButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
-            deleteButton.innerHTML = 'Revert';
-            deleteButton.type = 'submit';
+            const editButton = document.createElement('button');
+            editButton.id = 'editButton';
+            editButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+            editButton.innerHTML = 'Edit';
+            editButton.type = 'submit';
 
-            roomButtonsContainer.appendChild(deleteButton);
+            roomButtonsContainer.appendChild(editButton);
 
-            deleteButton.addEventListener('click', function () {
+            editButton.addEventListener('click', function () {
+                const form = document.getElementById('editForm');
+                form.action = `/rooms/${event.target.parentNode.parentNode.id}/edit`;
+                form.submit();
+            });
+
+            const revertButton = document.createElement('button');
+            revertButton.id = 'revertButton';
+            revertButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+            revertButton.innerHTML = 'Revert';
+            revertButton.type = 'submit';
+
+            roomButtonsContainer.appendChild(revertButton);
+
+            revertButton.addEventListener('click', function () {
                 document.getElementById('set_room_destroy').value = event.target.parentNode.parentNode.id
                 document.getElementById('destroyForm').submit();
             });
@@ -74,9 +88,16 @@ function loadRoomsImport() {
 
             roomSpecificContainer.addEventListener('mouseleave', function() {
                 importButton.remove();
-                deleteButton.remove();
+                revertButton.remove();
+                editButton.remove();
                 roomSpecificContainer.firstChild.className = 'text-2xl text-gray-500 font-bold dark:hover:text-white';
             });
         });
     });
 }
+
+document.querySelectorAll('.addContainer').forEach(addContainer => {
+   addContainer.addEventListener('click', function() {
+       document.location.href = `/rooms/create?floor=${event.target.id}`;
+   });
+});

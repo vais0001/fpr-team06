@@ -16,6 +16,9 @@
                 @method('delete')
                 <input type="number" name="set_room_destroy" class="hidden" id="set_room_destroy">
             </form>
+            <form action="{{route('rooms.edit', 1)}} " id="editForm" method="GET" class="hidden" name="editForm">
+                @csrf
+            </form>
         </div>
         <div id="world-map" data-maps='{{ json_encode($rooms) }}'></div>
         <div id="mainContent" class="h-full w-full flex flex-col justify-center items-center mt-5 gap-3">
@@ -35,6 +38,10 @@
                         </div>
                         @endif
                     @endforeach
+                        <div id="addRoom_{{$i}}"
+                             class="dark:bg-gray-800 rounded-md p-1 hover:bg-gray-200 dark:hover:bg-gray-700 addContainer">
+                            <h1 id="{{$i}}" class="text-2xl text-gray-500 font-bold dark:hover:text-white text-center pl-2 pr-2">+</h1>
+                        </div>
                 </div>
             </div>
             @endfor

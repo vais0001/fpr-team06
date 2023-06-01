@@ -20,13 +20,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('import', [RoomTimeController::class, 'index'])->name('importPage');
-
-Route::post('import', [RoomTimeController::class, 'import'])->name('import');
+Route::resource('rooms', RoomController::class);
+Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import');
 
 Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
 
-Route::get('/dashboard', [RoomController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function(){
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
