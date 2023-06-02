@@ -9,7 +9,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-800 flex flex-col justify-center items-center h-full">
-<a href="/dashboard" class="text-gray-200 text-4xl font-bold">TO DASHBOARD</a>
-<p class="text-gray-500 text-2xl">This page was made so it doesnt throw an error</p>
+    <a href="/dashboard" class="text-gray-200 text-4xl font-bold">TO DASHBOARD</a>
+    <p class="text-gray-500 text-2xl">This page was made so it doesnt throw an error</p>
 </body>
 </html>
