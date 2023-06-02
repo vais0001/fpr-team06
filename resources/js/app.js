@@ -73,8 +73,6 @@ buttons.forEach(button => {
 });
 
 function loadModel() {
-    console.log(scene.children.length)
-    console.log(scene)
     delete3DOBJ('LoadedFloor'); // deletes all loaded floor objects
     changeCameraDistance(this.value);
     changeCameraAngle(this.value);
@@ -109,86 +107,65 @@ function loadIcons (floor) {
     deleteRooms(rooms.length); // empties the rooms from the scene array
     rooms = [] //empties the array for new floor icons to be added
     if (floor == 'ground') { //loads temperature icons for the ground floor
-        const RC021 = new THREE.Sprite( hotMaterial )
-        RC021.scale.set(100, 200, 1)
-        RC021.position.set(-1300, 400, -170)
-        RC021.customIndex = 'RC021'
-        RC021.name = 'room'
-        rooms.push( RC021 )
-        scene.add( RC021 )
+        createRoom('RC021', hotMaterial, -1300, 400, -170)
 
-        const RC020 = new THREE.Sprite( normalMaterial )
-        RC020.scale.set(100, 200, 1)
-        RC020.position.set(-1000, 400, -1500)
-        RC020.customIndex = 'RC020'
-        RC020.name = 'room'
-        rooms.push( RC020 )
-        scene.add( RC020 )
+        createRoom('RC020', normalMaterial, -1000, 400, -1500)
 
-        const RC017 = new THREE.Sprite( normalMaterial )
-        RC017.scale.set(100, 200, 1)
-        RC017.position.set(100, 400, -1300)
-        RC017.customIndex = 'RC017'
-        RC017.name = 'room'
-        rooms.push( RC017 )
-        scene.add( RC017 )
+        createRoom('RC017', normalMaterial, 100, 400, -1300)
 
-        const RC023 = new THREE.Sprite( normalMaterial )
-        RC023.scale.set(100, 200, 1)
-        RC023.position.set(400, 400, -600)
-        RC023.customIndex = 'RC023'
-        RC023.name = 'room'
-        rooms.push( RC023 )
-        scene.add( RC023 )
+        createRoom('RC023', normalMaterial, 400, 400, -600)
 
-        const RC016 = new THREE.Sprite(normalMaterial)
-        RC016.scale.set(100, 200, 1)
-        RC016.position.set(1250, 400, -1000)
-        RC016.customIndex = 'RC016'
-        RC016.name = 'room'
-        rooms.push( RC016 )
-        scene.add( RC016 )
+        createRoom('RC016', normalMaterial, 1250, 400, -1000)
 
-        const RC011 = new THREE.Sprite( normalMaterial )
-        RC011.scale.set(100, 200, 1)
-        RC011.position.set(1250, 400, 750)
-        RC011.customIndex = 'RC011';
-        RC011.name = 'room'
-        rooms.push( RC011 )
-        scene.add( RC011 )
+        createRoom('RC011', normalMaterial, 1250, 400, 750)
+
     }
     if (floor == 1) {
-        const RC102 = new THREE.Sprite(normalMaterial)
-        RC102.scale.set(100, 200, 1)
-        RC102.position.set(500, 850, 1700)
-        RC102.customIndex = 'RC102'
-        RC102.name = 'room'
-        rooms.push( RC102 )
-        scene.add( RC102 )
+        createRoom('RC102', normalMaterial, 500, 850, 1700)
 
-        const RC103 = new THREE.Sprite(normalMaterial)
-        RC103.scale.set(100, 200, 1)
-        RC103.position.set(1250, 850, 1500)
-        RC103.customIndex = 'RC103'
-        RC103.name = 'room'
-        rooms.push( RC103 )
-        scene.add( RC103 )
+        createRoom('RC103', normalMaterial, 1250, 850, 1500)
 
-        const RC104 = new THREE.Sprite(normalMaterial)
-        RC104.scale.set(100, 200, 1)
-        RC104.position.set(1250, 850, 500)
-        RC104.customIndex = 'RC104'
-        RC104.name = 'room'
-        rooms.push( RC104 )
-        scene.add( RC104 )
+        createRoom('RC104', normalMaterial, 1250, 850, 500)
 
-        const RC108 = new THREE.Sprite(normalMaterial)
-        RC108.scale.set(100, 200, 1)
-        RC108.position.set(-50, 850, -600)
-        RC108.customIndex = 'RC108'
-        RC108.name = 'room'
-        rooms.push( RC108 )
-        scene.add( RC108 )
+        createRoom('RC108', normalMaterial, -50, 850, -600)
+    }
+
+    if (floor == 2) {
+        createRoom('RC213', normalMaterial, -700, 1300, 50)
+
+        createRoom('RC214', normalMaterial, -850, 1300, 800)
+
+        createRoom('RC201', normalMaterial, -1000, 1300, 1700)
+
+        createRoom('RC202', normalMaterial, 250, 1300, 1900)
+
+        createRoom('RC203', normalMaterial, 975, 1300, 1900)
+
+        createRoom('RC204', normalMaterial, 1350, 1300, 1900)
+
+        createRoom('RC205', normalMaterial, 1700, 1300, 1900)
+
+        createRoom('RC211', normalMaterial, -150, 1300, -1100)
+
+        createRoom('RC210', normalMaterial, 800, 1300, -1100)
+    }
+
+    if (floor == 3) {
+        createRoom('RC301', normalMaterial, -1100, 1700, 1800)
+
+        createRoom('RC304', normalMaterial, 250, 1700, 1800)
+
+        createRoom('RC305', normalMaterial, 1300, 1700, 1800)
+
+        createRoom('RC318', normalMaterial, -900, 1700, 1150)
+
+        createRoom('RC317', normalMaterial, -650, 1700, 650)
+
+        createRoom('RC316', normalMaterial, -650, 1700, 100)
+
+        createRoom('RC315', normalMaterial, -550, 1700, -250)
+
+        createRoom('RC309', normalMaterial, 650, 1700, -1050)
     }
 }
 
@@ -257,11 +234,10 @@ function changeCameraAngle (floor) {
     }
 }
 
-
 function delete3DOBJ(objName){
     let selectedObject = scene.getObjectByName(objName);
     scene.remove( selectedObject );
-    animate();
+    render();
 }
 
 function deleteRooms(length){
@@ -269,9 +245,19 @@ function deleteRooms(length){
     while (count <= length) {
         let selectedObject = scene.getObjectByName('room');
         scene.remove( selectedObject );
-        animate();
+        render();
         count++;
     }
+}
+
+function createRoom(roomId, roomStatus, xPosition, yPosition, zPosition) {
+    const room = new THREE.Sprite( roomStatus )
+    room.scale.set(100, 200, 1)
+    room.position.set(xPosition, yPosition, zPosition)
+    room.customIndex = roomId
+    room.name = 'room'
+    rooms.push( room )
+    scene.add( room )
 }
 
 window.addEventListener('resize', onWindowResize, false)
