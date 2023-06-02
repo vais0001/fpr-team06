@@ -17,11 +17,7 @@ class RoomFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->numerify('RC###'),
-            'floor' => $this->faker->numberBetween(1, 5),
-            'temperature' => $this->faker->randomFloat(2, 15, 30),
-            'co2' => $this->faker->numberBetween(380, 480),
-            'energyStatus' => $this->faker->boolean,
+            'name' => $this->faker->name,
         ];
     }
 }

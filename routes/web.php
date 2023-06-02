@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomTimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +17,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('model');
-})->middleware(['auth', 'verified'])->name('model');
+    return view('welcome');
+});
+
+Route::resource('rooms', RoomController::class);
+Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import');
+
+Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
+
+Route::get('/dashboard', function(){
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
