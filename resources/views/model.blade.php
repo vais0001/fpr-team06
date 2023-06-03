@@ -24,6 +24,9 @@ switch ($description){
     case 'broken clouds':
         $imgPath='images/cloudy.svg';
         break;
+    case 'overcast clouds':
+        $imgPath='images/cloudy.svg';
+        break;
     case 'shower rain':
         $imgPath='images/rainy-3.svg';
         break;
@@ -52,7 +55,6 @@ $iconUrl = "http://openweathermap.org/img/w/$iconCode.png";
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <title>My first three.js app</title>
-    <script src="../js/weather-widget.js" ></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;600&display=swap');
         body {
