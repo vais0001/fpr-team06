@@ -158,6 +158,8 @@ function runModel() {
             // })
             // object.scale.set(.01, .01, .01)
             scene.add(object)
+            changeCameraDistance('ground');
+            changeCameraAngle('ground');
             loadIcons('ground'); // loads temperature icons for the ground floor
             object.name = 'LoadedFloor'
         },
@@ -168,6 +170,13 @@ function runModel() {
             console.log(error)
         }
     )
+
+    //to get the value of a button
+    const buttons = document.querySelectorAll('button');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', loadModel, false);
+    });
 
     function loadModel() {
         delete3DOBJ('LoadedFloor'); // deletes all loaded floor objects
@@ -187,25 +196,16 @@ function runModel() {
                 // })
                 // object.scale.set(.01, .01, .01)
                 scene.add(object)
-                loadIcons('ground'); // loads temperature icons for the ground floor
                 object.name = 'LoadedFloor'
             },
             (xhr) => {
-                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+                //console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
             },
             (error) => {
                 console.log(error)
             }
         )
     }
-
-
-    //to get the value of a button
-    const buttons = document.querySelectorAll('button');
-
-    buttons.forEach(button => {
-        button.addEventListener('click', loadModel, false);
-    });
 
     // Temperature icons
     const normalTemp = new THREE.TextureLoader().load('images/temperature-normal.png');
@@ -233,7 +233,6 @@ function runModel() {
             createRoom('RC016', normalMaterial, 1250, 400, -1000)
 
             createRoom('RC011', normalMaterial, 1250, 400, 750)
-
         }
         if (floor == 1) {
             createRoom('RC102', normalMaterial, 500, 850, 1700)
@@ -244,7 +243,6 @@ function runModel() {
 
             createRoom('RC108', normalMaterial, -50, 850, -600)
         }
-
         if (floor == 2) {
             createRoom('RC213', normalMaterial, -700, 1300, 50)
 
@@ -264,7 +262,6 @@ function runModel() {
 
             createRoom('RC210', normalMaterial, 800, 1300, -1100)
         }
-
         if (floor == 3) {
             createRoom('RC301', normalMaterial, -1100, 1700, 1800)
 
@@ -300,63 +297,47 @@ function runModel() {
         }
     }
 
-    function onMouseClick(event) {
-        // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-        // Update the picking ray with the camera and mouse position
-        raycaster.setFromCamera(mouse, camera);
-
-        // Calculate objects intersecting the picking ray
-        let intersects = raycaster.intersectObjects(Object.values(rooms));
-
-        for (let i = 0; i < intersects.length; i++) {
-            console.log(intersects[i].object.customIndex);
-        }
-    }
-
-        window.addEventListener('click', onMouseClick, false);
+    window.addEventListener('click', onMouseClick, false);
 
     function changeCameraDistance(floor) {
-        if (floor === 'ground') {
-            camera.position.set(-2500, 2000, 1500)
+        if (floor == 'ground') {
+            camera.position.set(-2500, 2500, 1500)
             camera.updateProjectionMatrix()
         }
-        if (floor === 1) {
-            camera.position.set(-2000, 2500, 1500)
+        if (floor == 1) {
+            camera.position.set(-2000, 4000, 1500)
             camera.updateProjectionMatrix()
         }
-        if (floor === 2) {
-            camera.position.set(-2000, 3000, 1500)
+        if (floor == 2) {
+            camera.position.set(-2500, 4000, 3500)
             camera.updateProjectionMatrix()
         }
-        if (floor === 3) {
-            camera.position.set(-3000, 3000, 1500)
+        if (floor == 3) {
+            camera.position.set(-3000, 5000, 1500)
             camera.updateProjectionMatrix()
         }
     }
 
     function changeCameraAngle(floor) {
-        if (floor === 'ground') {
+        if (floor == 'ground') {
             controls.minDistance = 2500;
             controls.maxDistance = 4000;
             controls.minPolarAngle = 0;
             controls.maxPolarAngle = Math.PI * 0.35;
         }
-        if (floor === 1) {
+        if (floor == 1) {
             controls.minDistance = 3000;
             controls.maxDistance = 4500;
             controls.minPolarAngle = 0;
             controls.maxPolarAngle = Math.PI * 0.35;
         }
-        if (floor === 2) {
+        if (floor == 2) {
             controls.minDistance = 3500;
             controls.maxDistance = 5000;
             controls.minPolarAngle = 0;
             controls.maxPolarAngle = Math.PI * 0.35;
         }
-        if (floor === 3) {
+        if (floor == 3) {
             controls.minDistance = 3500;
             controls.maxDistance = 5000;
             controls.minPolarAngle = 0;
