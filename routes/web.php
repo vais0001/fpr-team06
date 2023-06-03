@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomTimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +17,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::resource('rooms', RoomController::class);
+Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import');
+
+Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
+
+Route::get('/dashboard', function(){
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/model' , function(){
     return view('model');
 })->middleware(['auth', 'verified'])->name('model');
 
@@ -23,5 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/tempprofilepage')->name('profile');
 
 require __DIR__.'/auth.php';

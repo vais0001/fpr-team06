@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Room;
+use App\Models\RoomTime;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call(RoomSeeder::class);
+        $this->call([
+            RoomTimeSeeder::class,
+            RoomSeeder::class,
+            UserSeeder::class,
+        ]);
     }
 }
