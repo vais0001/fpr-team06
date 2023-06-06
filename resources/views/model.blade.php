@@ -76,90 +76,198 @@
                 flex-direction: column;
             }
 
-            .button {
+            .button-light {
                 margin-bottom: 10px;
                 padding: 10px;
-                background-color: #f2f2f2;
-                border: 1px solid #ccc;
+                background-color: white;
+                border: 1px solid #5698EF;
+                color: black;
                 cursor: pointer;
             }
+
+            .button-dark {
+                margin-bottom: 10px;
+                padding: 10px;
+                background-color: black;
+                border: 1px solid #0E1A2B;
+                color: white;
+                cursor: pointer;
+            }
+
             #jrczimg {
                 height: 120px;
                 width: 200px;
             }
+
             .logo {
                 height: 50px;
                 width: 50px;
             }
 
-        {{--Weather Widget--}}
-        .outside-temperature-container {
-            position: absolute;
-            right: 1%;
-            top: 85%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-        }
+            {{--Weather Widget--}}
+            .outside-temperature-container {
+                position: absolute;
+                right: 1%;
+                top: 85%;
+                transform: translateY(-50%);
+                display: flex;
+                flex-direction: column;
+            }
 
-        .widget {
-            width: 200px;
-            height: 225px;
-            border-radius: 20px;
-            background: rgba(299, 299, 299, 0.4);
-        }
+            .widget-light {
+                width: 200px;
+                height: 225px;
+                border-radius: 20px;
+                background: rgba(299, 299, 299, 0.4);
+            }
 
-        .widget .left {
-            position: absolute;
-            right: 0;
-            width: 200px;
-            margin-top: 85px;
-        }
+            .widget-dark {
+                width: 200px;
+                height: 225px;
+                border-radius: 20px;
+                background: black;
+            }
 
-        .widget .right {
-            position: absolute;
-            right: 0;
-            width: 200px;
-            color: #fff;
-            margin: 20px 0;
-        }
+            .widget-light .left {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                margin-top: 85px;
+            }
 
-        .icon {
-            width: 50%;
-            margin-bottom: 0;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
+            .widget-dark .left {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                margin-top: 85px;
+            }
 
-        .weather-status {
-            color: #fff;
-            text-align: center;
-            margin: -10px 0 0;
-        }
+            .widget-light .right {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                color: black;
+                margin: 20px 0;
+            }
 
-            .widget .right .city {
+            .widget-dark .right {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                color: #fff;
+                margin: 20px 0;
+            }
+
+            .icon {
+                width: 50%;
+                margin-bottom: 0;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .weather-status {
+                color: black;
+                text-align: center;
+                margin: -10px 0 0;
+            }
+
+            .widget-light .right .city {
                 font-size: 1em;
                 text-align: center;
                 margin-bottom: 10px;
                 text-shadow: 1px 1px 5px #707070;
             }
 
-            .widget .right .degree {
-                font-size: 3em;
+            .widget-dark .right .city {
+                font-size: 1em;
+                text-align: center;
+                margin-bottom: 10px;
+                text-shadow: 1px 1px 5px #707070;
+            }
+
+            .widget-light .right .degree {
+                font-size: 2.5em;
                 font-weight: bold;
                 text-align: center;
                 margin: 0;
                 text-shadow: 1px 1px 5px #707070;
             }
+
+            .widget-dark .right .degree {
+                font-size: 2.5em;
+                font-weight: bold;
+                text-align: center;
+                margin: 0;
+                text-shadow: 1px 1px 5px #707070;
+            }
+            {{--Light Dark Mode--}}
+            input[type="checkbox"] {
+                -webkit-appearance: none;
+                visibility: hidden;
+                display: none;
+            }
+
+            .check {
+                position: relative;
+                margin-right: 10px;
+                bottom: 20%;
+                display: block;
+                width: 40px;
+                height: 20px;
+                background: #0E1A2B;
+                cursor: pointer;
+                border-radius: 20px;
+                overflow: hidden;
+                transition: ease-in 0.5s;
+            }
+
+            input[type="checkbox"]:checked ~ .check {
+                background: #5698EF;
+                box-shadow: 0 0 0 1600px #0E1A2B;
+            }
+
+            .check:before {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                background: #5698EF;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                transition: 0.5s;
+            }
+
+            input[type="checkbox"]:checked ~ .check:before {
+                transform: translateX(50px);
+            }
+
+            .check:after {
+                content: '';
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                background: #0E1A2B;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                transition: 0.5s;
+                transform: translateX(-50px);
+            }
+
+            input[type="checkbox"]:checked ~ .check:after {
+                transform: translateX(0px);
+            }
+
         </style>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
-                <button class="button" value="ground">Ground Floor</button>
-                <button class="button" value="1">Floor 1</button>
-                <button class="button" value="2">Floor 2</button>
-                <button class="button" value="3">Floor 3</button>
+                <button class="button-light" value="ground">Ground Floor</button>
+                <button class="button-light" value="1">Floor 1</button>
+                <button class="button-light" value="2">Floor 2</button>
+                <button class="button-light" value="3">Floor 3</button>
             </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">
@@ -174,6 +282,18 @@
                     </div>
                 </div>
             </div>
+            <script>
+                document.querySelector('.check').addEventListener('click', () => {
+                    document.querySelector('.button-light').className = "button-dark";
+                    document.querySelector('.widget-light').className = "widget-dark";
+                    document.querySelector('.weather-status').style.color = '#fff';
+                    if (document.querySelector('.check').addEventListener('click', () => {
+                        document.querySelector('button').className = "button-light";
+                        document.querySelector('.widget-dark').className = "widget-light";
+                        document.querySelector('.weather-status').style.color = 'black';
+                    }));
+                })
+            </script>
         </div>
     </x-slot>
 </x-app-layout>
