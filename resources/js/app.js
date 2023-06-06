@@ -7,6 +7,14 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+/**
+ * Makes a cookie to save the dark mode value
+ * @param cvalue dark mode value can be 'Dark' or 'Light'
+ */
+function setCookie(cvalue) {
+    document.cookie = "mode=" + cvalue;
+}
+
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setClearColor("#A3ABBD");
@@ -15,7 +23,13 @@ function setRenderColor(color) {
 }
 document.getElementById('model').appendChild(renderer.domElement)
 
+/**
+ * Handles the dark mode switch
+ */
 function darkMode() {
+    if (myCookieValue === "dark") {
+        document.getElementById('checkbox').checked = true;
+        }
     document.querySelector('.check').addEventListener('click', () => {
         if (!document.getElementById('checkbox').checked) {
             turnDark();
@@ -23,9 +37,12 @@ function darkMode() {
             turnLight();
         }
         console.log(document.getElementById('checkbox').checked);
-    })
+    });
 }
 
+/**
+ * changes the css classes to dark mode and sets a new cookie value
+ */
 function turnDark() {
     document.getElementById('button-light1').className = "button-dark";
     document.getElementById('button-light2').className = "button-dark";
@@ -34,7 +51,12 @@ function turnDark() {
     document.querySelector('.widget-light').className = "widget-dark";
     document.querySelector('.weather-status').style.color = '#fff';
     setRenderColor("#0E1A2B");
+    setCookie("dark");
 }
+
+/**
+ * changes the css classes to light mode and sets a new cookie value
+ */
 function turnLight() {
     document.getElementById('button-light1').className = "button-light";
     document.getElementById('button-light2').className = "button-light";
@@ -43,8 +65,32 @@ function turnLight() {
     document.querySelector('.widget-dark').className = "widget-light";
     document.querySelector('.weather-status').style.color = 'black';
     setRenderColor("#A3ABBD");
+    setCookie("light");
 }
 
+/**
+ * Gets the current value of the dark mode cookie
+ * @param cname dark mode value
+ * @returns {string}
+ */
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+const myCookieValue = getCookie("mode");
+console.log(myCookieValue);
 
 window.onload = function () {
     const url = window.location.href;
@@ -55,7 +101,14 @@ window.onload = function () {
         runModel();
         console.log('test');
     }
+    getCookie("mode");
     darkMode();
+    if (myCookieValue === "dark") {
+        turnDark();
+        console.log(myCookieValue);
+    } else {
+        turnLight();
+    }
 }
 function loadRoomsImport() {
     const tableBody = document.getElementById('tableBody');

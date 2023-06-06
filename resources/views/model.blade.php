@@ -81,7 +81,6 @@
                 border-radius: 10px;
                 padding: 10px;
                 background: rgba(299, 299, 299, 0.4);
-                border: 1px solid white;
                 color: black;
                 cursor: pointer;
             }
