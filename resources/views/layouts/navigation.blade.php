@@ -79,7 +79,7 @@
 
                 {{--Light Dark Mode--}}
                 <label>
-                    <input type="checkbox">
+                    <input type="checkbox" id="checkbox">
                     <span class="check"></span>
                 </label>
             </div>

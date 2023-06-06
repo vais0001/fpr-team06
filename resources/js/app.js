@@ -7,6 +7,45 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+const renderer = new THREE.WebGLRenderer()
+renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setClearColor("#A3ABBD");
+function setRenderColor(color) {
+    renderer.setClearColor(color);
+}
+document.getElementById('model').appendChild(renderer.domElement)
+
+function darkMode() {
+    document.querySelector('.check').addEventListener('click', () => {
+        if (!document.getElementById('checkbox').checked) {
+            turnDark();
+        } else {
+            turnLight();
+        }
+        console.log(document.getElementById('checkbox').checked);
+    })
+}
+
+function turnDark() {
+    document.getElementById('button-light1').className = "button-dark";
+    document.getElementById('button-light2').className = "button-dark";
+    document.getElementById('button-light3').className = "button-dark";
+    document.getElementById('button-light4').className = "button-dark";
+    document.querySelector('.widget-light').className = "widget-dark";
+    document.querySelector('.weather-status').style.color = '#fff';
+    setRenderColor("#0E1A2B");
+}
+function turnLight() {
+    document.getElementById('button-light1').className = "button-light";
+    document.getElementById('button-light2').className = "button-light";
+    document.getElementById('button-light3').className = "button-light";
+    document.getElementById('button-light4').className = "button-light";
+    document.querySelector('.widget-dark').className = "widget-light";
+    document.querySelector('.weather-status').style.color = 'black';
+    setRenderColor("#A3ABBD");
+}
+
+
 window.onload = function () {
     const url = window.location.href;
     if(url.includes('rooms')) {
@@ -16,6 +55,7 @@ window.onload = function () {
         runModel();
         console.log('test');
     }
+    darkMode();
 }
 function loadRoomsImport() {
     const tableBody = document.getElementById('tableBody');
@@ -129,17 +169,6 @@ function runModel() {
     camera.position.set(-2500, 2000, 1500)
     camera.updateProjectionMatrix()
 
-    const renderer = new THREE.WebGLRenderer()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-
-    if (document.querySelector('.button-light').className === "button-light") {
-        // renderer.setClearColor( 0x5698EF, 1 );
-        renderer.setClearColor( "red" );
-    } else {
-        renderer.setClearColor( 0x0E1A2B, 1 );
-    }
-
-    document.getElementById('model').appendChild(renderer.domElement)
 
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true

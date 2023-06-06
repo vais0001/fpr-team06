@@ -78,17 +78,19 @@
 
             .button-light {
                 margin-bottom: 10px;
+                border-radius: 10px;
                 padding: 10px;
-                background-color: white;
-                border: 1px solid #5698EF;
+                background: rgba(299, 299, 299, 0.4);
+                border: 1px solid white;
                 color: black;
                 cursor: pointer;
             }
 
             .button-dark {
                 margin-bottom: 10px;
+                border-radius: 10px;
                 padding: 10px;
-                background-color: black;
+                background: rgba(0, 0, 0, 0.4);
                 border: 1px solid #0E1A2B;
                 color: white;
                 cursor: pointer;
@@ -225,7 +227,7 @@
             }
 
             input[type="checkbox"]:checked ~ .check {
-                background: #5698EF;
+                background: #A3ABBD;
                 /*box-shadow: 0 0 0 1600px #0E1A2B;*/
             }
 
@@ -234,7 +236,7 @@
                 position: absolute;
                 top: 2px;
                 left: 2px;
-                background: #5698EF;
+                background: #A3ABBD;
                 width: 16px;
                 height: 16px;
                 border-radius: 50%;
@@ -267,10 +269,10 @@
 
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
-                <button class="button-light" value="ground">Ground Floor</button>
-                <button class="button-light" value="1">Floor 1</button>
-                <button class="button-light" value="2">Floor 2</button>
-                <button class="button-light" value="3">Floor 3</button>
+                <button class="button-light" id="button-light1" value="ground">Ground Floor</button>
+                <button class="button-light" id="button-light2" value="1">Floor 1</button>
+                <button class="button-light" id="button-light3" value="2">Floor 2</button>
+                <button class="button-light" id="button-light4" value="3">Floor 3</button>
             </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">
@@ -285,18 +287,6 @@
                     </div>
                 </div>
             </div>
-            <script>
-                document.querySelector('.check').addEventListener('click', () => {
-                    document.querySelector('.button-light').className = "button-dark";
-                    document.querySelector('.widget-light').className = "widget-dark";
-                    document.querySelector('.weather-status').style.color = '#fff';
-                    if (document.querySelector('.check').addEventListener('click', () => {
-                        document.querySelector('.button-light').className = "button-light";
-                        document.querySelector('.widget-dark').className = "widget-light";
-                        document.querySelector('.weather-status').style.color = 'black';
-                    }));
-                })
-            </script>
         </div>
     </x-slot>
 </x-app-layout>
