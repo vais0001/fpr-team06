@@ -76,6 +76,12 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+
+                {{--Light Dark Mode--}}
+                <label>
+                    <input type="checkbox">
+                    <span class="check"></span>
+                </label>
             </div>
 
 

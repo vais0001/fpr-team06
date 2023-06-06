@@ -131,6 +131,14 @@ function runModel() {
 
     const renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
+
+    if (document.querySelector('.button-light').className === "button-light") {
+        // renderer.setClearColor( 0x5698EF, 1 );
+        renderer.setClearColor( "red" );
+    } else {
+        renderer.setClearColor( 0x0E1A2B, 1 );
+    }
+
     document.getElementById('model').appendChild(renderer.domElement)
 
     const controls = new OrbitControls(camera, renderer.domElement)

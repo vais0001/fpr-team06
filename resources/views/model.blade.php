@@ -169,7 +169,8 @@
             .weather-status {
                 color: black;
                 text-align: center;
-                margin: -10px 0 0;
+                margin: -5px 0 0;
+                font-size: 20px;
             }
 
             .widget-light .right .city {
@@ -201,6 +202,7 @@
                 margin: 0;
                 text-shadow: 1px 1px 5px #707070;
             }
+
             {{--Light Dark Mode--}}
             input[type="checkbox"] {
                 -webkit-appearance: none;
@@ -210,7 +212,7 @@
 
             .check {
                 position: relative;
-                margin-right: 10px;
+                margin-left: 100px;
                 bottom: 20%;
                 display: block;
                 width: 40px;
@@ -224,7 +226,7 @@
 
             input[type="checkbox"]:checked ~ .check {
                 background: #5698EF;
-                box-shadow: 0 0 0 1600px #0E1A2B;
+                /*box-shadow: 0 0 0 1600px #0E1A2B;*/
             }
 
             .check:before {
@@ -262,6 +264,7 @@
 
         </style>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
                 <button class="button-light" value="ground">Ground Floor</button>
@@ -271,7 +274,7 @@
             </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">
-                <div class="widget">
+                <div class="widget-light">
                     <div class="left">
                         <img src="{{ asset($imgPath) }}" class="icon" alt="Weather Icon">
                         <h5 class="weather-status"><?php echo $description; ?></h5>
@@ -288,7 +291,7 @@
                     document.querySelector('.widget-light').className = "widget-dark";
                     document.querySelector('.weather-status').style.color = '#fff';
                     if (document.querySelector('.check').addEventListener('click', () => {
-                        document.querySelector('button').className = "button-light";
+                        document.querySelector('.button-light').className = "button-light";
                         document.querySelector('.widget-dark').className = "widget-light";
                         document.querySelector('.weather-status').style.color = 'black';
                     }));
