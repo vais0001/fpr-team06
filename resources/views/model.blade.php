@@ -52,8 +52,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
        <script src="resources/css/app.css"></script>
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
                 <button class="button-light" id="button-light1" value="ground">Ground Floor</button>

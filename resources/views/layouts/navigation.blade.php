@@ -79,7 +79,7 @@
                 </x-dropdown>
 
                 {{--Light Dark Mode--}}
-                <label>
+                <label style="margin-left: 100px">
                     <input type="checkbox" id="checkbox">
                     <span class="check"></span>
                 </label>
