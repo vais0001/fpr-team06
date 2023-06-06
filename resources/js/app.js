@@ -39,7 +39,6 @@ function darkMode() {
         console.log(document.getElementById('checkbox').checked);
     });
 }
-
 /**
  * changes the css classes to dark mode and sets a new cookie value
  */
@@ -53,7 +52,6 @@ function turnDark() {
     setRenderColor("#0E1A2B");
     setCookie("dark");
 }
-
 /**
  * changes the css classes to light mode and sets a new cookie value
  */
@@ -67,7 +65,6 @@ function turnLight() {
     setRenderColor("#A3ABBD");
     setCookie("light");
 }
-
 /**
  * Gets the current value of the dark mode cookie
  * @param cname dark mode value
