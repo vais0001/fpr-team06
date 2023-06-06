@@ -53,6 +53,219 @@
               integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
        <script src="resources/css/app.css"></script>
 
+        <style>
+
+            /*Change nav to absolute so model does not break*/
+            nav {
+                position: absolute;
+                width: 100%;
+            }
+
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;600&display=swap');
+
+            body {
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .button-container {
+                position: fixed;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .button-light {
+                margin-bottom: 10px;
+                border-radius: 10px;
+                padding: 10px;
+                background: rgba(299, 299, 299, 0.4);
+                color: black;
+                cursor: pointer;
+            }
+
+            .button-dark {
+                margin-bottom: 10px;
+                border-radius: 10px;
+                padding: 10px;
+                background: rgba(0, 0, 0, 0.4);
+                color: white;
+                cursor: pointer;
+            }
+
+            #jrczimg {
+                height: 120px;
+                width: 200px;
+            }
+
+            .logo {
+                height: 50px;
+                width: 50px;
+            }
+
+            /*Weather Widget*/
+            .outside-temperature-container {
+                position: absolute;
+                right: 1%;
+                top: 85%;
+                transform: translateY(-50%);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .widget-light {
+                width: 200px;
+                height: 225px;
+                border-radius: 20px;
+                background: rgba(299, 299, 299, 0.4);
+            }
+
+            .widget-dark {
+                width: 200px;
+                height: 225px;
+                border-radius: 20px;
+                background: rgba(0, 0, 0, 0.4);
+            }
+
+            .widget-light .left {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                margin-top: 85px;
+            }
+
+            .widget-dark .left {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                margin-top: 85px;
+            }
+
+            .widget-light .right {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                color: black;
+                margin: 20px 0;
+            }
+
+            .widget-dark .right {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                color: #fff;
+                margin: 20px 0;
+            }
+
+            .icon {
+                width: 50%;
+                margin-bottom: 0;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .weather-status {
+                color: black;
+                text-align: center;
+                margin: -5px 0 0;
+                font-size: 20px;
+            }
+
+            .widget-light .right .city {
+                font-size: 1em;
+                text-align: center;
+                margin-bottom: 10px;
+                text-shadow: 1px 1px 5px #707070;
+            }
+
+            .widget-dark .right .city {
+                font-size: 1em;
+                text-align: center;
+                margin-bottom: 10px;
+                text-shadow: 1px 1px 5px #707070;
+            }
+
+            .widget-light .right .degree {
+                font-size: 2.5em;
+                font-weight: bold;
+                text-align: center;
+                margin: 0;
+                text-shadow: 1px 1px 5px #707070;
+            }
+
+            .widget-dark .right .degree {
+                font-size: 2.5em;
+                font-weight: bold;
+                text-align: center;
+                margin: 0;
+                text-shadow: 1px 1px 5px #707070;
+            }
+
+            /*Light Dark Mode*/
+            input[type="checkbox"] {
+                -webkit-appearance: none;
+                visibility: hidden;
+                display: none;
+            }
+
+            .check {
+                position: relative;
+                bottom: 20%;
+                display: block;
+                width: 40px;
+                height: 20px;
+                background: #0E1A2B;
+                cursor: pointer;
+                border-radius: 20px;
+                overflow: hidden;
+                transition: ease-in 0.5s;
+            }
+
+            input[type="checkbox"]:checked ~ .check {
+                background: #A3ABBD;
+            }
+
+            .check:before {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                background: #A3ABBD;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                transition: 0.5s;
+            }
+
+            input[type="checkbox"]:checked ~ .check:before {
+                transform: translateX(50px);
+            }
+
+            .check:after {
+                content: '';
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                background: #0E1A2B;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                transition: 0.5s;
+                transform: translateX(-50px);
+            }
+
+            input[type="checkbox"]:checked ~ .check:after {
+                transform: translateX(0px);
+            }
+
+        </style>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
