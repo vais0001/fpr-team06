@@ -52,19 +52,15 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
        <script src="resources/css/app.css"></script>
-
         <style>
-
             /*Change nav to absolute so model does not break*/
             nav {
                 position: absolute;
                 width: 100%;
             }
-
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;600&display=swap');
 
             body {
-                height: 100vh;
                 margin: 0;
                 padding: 0;
                 overflow: hidden;
