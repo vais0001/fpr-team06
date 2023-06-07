@@ -181,7 +181,7 @@ function runModel() {
     )
 
     //to get the value of a button
-    const buttons = document.querySelectorAll('button');
+    const buttons = document.querySelectorAll('.button');
 
     buttons.forEach(button => {
         button.addEventListener('click', loadModel, false);
