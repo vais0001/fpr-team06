@@ -18,12 +18,11 @@ class RoomTimesImport implements ToModel, WithStartRow
      */
     public function model(array $row): \Illuminate\Database\Eloquent\Model|RoomTime|null
     {
-
         return new RoomTime([
             'room_id' => request('set_room'),
             'time' => $row[0],
             'co2' => $row[2],
-            'temperature' => $row[3]
+            'temperature' => $row[3],
         ]);
     }
     public function startRow(): int

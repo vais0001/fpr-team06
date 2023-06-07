@@ -39,6 +39,7 @@ function loadRoomsImport() {
                      <td>${room.time}</td>
                      <td>${room.co2}</td>
                      <td>${room.temperature}</td>
+                     <td>${room.outside_temperature}</td>
                      </tr>`;
                 });
 

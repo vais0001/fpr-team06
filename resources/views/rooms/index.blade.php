@@ -52,6 +52,7 @@
                             <th class="px-4 py-2">Time</th>
                             <th class="px-4 py-2">Co2</th>
                             <th class="px-4 py-2">Temperature</th>
+                            <th class="px-4 py-2">Outside Temp</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">

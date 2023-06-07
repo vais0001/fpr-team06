@@ -22,7 +22,6 @@ Route::get('/', function () {
 
 Route::resource('rooms', RoomController::class);
 Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import');
-
 Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
 
 Route::get('/dashboard', function(){
