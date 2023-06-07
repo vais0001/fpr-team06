@@ -9,9 +9,16 @@ use Illuminate\Http\Request;
 use App\Imports\RoomTimesImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+
 
 class RoomTimeController extends Controller
 {
+    public function showModel()  // Method for showing the view
+    {
+        return view('model');
+    }
+
     public function import(Request $request)
     {
         $request->validate([
@@ -37,5 +44,21 @@ class RoomTimeController extends Controller
         $room = Room::find(request('set_room_destroy'));
         $roomTime = RoomTime::all()->where('room_id', request('set_room_destroy'))->where('created_at', '>=', $room->updated_at)->each->delete();
         return redirect()->route('rooms.index')->with('success', 'RoomTime deleted successfully');
+    }
+
+    public function getData()
+    {
+        $rooms = Room::all();
+
+        $data = $rooms->map(function ($room) {
+            $latestRoomTime = $room->roomTime()->latest('id')->first();
+
+            return [
+                'name' => $room->name,
+                'temperature' => optional($latestRoomTime)->temperature,
+            ];
+        });
+
+        return response()->json($data);
     }
 }
