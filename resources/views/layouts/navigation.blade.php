@@ -1,4 +1,5 @@
-<nav x-data="{ open: false }" class="bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+{{--<nav x-data="{ open: false }" class="bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-gray-700">--}}
+<nav x-data="{ open: false }" class="dark:bg-black border-b dark:border-gray-700">
     <style>
         #marginpictures{
             margin-left: 57%;
@@ -69,8 +70,8 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('images/jrcz-transparent-white.png') }}" alt="JRCZ-logo" class="block h-10 w-auto fill-current text-gray-600">
+                    <a href ="{{ route('dashboard') }}">
+                        <img src="{{ asset('images/jrcz-transparent.png') }}" alt="JRCZ-logo" id="jrczImage" class="block h-10 w-auto fill-current text-gray-600">
                     </a>
                 </div>
                 <!-- Navigation Links -->

@@ -44,6 +44,8 @@ function darkMode() {
  * changes the css classes to dark mode and sets a new cookie value
  */
 function turnDark() {
+    document.documentElement.classList.add("dark");
+    document.getElementById('jrczImage').src = 'images/jrcz-transparent-white.png';
     document.getElementById('button-light1').className = "button-dark";
     document.getElementById('button-light2').className = "button-dark";
     document.getElementById('button-light3').className = "button-dark";
@@ -56,6 +58,8 @@ function turnDark() {
  * changes the css classes to light mode and sets a new cookie value
  */
 function turnLight() {
+    document.documentElement.classList.remove("dark");
+    document.getElementById('jrczImage').src = 'images/jrcz-transparent.png';
     document.getElementById('button-light1').className = "button-light";
     document.getElementById('button-light2').className = "button-light";
     document.getElementById('button-light3').className = "button-light";
@@ -104,8 +108,10 @@ window.onload = function () {
     getCookie("mode");
     darkMode();
     if (myCookieValue === "dark") {
+        document.documentElement.classList.add("dark");
         turnDark();
     } else {
+        document.documentElement.classList.remove("dark");
         turnLight();
     }
 }
