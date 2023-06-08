@@ -7,16 +7,117 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+/**
+ * Makes a cookie to save the dark mode value
+ * @param cvalue dark mode value can be 'Dark' or 'Light'
+ */
+function setCookie(cvalue) {
+    document.cookie = "mode=" + cvalue;
+}
+
+const renderer = new THREE.WebGLRenderer()
+renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setClearColor("#A3ABBD");
+function setRenderColor(color) {
+    renderer.setClearColor(color);
+}
+
+/**
+ * Handles the dark mode switch
+ */
+function darkMode() {
+    if (myCookieValue === "dark") {
+        document.getElementById('checkbox').checked = true;
+        }
+    document.querySelector('.check').addEventListener('click', () => {
+        if (!document.getElementById('checkbox').checked) {
+            setCookie("dark");
+            turnDark();
+        } else {
+            setCookie("light");
+            turnLight();
+        }
+        console.log(document.getElementById('checkbox').checked);
+    });
+}
+/**
+ * changes the css classes to dark mode and sets a new cookie value
+ */
+function turnDark() {
+    document.documentElement.classList.add("dark");
+    document.getElementById('jrczImage').src = 'images/jrcz-transparent-white.png';
+    document.getElementById('button-light1').className = "button-dark";
+    document.getElementById('button-light2').className = "button-dark";
+    document.getElementById('button-light3').className = "button-dark";
+    document.getElementById('button-light4').className = "button-dark";
+    document.querySelector('.widget-light').className = "widget-dark";
+    document.querySelector('.weather-status').style.color = '#fff';
+    setRenderColor("#0E1A2B");
+}
+/**
+ * changes the css classes to light mode and sets a new cookie value
+ */
+function turnLight() {
+    document.documentElement.classList.remove("dark");
+    document.getElementById('jrczImage').src = 'images/jrcz-transparent.png';
+    document.getElementById('button-light1').className = "button-light";
+    document.getElementById('button-light2').className = "button-light";
+    document.getElementById('button-light3').className = "button-light";
+    document.getElementById('button-light4').className = "button-light";
+    document.querySelector('.widget-dark').className = "widget-light";
+    document.querySelector('.weather-status').style.color = 'black';
+    setRenderColor("#A3ABBD");
+}
+/**
+ * Gets the current value of the dark mode cookie
+ * @param cname dark mode value
+ * @returns {string}
+ */
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+const myCookieValue = getCookie("mode");
+console.log(myCookieValue);
+
 window.onload = function () {
     const url = window.location.href;
     if(url.includes('rooms')) {
         loadRoomsImport();
+        console.log(myCookieValue);
     }
     if(url.includes('model')) {
         runModel();
         console.log('test');
     }
+    if(url.includes('dashboard')) {
+        console.log(myCookieValue);
+    }
+    getCookie("mode");
+    darkMode();
+    if (myCookieValue === "dark") {
+        document.documentElement.classList.add("dark");
+        turnDark();
+    } else {
+        document.documentElement.classList.remove("dark");
+        turnLight();
+    }
 }
+
+document.getElementById('model').appendChild(renderer.domElement)
+
 function loadRoomsImport() {
     const tableBody = document.getElementById('tableBody');
 
@@ -138,9 +239,6 @@ function runModel() {
     camera.position.set(-2500, 2000, 1500)
     camera.updateProjectionMatrix()
 
-    const renderer = new THREE.WebGLRenderer()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    document.getElementById('model').appendChild(renderer.domElement)
 
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true

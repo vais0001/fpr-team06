@@ -1,17 +1,76 @@
-<nav x-data="{ open: false }" class="bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="dark:bg-black border-b dark:border-gray-700">
     <style>
         #marginpictures{
             margin-left: 57%;
         }
+
+        /*Light Dark Mode*/
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            visibility: hidden;
+            display: none;
+        }
+
+        .check {
+            position: relative;
+            bottom: 20%;
+            display: block;
+            width: 40px;
+            height: 20px;
+            background: #0E1A2B;
+            cursor: pointer;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: ease-in 0.5s;
+        }
+
+        input[type="checkbox"]:checked ~ .check {
+            background: #A3ABBD;
+        }
+
+        .check:before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: #A3ABBD;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            transition: 0.5s;
+        }
+
+        input[type="checkbox"]:checked ~ .check:before {
+            transform: translateX(50px);
+        }
+
+        .check:after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #0E1A2B;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            transition: 0.5s;
+            transform: translateX(-50px);
+        }
+
+        input[type="checkbox"]:checked ~ .check:after {
+            transform: translateX(0px);
+        }
+
     </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('images/jrcz-transparent-white.png') }}" alt="JRCZ-logo" class="block h-10 w-auto fill-current text-gray-600">
+                    <a href ="{{ route('dashboard') }}">
+                        <img src="{{ asset('images/jrcz-transparent.png') }}" alt="JRCZ-logo" id="jrczImage" class="block h-10 w-auto fill-current text-gray-600">
                     </a>
                 </div>
                 <!-- Navigation Links -->
@@ -76,9 +135,13 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+
+                {{--Light Dark Mode--}}
+                <label style="margin-left: 100px">
+                    <input type="checkbox" id="checkbox">
+                    <span class="check"></span>
+                </label>
             </div>
-
-
 
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
