@@ -203,63 +203,6 @@
                 text-shadow: 1px 1px 5px #707070;
             }
 
-            /*Light Dark Mode*/
-            input[type="checkbox"] {
-                -webkit-appearance: none;
-                visibility: hidden;
-                display: none;
-            }
-
-            .check {
-                position: relative;
-                bottom: 20%;
-                display: block;
-                width: 40px;
-                height: 20px;
-                background: #0E1A2B;
-                cursor: pointer;
-                border-radius: 20px;
-                overflow: hidden;
-                transition: ease-in 0.5s;
-            }
-
-            input[type="checkbox"]:checked ~ .check {
-                background: #A3ABBD;
-            }
-
-            .check:before {
-                content: '';
-                position: absolute;
-                top: 2px;
-                left: 2px;
-                background: #A3ABBD;
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                transition: 0.5s;
-            }
-
-            input[type="checkbox"]:checked ~ .check:before {
-                transform: translateX(50px);
-            }
-
-            .check:after {
-                content: '';
-                position: absolute;
-                top: 2px;
-                right: 2px;
-                background: #0E1A2B;
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                transition: 0.5s;
-                transform: translateX(-50px);
-            }
-
-            input[type="checkbox"]:checked ~ .check:after {
-                transform: translateX(0px);
-            }
-
         </style>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])

@@ -21,7 +21,6 @@ renderer.setClearColor("#A3ABBD");
 function setRenderColor(color) {
     renderer.setClearColor(color);
 }
-document.getElementById('model').appendChild(renderer.domElement)
 
 /**
  * Handles the dark mode switch
@@ -32,8 +31,10 @@ function darkMode() {
         }
     document.querySelector('.check').addEventListener('click', () => {
         if (!document.getElementById('checkbox').checked) {
+            setCookie("dark");
             turnDark();
         } else {
+            setCookie("light");
             turnLight();
         }
         console.log(document.getElementById('checkbox').checked);
@@ -50,7 +51,6 @@ function turnDark() {
     document.querySelector('.widget-light').className = "widget-dark";
     document.querySelector('.weather-status').style.color = '#fff';
     setRenderColor("#0E1A2B");
-    setCookie("dark");
 }
 /**
  * changes the css classes to light mode and sets a new cookie value
@@ -63,7 +63,6 @@ function turnLight() {
     document.querySelector('.widget-dark').className = "widget-light";
     document.querySelector('.weather-status').style.color = 'black';
     setRenderColor("#A3ABBD");
-    setCookie("light");
 }
 /**
  * Gets the current value of the dark mode cookie
@@ -93,20 +92,26 @@ window.onload = function () {
     const url = window.location.href;
     if(url.includes('rooms')) {
         loadRoomsImport();
+        console.log(myCookieValue);
     }
     if(url.includes('model')) {
         runModel();
         console.log('test');
     }
+    if(url.includes('dashboard')) {
+        console.log(myCookieValue);
+    }
     getCookie("mode");
     darkMode();
     if (myCookieValue === "dark") {
         turnDark();
-        console.log(myCookieValue);
     } else {
         turnLight();
     }
 }
+
+document.getElementById('model').appendChild(renderer.domElement)
+
 function loadRoomsImport() {
     const tableBody = document.getElementById('tableBody');
 
