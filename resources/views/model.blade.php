@@ -204,6 +204,8 @@
             }
 
         </style>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">

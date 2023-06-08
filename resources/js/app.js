@@ -212,6 +212,15 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 
 function runModel() {
+    let roomData = null; // Global variable for the room temperature data
+
+    $.ajax({
+        url: '/model-data',
+        type: 'GET'
+    }).done(function(data) {
+        roomData = data;
+    });
+
     const scene = new THREE.Scene()
 
     const light = new THREE.PointLight()
@@ -270,7 +279,7 @@ function runModel() {
     )
 
     //to get the value of a button
-    const buttons = document.querySelectorAll('button');
+    const buttons = document.querySelectorAll('.button');
 
     buttons.forEach(button => {
         button.addEventListener('click', loadModel, false);
@@ -305,77 +314,68 @@ function runModel() {
         )
     }
 
-    // Temperature icons
-    const normalTemp = new THREE.TextureLoader().load('images/temperature-normal.png');
-    const hotTemp = new THREE.TextureLoader().load('images/temperature-hot.png');
-    const coldTemp = new THREE.TextureLoader().load('images/temperature-cold.png');
-
-    const normalMaterial = new THREE.SpriteMaterial({map: normalTemp, color: 0xffffff});
-    const hotMaterial = new THREE.SpriteMaterial({map: hotTemp, color: 0xffffff});
-    const coldMaterial = new THREE.SpriteMaterial({map: coldTemp, color: 0xffffff});
-
     let rooms = []
 
     function loadIcons (floor) {
         deleteRooms(rooms.length); // empties the rooms from the scene array
         rooms = [] //empties the array for new floor icons to be added
         if (floor == 'ground') { //loads temperature icons for the ground floor
-            createRoom('RC021', hotMaterial, -1300, 400, -170)
+            createRoom('RC021', -1300, 400, -170)
 
-            createRoom('RC020', normalMaterial, -1000, 400, -1500)
+            createRoom('RC020', -1000, 400, -1500)
 
-            createRoom('RC017', normalMaterial, 100, 400, -1300)
+            createRoom('RC017', 100, 400, -1300)
 
-            createRoom('RC023', normalMaterial, 400, 400, -600)
+            createRoom('RC023', 400, 400, -600)
 
-            createRoom('RC016', normalMaterial, 1250, 400, -1000)
+            createRoom('RC016', 1250, 400, -1000)
 
-            createRoom('RC011', normalMaterial, 1250, 400, 750)
+            createRoom('RC011', 1250, 400, 750)
         }
         if (floor == 1) {
-            createRoom('RC102', normalMaterial, 500, 850, 1700)
+            createRoom('RC102', 500, 850, 1700)
 
-            createRoom('RC103', normalMaterial, 1250, 850, 1500)
+            createRoom('RC103', 1250, 850, 1500)
 
-            createRoom('RC104', normalMaterial, 1250, 850, 500)
+            createRoom('RC104', 1250, 850, 500)
 
-            createRoom('RC108', normalMaterial, -50, 850, -600)
+            createRoom('RC108', -50, 850, -600)
         }
         if (floor == 2) {
-            createRoom('RC213', normalMaterial, -700, 1300, 50)
+            createRoom('RC213', -700, 1300, 50)
 
-            createRoom('RC214', normalMaterial, -850, 1300, 800)
+            createRoom('RC214', -850, 1300, 800)
 
-            createRoom('RC201', normalMaterial, -1000, 1300, 1700)
+            createRoom('RC201', -1000, 1300, 1700)
 
-            createRoom('RC202', normalMaterial, 250, 1300, 1900)
+            createRoom('RC202', 250, 1300, 1900)
 
-            createRoom('RC203', normalMaterial, 975, 1300, 1900)
+            createRoom('RC203', 975, 1300, 1900)
 
-            createRoom('RC204', normalMaterial, 1350, 1300, 1900)
+            createRoom('RC204', 1350, 1300, 1900)
 
-            createRoom('RC205', normalMaterial, 1700, 1300, 1900)
+            createRoom('RC205', 1700, 1300, 1900)
 
-            createRoom('RC211', normalMaterial, -150, 1300, -1100)
+            createRoom('RC211', -150, 1300, -1100)
 
-            createRoom('RC210', normalMaterial, 800, 1300, -1100)
+            createRoom('RC210', 800, 1300, -1100)
         }
         if (floor == 3) {
-            createRoom('RC301', normalMaterial, -1100, 1700, 1800)
+            createRoom('RC301', -1100, 1700, 1800)
 
-            createRoom('RC304', normalMaterial, 250, 1700, 1800)
+            createRoom('RC304', 250, 1700, 1800)
 
-            createRoom('RC305', normalMaterial, 1300, 1700, 1800)
+            createRoom('RC305', 1300, 1700, 1800)
 
-            createRoom('RC318', normalMaterial, -900, 1700, 1150)
+            createRoom('RC318', -900, 1700, 1150)
 
-            createRoom('RC317', normalMaterial, -650, 1700, 650)
+            createRoom('RC317', -650, 1700, 650)
 
-            createRoom('RC316', normalMaterial, -650, 1700, 100)
+            createRoom('RC316', -650, 1700, 100)
 
-            createRoom('RC315', normalMaterial, -550, 1700, -250)
+            createRoom('RC315', -550, 1700, -250)
 
-            createRoom('RC309', normalMaterial, 650, 1700, -1050)
+            createRoom('RC309', 650, 1700, -1050)
         }
     }
 
@@ -459,8 +459,36 @@ function runModel() {
         }
     }
 
-    function createRoom(roomId, roomStatus, xPosition, yPosition, zPosition) {
-        const room = new THREE.Sprite( roomStatus )
+    // Temperature icons
+    const normalTemp = new THREE.TextureLoader().load('images/temperature-normal.png');
+    const hotTemp = new THREE.TextureLoader().load('images/temperature-hot.png');
+    const coldTemp = new THREE.TextureLoader().load('images/temperature-cold.png');
+
+    const normalMaterial = new THREE.SpriteMaterial({map: normalTemp, color: 0xffffff});
+    const hotMaterial = new THREE.SpriteMaterial({map: hotTemp, color: 0xffffff});
+    const coldMaterial = new THREE.SpriteMaterial({map: coldTemp, color: 0xffffff});
+
+    function createRoom(roomId, xPosition, yPosition, zPosition) {
+        let temperature;
+        let temperatureIcon;
+        for (let i = 0; i < roomData.length; i++) {
+            if (roomData[i].name == roomId) {
+                temperature = roomData[i].temperature;
+            }
+        }
+
+        if (temperature >= 18.5 && temperature <= 19.5 || temperature == null) {
+            temperatureIcon = normalMaterial; //If the temperature is around 19 degrees and if there is no temperature assigned to a room
+        }
+
+        if (temperature > 19.5) {
+            temperatureIcon = hotMaterial; //if the temperature is higher than 19 degrees
+        }
+
+        if (temperature < 18.5 && temperature != null) {
+            temperatureIcon = coldMaterial; //if the temperature is below 19 degrees
+        }
+        const room = new THREE.Sprite( temperatureIcon )
         room.scale.set(100, 200, 1)
         room.position.set(xPosition, yPosition, zPosition)
         room.customIndex = roomId
