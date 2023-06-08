@@ -1,4 +1,3 @@
-{{--<nav x-data="{ open: false }" class="bg-white dark:bg-slate-800 border-b border-gray-100 dark:border-gray-700">--}}
 <nav x-data="{ open: false }" class="dark:bg-black border-b dark:border-gray-700">
     <style>
         #marginpictures{
