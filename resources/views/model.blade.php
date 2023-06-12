@@ -209,17 +209,11 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
-<<<<<<< HEAD
-                <button class="button-light" id="button-light1" value="ground">@lang('messages.ground_floor')</button>
-                <button class="button-light" id="button-light2" value="1">@lang('messages.first_floor')</button>
-                <button class="button-light" id="button-light3" value="2">@lang('messages.second_floor')</button>
-                <button class="button-light" id="button-light4" value="3">@lang('messages.third_floor')</button>
-=======
-                <button class="button-light button" id="button-light1" value="ground">Ground Floor</button>
-                <button class="button-light button" id="button-light2" value="1">Floor 1</button>
-                <button class="button-light button" id="button-light3" value="2">Floor 2</button>
-                <button class="button-light button" id="button-light4" value="3">Floor 3</button>
->>>>>>> fe7bbac10914211207ec0a44789c09cbf622069b
+                <button class="button-light button" id="button-light1" value="ground">@lang('messages.ground_floor')</button>
+                <button class="button-light button" id="button-light2" value="1">@lang('messages.first_floor')</button>
+                <button class="button-light button" id="button-light3" value="2">@lang('messages.second_floor')</button>
+                <button class="button-light button" id="button-light4" value="3">@lang('messages.third_floor')</button>
+
             </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">
