@@ -391,17 +391,35 @@ function runModel() {
         let intersects = raycaster.intersectObjects(Object.values(rooms));
 
         for (let i = 0; i < intersects.length; i++) {
-            let roomID = intersects[i].object.customIndex;
+                let roomID = intersects[i].object.customIndex;
 
-            // Load room data into the modal-content element
-            document.getElementById('modal-content').textContent = JSON.stringify(roomID);
+                // Load room data into the modal-content element
+                document.getElementById('modal-content').textContent = JSON.stringify(roomID);
 
-            // Display the modal
-            $('#myModal').modal('show');
+                // Display the modal
+                $('#myModal').modal('show');
         }
     }
 
-    window.addEventListener('click', onMouseClick, false);
+    function onMouseMove(event) {
+        // Normalized device coordinates range from -1 to +1
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        let intersects = raycaster.intersectObjects(Object.values(rooms));
+
+        if (intersects.length > 0) {
+            // If the mouse hovers over the 3D object, change cursor to pointer
+            document.body.style.cursor = 'pointer';
+        } else {
+            // When the mouse isn't hovering over the object, revert the cursor
+            document.body.style.cursor = 'auto';
+        }
+    }
+
+    window.addEventListener('click', onMouseClick, false); //Used to click on the temperature icon
+    window.addEventListener('mousemove', onMouseMove, false); //Used to make the cursor a pointer when hovering over a temperature icon
 
     function changeCameraDistance(floor) {
         if (floor == 'ground') {
