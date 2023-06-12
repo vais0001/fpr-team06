@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="dark:bg-black border-b dark:border-gray-700">
     <style>
         #marginpictures{
-            margin-left: 57%;
+            margin-left: 46%;
         }
 
         /*Light Dark Mode*/
