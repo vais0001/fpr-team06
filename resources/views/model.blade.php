@@ -51,13 +51,12 @@
     <x-slot name="slot">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-       <script src="resources/css/app.css"></script>
         <style>
             /*Change nav to absolute so model does not break*/
-            /*nav {*/
-            /*    position: absolute;*/
-            /*    width: 100%;*/
-            /*}*/
+            nav {
+                position: absolute;
+                width: 100%;
+            }
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;600&display=swap');
 
             body {
@@ -210,10 +209,17 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
+<<<<<<< HEAD
                 <button class="button-light" id="button-light1" value="ground">@lang('messages.ground_floor')</button>
                 <button class="button-light" id="button-light2" value="1">@lang('messages.first_floor')</button>
                 <button class="button-light" id="button-light3" value="2">@lang('messages.second_floor')</button>
                 <button class="button-light" id="button-light4" value="3">@lang('messages.third_floor')</button>
+=======
+                <button class="button-light button" id="button-light1" value="ground">Ground Floor</button>
+                <button class="button-light button" id="button-light2" value="1">Floor 1</button>
+                <button class="button-light button" id="button-light3" value="2">Floor 2</button>
+                <button class="button-light button" id="button-light4" value="3">Floor 3</button>
+>>>>>>> fe7bbac10914211207ec0a44789c09cbf622069b
             </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">
