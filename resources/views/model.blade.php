@@ -53,10 +53,10 @@
               integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
         <style>
             /*Change nav to absolute so model does not break*/
-            /*nav {*/
-            /*    position: absolute;*/
-            /*    width: 100%;*/
-            /*}*/
+            nav {
+                position: absolute;
+                width: 100%;
+            }
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;600&display=swap');
 
             body {
