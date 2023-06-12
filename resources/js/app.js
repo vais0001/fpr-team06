@@ -391,7 +391,9 @@ function runModel() {
         let intersects = raycaster.intersectObjects(Object.values(rooms));
 
         for (let i = 0; i < intersects.length; i++) {
-            console.log(intersects[i].object.customIndex);
+            console.log(intersects[i].object);
+            let uniqueID = intersects[i].object.index;
+            window.open('/model/' + uniqueID, '_blank', "width=600,height=600");
         }
     }
 
@@ -470,10 +472,12 @@ function runModel() {
 
     function createRoom(roomId, xPosition, yPosition, zPosition) {
         let temperature;
+        let index;
         let temperatureIcon;
         for (let i = 0; i < roomData.length; i++) {
             if (roomData[i].name == roomId) {
                 temperature = roomData[i].temperature;
+                index = i;
             }
         }
 
@@ -493,6 +497,7 @@ function runModel() {
         room.position.set(xPosition, yPosition, zPosition)
         room.customIndex = roomId
         room.name = 'room'
+        room.index = index;
         rooms.push( room )
         scene.add( room )
     }
