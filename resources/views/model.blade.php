@@ -205,6 +205,7 @@
         </style>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
@@ -213,7 +214,6 @@
                 <button class="button-light button" id="button-light2" value="1">@lang('messages.first_floor')</button>
                 <button class="button-light button" id="button-light3" value="2">@lang('messages.second_floor')</button>
                 <button class="button-light button" id="button-light4" value="3">@lang('messages.third_floor')</button>
-
             </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">
@@ -225,6 +225,24 @@
                     <div class="right">
                         <h5 class="city">Middelburg</h5>
                         <h5 class="degree"><?php echo round($temperature); ?>&deg;C</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Structure -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Room Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modal-content">Loading...</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>

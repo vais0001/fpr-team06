@@ -391,9 +391,13 @@ function runModel() {
         let intersects = raycaster.intersectObjects(Object.values(rooms));
 
         for (let i = 0; i < intersects.length; i++) {
-            console.log(intersects[i].object);
-            let uniqueID = intersects[i].object.index;
-            window.open('/model/' + uniqueID, '_blank', "width=600,height=600");
+            let roomID = intersects[i].object.customIndex;
+
+            // Load room data into the modal-content element
+            document.getElementById('modal-content').textContent = JSON.stringify(roomID);
+
+            // Display the modal
+            $('#myModal').modal('show');
         }
     }
 
