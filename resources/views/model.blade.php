@@ -204,16 +204,16 @@
             }
 
         </style>
-        
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
-                <button class="button-light" id="button-light1" value="ground">Ground Floor</button>
-                <button class="button-light" id="button-light2" value="1">Floor 1</button>
-                <button class="button-light" id="button-light3" value="2">Floor 2</button>
-                <button class="button-light" id="button-light4" value="3">Floor 3</button>
+                <button class="button-light" id="button-light1" value="ground">@lang('messages.ground_floor')</button>
+                <button class="button-light" id="button-light2" value="1">@lang('messages.first_floor')</button>
+                <button class="button-light" id="button-light3" value="2">@lang('messages.second_floor')</button>
+                <button class="button-light" id="button-light4" value="3">@lang('messages.third_floor')</button>
             </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">

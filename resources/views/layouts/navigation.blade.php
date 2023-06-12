@@ -97,6 +97,8 @@
                 <a href="#">
                     <img src="{{ asset('images/internet.png') }}" alt="JRCZ-logo" class="block h-10 w-auto fill-current text-gray-600">
                 </a>
+                <a href="{{ route('switchLang', 'en') }}">English</a>
+                <a href="{{ route('switchLang', 'nl') }}">Nederlands</a>
             </div>
 
             <!-- Settings Dropdown -->

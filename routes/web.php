@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomTimeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LanguageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('lang', LanguageController::class);
+Route::get('/lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang')->name('switchLang');
 
 Route::resource('rooms', RoomController::class);
 Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import');
