@@ -55,7 +55,7 @@
             /*Change nav to absolute so model does not break*/
             nav {
                 position: absolute;
-                background-color: white;
+                background-color: #e5e7eb;
                 width: 100%;
             }
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;600&display=swap');
