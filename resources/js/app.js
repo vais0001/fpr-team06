@@ -36,6 +36,7 @@ function loadRoomsImport() {
                 let result = '';
                 rooms[event.target.parentNode.id-1]['room_time'].forEach(room => {
                     result += `<tr>
+                     <td>${room.id}</td>
                      <td>${room.time}</td>
                      <td>${room.co2}</td>
                      <td>${room.temperature}</td>

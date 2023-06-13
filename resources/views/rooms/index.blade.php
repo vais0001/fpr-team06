@@ -49,6 +49,7 @@
                 <table class="table-auto w-full text-white text-center">
                     <thead>
                         <tr class="px-4 py-2 text-white text-center">
+                            <th class="px-4 py-2">ID</th>
                             <th class="px-4 py-2">Time</th>
                             <th class="px-4 py-2">Co2</th>
                             <th class="px-4 py-2">Temperature</th>

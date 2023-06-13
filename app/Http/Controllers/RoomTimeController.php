@@ -18,6 +18,8 @@ class RoomTimeController extends Controller
         $json_data = file_get_contents($url);
         $result = json_decode($json_data);
 
+        $timeCreation = now();
+
         $request->validate([
             'room_times' => 'required|mimes:xlsx,xls,csv'
         ]);
@@ -29,7 +31,7 @@ class RoomTimeController extends Controller
         $end_time = strval(Carbon::parse($end_time)->addDay(1));
 
 
-        $roomTimes = RoomTime::all()->where('room_id', request('set_room'));
+        $roomTimes = RoomTime::all()->where('room_id', request('set_room'))->where('created_at' ,'>=', $timeCreation);
         $currentHour = $start_time;
         $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
         foreach ($result->hourly->time as $i => $time) {
@@ -40,13 +42,17 @@ class RoomTimeController extends Controller
         }
         $count = key($result->hourly->time);
         foreach ($roomTimes as $roomTime) {
-            if ($roomTime->time >= $currentHour && $roomTime->time <= $nextHour) {
+            if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour) {
                 RoomTime::where('id', $roomTime->id)->update(array('outside_temperature' => round($result->hourly->temperature_2m[$count])));
             }else {
-                RoomTime::where('id', $roomTime->id)->update(array('outside_temperature' => round($result->hourly->temperature_2m[$count])));
-                $currentHour =  strval(Carbon::parse($currentHour)->addHour(1));
-                $nextHour =  strval(Carbon::parse($nextHour)->addHour(1));
-                $count++;
+                try{
+                    RoomTime::where('id', $roomTime->id)->update(array('outside_temperature' => round($result->hourly->temperature_2m[$count])));
+                    $currentHour =  strval(Carbon::parse($currentHour)->addHour(1));
+                    $nextHour =  strval(Carbon::parse($nextHour)->addHour(1));
+                    $count++;
+                }catch (\Exception $e){
+                    break;
+                }
             }
         }
         return redirect()->route('rooms.index')->with('success', 'All good!');
