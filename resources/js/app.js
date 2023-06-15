@@ -41,6 +41,7 @@ function loadRoomsImport() {
                      <td>${room.co2}</td>
                      <td>${room.temperature}</td>
                      <td>${room.outside_temperature}</td>
+                     <td>${room.booked}</td>
                      </tr>`;
                 });
 

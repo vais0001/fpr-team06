@@ -1,12 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Import') }}
-        </h2>
+        <div class="flex justify-start items-center flex-row gap-4">
+            <h2 class="text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Import') }}
+            </h2>
+            <div class="flex justify-end items-center flex-grow flex-row">
+                <form class="text-gray-400" action="{{route('import-bookings')}}" id="importBookingForm" method="POST" enctype="multipart/form-data" name="importBookingForm">
+                    @csrf
+                    <input type="file" name="booking" required class="rounded-md bg-gray-700 w-52">
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 h-8 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Import reservation DATA</button>
+                </form>
+            </div>
+        </div>
     </x-slot>
     <x-slot name="slot">
         <div class="flex justify-center items-center m-auto flex-col text-gray-400 border-200">
-            <form action="{{route('import')}}" id="importForm" method="POST" enctype="multipart/form-data" name="importForm">
+            <form class="flex justify-center items-center flex-row gap-4" action="{{route('import')}}" id="importForm" method="POST" enctype="multipart/form-data" name="importForm">
                 @csrf
                 <input type="file" name="room_times" required class="rounded-md bg-gray-700 w-full mt-5">
                 <input type="number" name="set_room" class="hidden" id="set_room">
@@ -54,6 +63,7 @@
                             <th class="px-4 py-2">Co2</th>
                             <th class="px-4 py-2">Temperature</th>
                             <th class="px-4 py-2">Outside Temp</th>
+                            <th class="px-4 py-2">Booked</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">

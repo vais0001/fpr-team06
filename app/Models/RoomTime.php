@@ -14,5 +14,7 @@ class RoomTime extends Model
         'time',
         'co2',
         'temperature',
+        'outside_temperature',
+        'booked',
     ];
 }

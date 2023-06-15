@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BookingDataImport;
 use App\Models\Room;
 use App\Models\RoomTime;
 use Carbon\Carbon;
@@ -30,7 +31,6 @@ class RoomTimeController extends Controller
         $end_time = RoomTime::all()->where('room_id', request('set_room'))->last()->time;
         $end_time = strval(Carbon::parse($end_time)->addDay(1));
 
-
         $roomTimes = RoomTime::all()->where('room_id', request('set_room'))->where('created_at' ,'>=', $timeCreation);
         $currentHour = $start_time;
         $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
@@ -55,6 +55,39 @@ class RoomTimeController extends Controller
                 }
             }
         }
+        return redirect()->route('rooms.index')->with('success', 'All good!');
+    }
+    public function importBookings(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $import = new BookingDataImport();
+        Excel::import($import, $request->file('booking'));
+        $request->validate([
+            'booking' => 'required|mimes:xlsx,xls,csv'
+        ]);
+        $rooms = Room::all();
+
+        $startHour = Carbon::parse($import->data['date'])->addHour(8);
+        $endHour = Carbon::parse($import->data['date'])->addHour(16);
+        $currentHour = $startHour;
+        $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
+        foreach($import->data['rooms'] as $room) {
+            preg_match('/\((.*?)\)/', $room['name'], $matches);
+            $roomName = $matches[1];
+            $roomTimes = RoomTime::all()->where('room_id', '=', Room::all()->where('name', $roomName)->first()->id)->where('time', '>=', $startHour)->where('time', '<=', $endHour);
+
+            $count = 0;
+            foreach ($roomTimes as $roomTime) {
+                if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour) {
+                    $roomTime->update(['booked' => round($room['bookings'][$count]) == 1]);
+                } else {
+                    $roomTime->update(array('booked' => round($room['bookings'][$count]) == 1));
+                    $currentHour = strval(Carbon::parse($currentHour)->addHour(1));
+                    $nextHour = strval(Carbon::parse($nextHour)->addHour(1));
+                    $count++;
+                }
+            }
+        }
+
         return redirect()->route('rooms.index')->with('success', 'All good!');
     }
     public function destroy(RoomTime $room_time)
