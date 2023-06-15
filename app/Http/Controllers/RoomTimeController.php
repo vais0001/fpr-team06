@@ -64,8 +64,6 @@ class RoomTimeController extends Controller
         $request->validate([
             'booking' => 'required|mimes:xlsx,xls,csv'
         ]);
-        $rooms = Room::all();
-
         $startHour = Carbon::parse($import->data['date'])->addHour(8);
         $endHour = Carbon::parse($import->data['date'])->addHour(16);
         $currentHour = $startHour;
