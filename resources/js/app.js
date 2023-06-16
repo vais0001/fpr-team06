@@ -7,16 +7,117 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+/**
+ * Makes a cookie to save the dark mode value
+ * @param cvalue dark mode value can be 'Dark' or 'Light'
+ */
+function setCookie(cvalue) {
+    document.cookie = "mode=" + cvalue;
+}
+
+const renderer = new THREE.WebGLRenderer()
+renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setClearColor("#A3ABBD");
+function setRenderColor(color) {
+    renderer.setClearColor(color);
+}
+
+/**
+ * Handles the dark mode switch
+ */
+function darkMode() {
+    if (myCookieValue === "dark") {
+        document.getElementById('checkbox').checked = true;
+        }
+    document.querySelector('.check').addEventListener('click', () => {
+        if (!document.getElementById('checkbox').checked) {
+            setCookie("dark");
+            turnDark();
+        } else {
+            setCookie("light");
+            turnLight();
+        }
+        console.log(document.getElementById('checkbox').checked);
+    });
+}
+/**
+ * changes the css classes to dark mode and sets a new cookie value
+ */
+function turnDark() {
+    document.documentElement.classList.add("dark");
+    document.getElementById('jrczImage').src = 'images/jrcz-transparent-white.png';
+    document.getElementById('button-light1').className = "button-dark";
+    document.getElementById('button-light2').className = "button-dark";
+    document.getElementById('button-light3').className = "button-dark";
+    document.getElementById('button-light4').className = "button-dark";
+    document.querySelector('.widget-light').className = "widget-dark";
+    document.querySelector('.weather-status').style.color = '#fff';
+    setRenderColor("#0E1A2B");
+}
+/**
+ * changes the css classes to light mode and sets a new cookie value
+ */
+function turnLight() {
+    document.documentElement.classList.remove("dark");
+    document.getElementById('jrczImage').src = 'images/jrcz-transparent.png';
+    document.getElementById('button-light1').className = "button-light";
+    document.getElementById('button-light2').className = "button-light";
+    document.getElementById('button-light3').className = "button-light";
+    document.getElementById('button-light4').className = "button-light";
+    document.querySelector('.widget-dark').className = "widget-light";
+    document.querySelector('.weather-status').style.color = 'black';
+    setRenderColor("#A3ABBD");
+}
+/**
+ * Gets the current value of the dark mode cookie
+ * @param cname dark mode value
+ * @returns {string}
+ */
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+const myCookieValue = getCookie("mode");
+console.log(myCookieValue);
+
 window.onload = function () {
     const url = window.location.href;
     if(url.includes('rooms')) {
         loadRoomsImport();
+        console.log(myCookieValue);
     }
     if(url.includes('model')) {
         runModel();
         console.log('test');
     }
+    if(url.includes('dashboard')) {
+        console.log(myCookieValue);
+    }
+    getCookie("mode");
+    darkMode();
+    if (myCookieValue === "dark") {
+        document.documentElement.classList.add("dark");
+        turnDark();
+    } else {
+        document.documentElement.classList.remove("dark");
+        turnLight();
+    }
 }
+
+document.getElementById('model').appendChild(renderer.domElement)
+
 function loadRoomsImport() {
     const rooms = JSON.parse(document.getElementById('world-map').dataset.maps);
 
@@ -126,6 +227,15 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 
 function runModel() {
+    let roomData = null; // Global variable for the room temperature data
+
+    $.ajax({
+        url: '/model-data',
+        type: 'GET'
+    }).done(function(data) {
+        roomData = data;
+    });
+
     const scene = new THREE.Scene()
 
     const light = new THREE.PointLight()
@@ -144,9 +254,6 @@ function runModel() {
     camera.position.set(-2500, 2000, 1500)
     camera.updateProjectionMatrix()
 
-    const renderer = new THREE.WebGLRenderer()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    document.getElementById('model').appendChild(renderer.domElement)
 
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
@@ -187,7 +294,7 @@ function runModel() {
     )
 
     //to get the value of a button
-    const buttons = document.querySelectorAll('button');
+    const buttons = document.querySelectorAll('.button');
 
     buttons.forEach(button => {
         button.addEventListener('click', loadModel, false);
@@ -222,77 +329,68 @@ function runModel() {
         )
     }
 
-    // Temperature icons
-    const normalTemp = new THREE.TextureLoader().load('images/temperature-normal.png');
-    const hotTemp = new THREE.TextureLoader().load('images/temperature-hot.png');
-    const coldTemp = new THREE.TextureLoader().load('images/temperature-cold.png');
-
-    const normalMaterial = new THREE.SpriteMaterial({map: normalTemp, color: 0xffffff});
-    const hotMaterial = new THREE.SpriteMaterial({map: hotTemp, color: 0xffffff});
-    const coldMaterial = new THREE.SpriteMaterial({map: coldTemp, color: 0xffffff});
-
     let rooms = []
 
     function loadIcons (floor) {
         deleteRooms(rooms.length); // empties the rooms from the scene array
         rooms = [] //empties the array for new floor icons to be added
         if (floor == 'ground') { //loads temperature icons for the ground floor
-            createRoom('RC021', hotMaterial, -1300, 400, -170)
+            createRoom('RC021', -1300, 400, -170)
 
-            createRoom('RC020', normalMaterial, -1000, 400, -1500)
+            createRoom('RC020', -1000, 400, -1500)
 
-            createRoom('RC017', normalMaterial, 100, 400, -1300)
+            createRoom('RC017', 100, 400, -1300)
 
-            createRoom('RC023', normalMaterial, 400, 400, -600)
+            createRoom('RC023', 400, 400, -600)
 
-            createRoom('RC016', normalMaterial, 1250, 400, -1000)
+            createRoom('RC016', 1250, 400, -1000)
 
-            createRoom('RC011', normalMaterial, 1250, 400, 750)
+            createRoom('RC011', 1250, 400, 750)
         }
         if (floor == 1) {
-            createRoom('RC102', normalMaterial, 500, 850, 1700)
+            createRoom('RC102', 500, 850, 1700)
 
-            createRoom('RC103', normalMaterial, 1250, 850, 1500)
+            createRoom('RC103', 1250, 850, 1500)
 
-            createRoom('RC104', normalMaterial, 1250, 850, 500)
+            createRoom('RC104', 1250, 850, 500)
 
-            createRoom('RC108', normalMaterial, -50, 850, -600)
+            createRoom('RC108', -50, 850, -600)
         }
         if (floor == 2) {
-            createRoom('RC213', normalMaterial, -700, 1300, 50)
+            createRoom('RC213', -700, 1300, 50)
 
-            createRoom('RC214', normalMaterial, -850, 1300, 800)
+            createRoom('RC214', -850, 1300, 800)
 
-            createRoom('RC201', normalMaterial, -1000, 1300, 1700)
+            createRoom('RC201', -1000, 1300, 1700)
 
-            createRoom('RC202', normalMaterial, 250, 1300, 1900)
+            createRoom('RC202', 250, 1300, 1900)
 
-            createRoom('RC203', normalMaterial, 975, 1300, 1900)
+            createRoom('RC203', 975, 1300, 1900)
 
-            createRoom('RC204', normalMaterial, 1350, 1300, 1900)
+            createRoom('RC204', 1350, 1300, 1900)
 
-            createRoom('RC205', normalMaterial, 1700, 1300, 1900)
+            createRoom('RC205', 1700, 1300, 1900)
 
-            createRoom('RC211', normalMaterial, -150, 1300, -1100)
+            createRoom('RC211', -150, 1300, -1100)
 
-            createRoom('RC210', normalMaterial, 800, 1300, -1100)
+            createRoom('RC210', 800, 1300, -1100)
         }
         if (floor == 3) {
-            createRoom('RC301', normalMaterial, -1100, 1700, 1800)
+            createRoom('RC301', -1100, 1700, 1800)
 
-            createRoom('RC304', normalMaterial, 250, 1700, 1800)
+            createRoom('RC304', 250, 1700, 1800)
 
-            createRoom('RC305', normalMaterial, 1300, 1700, 1800)
+            createRoom('RC305', 1300, 1700, 1800)
 
-            createRoom('RC318', normalMaterial, -900, 1700, 1150)
+            createRoom('RC318', -900, 1700, 1150)
 
-            createRoom('RC317', normalMaterial, -650, 1700, 650)
+            createRoom('RC317', -650, 1700, 650)
 
-            createRoom('RC316', normalMaterial, -650, 1700, 100)
+            createRoom('RC316', -650, 1700, 100)
 
-            createRoom('RC315', normalMaterial, -550, 1700, -250)
+            createRoom('RC315', -550, 1700, -250)
 
-            createRoom('RC309', normalMaterial, 650, 1700, -1050)
+            createRoom('RC309', 650, 1700, -1050)
         }
     }
 
@@ -308,11 +406,35 @@ function runModel() {
         let intersects = raycaster.intersectObjects(Object.values(rooms));
 
         for (let i = 0; i < intersects.length; i++) {
-            console.log(intersects[i].object.customIndex);
+                let roomID = intersects[i].object.customIndex;
+
+                // Load room data into the modal-content element
+                document.getElementById('modal-content').textContent = JSON.stringify(roomID);
+
+                // Display the modal
+                $('#myModal').modal('show');
         }
     }
 
-    window.addEventListener('click', onMouseClick, false);
+    function onMouseMove(event) {
+        // Normalized device coordinates range from -1 to +1
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        let intersects = raycaster.intersectObjects(Object.values(rooms));
+
+        if (intersects.length > 0) {
+            // If the mouse hovers over the 3D object, change cursor to pointer
+            document.body.style.cursor = 'pointer';
+        } else {
+            // When the mouse isn't hovering over the object, revert the cursor
+            document.body.style.cursor = 'auto';
+        }
+    }
+
+    window.addEventListener('click', onMouseClick, false); //Used to click on the temperature icon
+    window.addEventListener('mousemove', onMouseMove, false); //Used to make the cursor a pointer when hovering over a temperature icon
 
     function changeCameraDistance(floor) {
         if (floor == 'ground') {
@@ -376,12 +498,43 @@ function runModel() {
         }
     }
 
-    function createRoom(roomId, roomStatus, xPosition, yPosition, zPosition) {
-        const room = new THREE.Sprite( roomStatus )
+    // Temperature icons
+    const normalTemp = new THREE.TextureLoader().load('images/temperature-normal.png');
+    const hotTemp = new THREE.TextureLoader().load('images/temperature-hot.png');
+    const coldTemp = new THREE.TextureLoader().load('images/temperature-cold.png');
+
+    const normalMaterial = new THREE.SpriteMaterial({map: normalTemp, color: 0xffffff});
+    const hotMaterial = new THREE.SpriteMaterial({map: hotTemp, color: 0xffffff});
+    const coldMaterial = new THREE.SpriteMaterial({map: coldTemp, color: 0xffffff});
+
+    function createRoom(roomId, xPosition, yPosition, zPosition) {
+        let temperature;
+        let index;
+        let temperatureIcon;
+        for (let i = 0; i < roomData.length; i++) {
+            if (roomData[i].name == roomId) {
+                temperature = roomData[i].temperature;
+                index = i;
+            }
+        }
+
+        if (temperature >= 18.5 && temperature <= 19.5 || temperature == null) {
+            temperatureIcon = normalMaterial; //If the temperature is around 19 degrees and if there is no temperature assigned to a room
+        }
+
+        if (temperature > 19.5) {
+            temperatureIcon = hotMaterial; //if the temperature is higher than 19 degrees
+        }
+
+        if (temperature < 18.5 && temperature != null) {
+            temperatureIcon = coldMaterial; //if the temperature is below 19 degrees
+        }
+        const room = new THREE.Sprite( temperatureIcon )
         room.scale.set(100, 200, 1)
         room.position.set(xPosition, yPosition, zPosition)
         room.customIndex = roomId
         room.name = 'room'
+        room.index = index;
         rooms.push( room )
         scene.add( room )
     }

@@ -9,10 +9,18 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Imports\RoomTimesImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+
 
 class RoomTimeController extends Controller
 {
-    public function import(Request $request): \Illuminate\Http\RedirectResponse
+    public function showModel()  // Method for showing the view
+    {
+        return view('model');
+    }
+
+    public function import(Request $request)
     {
         $url = "https://api.open-meteo.com/v1/forecast?latitude=51.494931&longitude=3.609084&hourly=temperature_2m&past_days=92&forecast_days=1&timezone=Europe%2FBerlin";
 
@@ -105,5 +113,21 @@ class RoomTimeController extends Controller
         $room = Room::find(request('set_room_destroy'));
         RoomTime::all()->where('room_id', request('set_room_destroy'))->where('created_at', '>=', $room->updated_at)->each->delete();
         return redirect()->route('rooms.index');
+    }
+
+    public function getData()
+    {
+        $rooms = Room::all();
+
+        $data = $rooms->map(function ($room) {
+            $latestRoomTime = $room->roomTime()->latest('id')->first();
+
+            return [
+                'name' => $room->name,
+                'temperature' => optional($latestRoomTime)->temperature,
+            ];
+        });
+
+        return response()->json($data);
     }
 }

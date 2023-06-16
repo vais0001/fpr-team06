@@ -52,12 +52,12 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
         <style>
-            {{-- Change nav to absolute so model does not break --}}
+            /*Change nav to absolute so model does not break*/
             nav {
                 position: absolute;
+                background-color: #e5e7eb;
                 width: 100%;
             }
-
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;600&display=swap');
 
             body {
@@ -76,94 +76,149 @@
                 flex-direction: column;
             }
 
-            .button {
+            .button-light {
                 margin-bottom: 10px;
+                border-radius: 10px;
                 padding: 10px;
-                background-color: #f2f2f2;
-                border: 1px solid #ccc;
+                background: rgba(299, 299, 299, 0.4);
+                color: black;
                 cursor: pointer;
             }
+
+            .button-dark {
+                margin-bottom: 10px;
+                border-radius: 10px;
+                padding: 10px;
+                background: rgba(0, 0, 0, 0.4);
+                color: white;
+                cursor: pointer;
+            }
+
             #jrczimg {
                 height: 120px;
                 width: 200px;
             }
+
             .logo {
                 height: 50px;
                 width: 50px;
             }
 
-        {{--Weather Widget--}}
-        .outside-temperature-container {
-            position: absolute;
-            right: 1%;
-            top: 85%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-        }
+            /*Weather Widget*/
+            .outside-temperature-container {
+                position: absolute;
+                right: 1%;
+                top: 85%;
+                transform: translateY(-50%);
+                display: flex;
+                flex-direction: column;
+            }
 
-        .widget {
-            width: 200px;
-            height: 225px;
-            border-radius: 20px;
-            background: rgba(299, 299, 299, 0.4);
-        }
+            .widget-light {
+                width: 200px;
+                height: 225px;
+                border-radius: 20px;
+                background: rgba(299, 299, 299, 0.4);
+            }
 
-        .widget .left {
-            position: absolute;
-            right: 0;
-            width: 200px;
-            margin-top: 85px;
-        }
+            .widget-dark {
+                width: 200px;
+                height: 225px;
+                border-radius: 20px;
+                background: rgba(0, 0, 0, 0.4);
+            }
 
-        .widget .right {
-            position: absolute;
-            right: 0;
-            width: 200px;
-            color: #fff;
-            margin: 20px 0;
-        }
+            .widget-light .left {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                margin-top: 85px;
+            }
 
-        .icon {
-            width: 50%;
-            margin-bottom: 0;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
+            .widget-dark .left {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                margin-top: 85px;
+            }
 
-        .weather-status {
-            color: #fff;
-            text-align: center;
-            margin: -10px 0 0;
-        }
+            .widget-light .right {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                color: black;
+                margin: 20px 0;
+            }
 
-            .widget .right .city {
+            .widget-dark .right {
+                position: absolute;
+                right: 0;
+                width: 200px;
+                color: #fff;
+                margin: 20px 0;
+            }
+
+            .icon {
+                width: 50%;
+                margin-bottom: 0;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .weather-status {
+                color: black;
+                text-align: center;
+                margin: -5px 0 0;
+                font-size: 20px;
+            }
+
+            .widget-light .right .city {
                 font-size: 1em;
                 text-align: center;
                 margin-bottom: 10px;
                 text-shadow: 1px 1px 5px #707070;
             }
 
-            .widget .right .degree {
-                font-size: 3em;
+            .widget-dark .right .city {
+                font-size: 1em;
+                text-align: center;
+                margin-bottom: 10px;
+                text-shadow: 1px 1px 5px #707070;
+            }
+
+            .widget-light .right .degree {
+                font-size: 2.5em;
                 font-weight: bold;
                 text-align: center;
                 margin: 0;
                 text-shadow: 1px 1px 5px #707070;
             }
+
+            .widget-dark .right .degree {
+                font-size: 2.5em;
+                font-weight: bold;
+                text-align: center;
+                margin: 0;
+                text-shadow: 1px 1px 5px #707070;
+            }
+
         </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
-                <button class="button" value="ground">Ground Floor</button>
-                <button class="button" value="1">Floor 1</button>
-                <button class="button" value="2">Floor 2</button>
-                <button class="button" value="3">Floor 3</button>
+                <button class="button-light button" id="button-light1" value="ground">@lang('messages.ground_floor')</button>
+                <button class="button-light button" id="button-light2" value="1">@lang('messages.first_floor')</button>
+                <button class="button-light button" id="button-light3" value="2">@lang('messages.second_floor')</button>
+                <button class="button-light button" id="button-light4" value="3">@lang('messages.third_floor')</button>
             </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">
-                <div class="widget">
+                <div class="widget-light">
                     <div class="left">
                         <img src="{{ asset($imgPath) }}" class="icon" alt="Weather Icon">
                         <h5 class="weather-status"><?php echo $description; ?></h5>
@@ -171,6 +226,24 @@
                     <div class="right">
                         <h5 class="city">Middelburg</h5>
                         <h5 class="degree"><?php echo round($temperature); ?>&deg;C</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Structure -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Room Details</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modal-content">Loading...</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>

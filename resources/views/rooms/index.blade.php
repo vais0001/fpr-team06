@@ -45,13 +45,13 @@
             @for ($i = 0; $i < 4; $i++)
             <div id="infoContainer" class="h-1/4 w-3/4 flex flex-col justify-center items-center gap-1 mb-5">
                 <div id="floorContainer_0" class="flex justify-center items-center">
-                    <h1 id="floorName" class="text-2xl text-white semi-bold">Floor {{$i}}</h1>
+                    <h1 id="floorName" class="text-2xl text-gray-400 dark:text-white semi-bold">Floor {{$i}}</h1>
                 </div>
                 <div id="roomContainer" class="flex flex-wrap flex-row gap-4">
                     @foreach($rooms as $room)
                         @if($room->floor === $i)
                         <div id="{{$room->id}}"
-                             class="dark:bg-gray-800 rounded-md p-1 hover:bg-gray-200 dark:hover:bg-gray-700 roomContainer">
+                             class="bg-white dark:bg-gray-800 rounded-md p-1 hover:bg-gray-200 dark:hover:bg-gray-700 roomContainer">
                             <h1 id="roomName" class="text-2xl text-gray-500 font-bold dark:hover:text-white text-center">
                                 {{$room->name}}
                             </h1>
