@@ -2,21 +2,21 @@
 
 namespace App\Imports;
 
-use App\Models\Room;
 use App\Models\RoomTime;
+use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithStartRow;
-use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class RoomTimesImport implements ToModel, WithStartRow
+class RoomTimesImport implements ToModel, WithStartRow, WithValidation
 {
     /**
      * @param array $row
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return Model|RoomTime|null
      */
-    public function model(array $row): \Illuminate\Database\Eloquent\Model|RoomTime|null
+    public function model(array $row): Model|RoomTime|null
     {
         return new RoomTime([
             'room_id' => request('set_room'),
@@ -28,5 +28,16 @@ class RoomTimesImport implements ToModel, WithStartRow
     public function startRow(): int
     {
         return 3;
+    }
+
+    public function rules(): array
+    {
+        return [
+            '2' => function($attribute, $value, $onFailure) {
+                if ($value < 100 || $value > 1000) {
+                    $onFailure('Invalid file');
+                }
+            }
+        ];
     }
 }

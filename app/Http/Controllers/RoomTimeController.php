@@ -24,7 +24,14 @@ class RoomTimeController extends Controller
         $request->validate([
             'room_times' => 'required|mimes:xlsx,xls,csv'
         ]);
-        Excel::import(new RoomTimesImport, $request->file('room_times'));
+        $import = new RoomTimesImport;
+        try{
+            Excel::import($import, $request->file('room_times'));
+        }catch (\Maatwebsite\Excel\Validators\ValidationException $e)
+        {
+            return back()->withErrors(['errorTime' => '* File has invalid columns. Make sure the file is the correct format. (Column 1: Time, Column 3: CO2, Column 4: Temperature)']);
+        }
+//        dd($import->errors());
         Room::where('id', request('set_room'))->update(array('updated_at' => now()->subSecond(10)));
 
         $start_time = RoomTime::all()->where('room_id', request('set_room'))->first()->time;
@@ -61,11 +68,17 @@ class RoomTimeController extends Controller
     {
         $import = new BookingDataImport();
         Excel::import($import, $request->file('booking'));
+
+        if($import->data == null){
+            return back()->withErrors(['errorBooking'=>'* Invalid file']);
+        }
         $request->validate([
             'booking' => 'required|mimes:xlsx,xls,csv'
         ]);
         $startHour = Carbon::parse($import->data['date'])->addHour(8);
         $endHour = Carbon::parse($import->data['date'])->addHour(16);
+        $startHour->subDay(45);
+        $endHour->subDay(45);
         $currentHour = $startHour;
         $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
         foreach($import->data['rooms'] as $room) {
@@ -78,10 +91,14 @@ class RoomTimeController extends Controller
                 if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour) {
                     $roomTime->update(['booked' => round($room['bookings'][$count]) == 1]);
                 } else {
-                    $roomTime->update(array('booked' => round($room['bookings'][$count]) == 1));
-                    $currentHour = strval(Carbon::parse($currentHour)->addHour(1));
-                    $nextHour = strval(Carbon::parse($nextHour)->addHour(1));
-                    $count++;
+                    try{
+                        $roomTime->update(array('booked' => round($room['bookings'][$count]) == 1));
+                        $currentHour = strval(Carbon::parse($currentHour)->addHour(1));
+                        $nextHour = strval(Carbon::parse($nextHour)->addHour(1));
+                        $count++;
+                    }catch (\Exception $e){
+                        break;
+                    }
                 }
             }
         }

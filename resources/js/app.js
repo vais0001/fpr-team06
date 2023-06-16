@@ -18,20 +18,23 @@ window.onload = function () {
     }
 }
 function loadRoomsImport() {
+    const rooms = JSON.parse(document.getElementById('world-map').dataset.maps);
+
     const tableBody = document.getElementById('tableBody');
 
-    const rooms = JSON.parse(document.getElementById('world-map').dataset.maps);
     console.log(rooms);
     document.querySelectorAll('.roomContainer').forEach(roomSpecificContainer => {
         roomSpecificContainer.addEventListener('click', function() {
-
             if(roomSpecificContainer.lastChild.id === 'roomButtonsContainer'){
                 roomSpecificContainer.lastChild.remove();
             }
+
             tableBody.innerHTML = '';
-            console.log(event.target.id);
-            console.log(rooms[event.target.parentNode.id-1]);
             if(event.target.id === 'roomName'){
+
+                const roomNameTable = document.getElementById('roomNameTable');
+                roomNameTable.className = 'text-2xl text-white font-bold dark:hover:text-white visible';
+                roomNameTable.innerHTML = rooms[event.target.parentNode.id-1].name;
 
                 let result = '';
                 rooms[event.target.parentNode.id-1]['room_time'].forEach(room => {
@@ -89,7 +92,16 @@ function loadRoomsImport() {
 
             importButton.addEventListener('click', function () {
                 document.getElementById('set_room').value = event.target.parentNode.parentNode.id
-                document.getElementById('importForm').submit();
+                if(document.getElementById('room_times').value !== '') {
+                    document.getElementById('importForm').submit();
+                } else{
+                    const errorContainer = document.getElementById('errorContainer');
+                    errorContainer.innerHTML = '';
+                    const error = document.createElement('p');
+                    error.className = 'text-red-600';
+                    error.innerHTML = '* Please select a file';
+                    errorContainer.appendChild(error);
+                }
             });
             roomButtonsContainer.appendChild(importButton);
 

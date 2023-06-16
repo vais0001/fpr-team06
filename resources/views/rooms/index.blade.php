@@ -9,6 +9,9 @@
                     @csrf
                     <input type="file" name="booking" required class="rounded-md bg-gray-700 w-52">
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 mr-2 h-8 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Import reservation DATA</button>
+                    @if($errors->any())
+                        <p class="text-red-600">{{session('errors')->first('errorBooking')}}</p>
+                    @endif
                 </form>
             </div>
         </div>
@@ -17,9 +20,14 @@
         <div class="flex justify-center items-center m-auto flex-col text-gray-400 border-200">
             <form class="flex justify-center items-center flex-row gap-4" action="{{route('import')}}" id="importForm" method="POST" enctype="multipart/form-data" name="importForm">
                 @csrf
-                <input type="file" name="room_times" required class="rounded-md bg-gray-700 w-full mt-5">
+                <input type="file" name="room_times" id="room_times" required class="rounded-md bg-gray-700 w-full mt-5">
                 <input type="number" name="set_room" class="hidden" id="set_room">
             </form>
+            <div id="errorContainer">
+                @if ($errors->any())
+                    <p class="text-red-600">{{session('errors')->first('errorTime')}}</p>
+                @endif
+            </div>
             <form action="{{route('destroy')}}" id="destroyForm" method="POST" class="hidden" name="destroyForm">
                 @csrf
                 @method('delete')
@@ -55,6 +63,9 @@
             </div>
             @endfor
             <div id="tableContainer">
+                <div class="flex justify-center items-center">
+                    <h2 id="roomNameTable"></h2>
+                </div>
                 <table class="table-auto w-full text-white text-center">
                     <thead>
                         <tr class="px-4 py-2 text-white text-center">
