@@ -17,6 +17,8 @@ return new class extends Migration
             $table->dateTime('time');
             $table->integer('co2');
             $table->integer('temperature');
+            $table->integer('outside_temperature')->nullable();
+            $table->boolean('booked')->nullable();
             $table->timestamps();
 
 

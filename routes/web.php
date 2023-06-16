@@ -27,7 +27,7 @@ Route::get('/lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang')
 
 Route::resource('rooms', RoomController::class);
 Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import');
-
+Route::post('rooms/import-bookings', [RoomTimeController::class, 'importBookings'])->name('import-bookings');
 Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
 
 Route::get('/dashboard', function(){
