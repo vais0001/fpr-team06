@@ -19,7 +19,7 @@ class RoomTimeController extends Controller
         $json_data = file_get_contents($url);
         $result = json_decode($json_data);
 
-        $timeCreation = now();
+        $timeCreation = now()->subSecond(1);
 
         $request->validate([
             'room_times' => 'required|mimes:xlsx,xls,csv'
@@ -31,14 +31,12 @@ class RoomTimeController extends Controller
         {
             return back()->withErrors(['errorTime' => '* File has invalid columns. Make sure the file is the correct format. (Column 1: Time, Column 3: CO2, Column 4: Temperature)']);
         }
-//        dd($import->errors());
         Room::where('id', request('set_room'))->update(array('updated_at' => now()->subSecond(10)));
 
-        $start_time = RoomTime::all()->where('room_id', request('set_room'))->first()->time;
-        $end_time = RoomTime::all()->where('room_id', request('set_room'))->last()->time;
-        $end_time = strval(Carbon::parse($end_time)->addDay(1));
-
         $roomTimes = RoomTime::all()->where('room_id', request('set_room'))->where('created_at' ,'>=', $timeCreation);
+        $start_time = $roomTimes->first()->time;
+        $end_time = strval(Carbon::parse($roomTimes->last()->time)->addDay(1));
+
         $currentHour = $start_time;
         $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
         foreach ($result->hourly->time as $i => $time) {
@@ -62,7 +60,7 @@ class RoomTimeController extends Controller
                 }
             }
         }
-        return redirect()->route('rooms.index')->with('success', 'All good!');
+        return redirect()->route('rooms.index')->with('success', 'Imported successfully.');
     }
     public function importBookings(Request $request): \Illuminate\Http\RedirectResponse
     {
@@ -77,8 +75,6 @@ class RoomTimeController extends Controller
         ]);
         $startHour = Carbon::parse($import->data['date'])->addHour(8);
         $endHour = Carbon::parse($import->data['date'])->addHour(16);
-        $startHour->subDay(45);
-        $endHour->subDay(45);
         $currentHour = $startHour;
         $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
         foreach($import->data['rooms'] as $room) {
@@ -103,12 +99,12 @@ class RoomTimeController extends Controller
             }
         }
 
-        return redirect()->route('rooms.index')->with('success', 'All good!');
+        return redirect()->route('rooms.index')->with('success', 'Bookings added successfully.');
     }
     public function destroy(RoomTime $room_time)
     {
         $room = Room::find(request('set_room_destroy'));
-        $roomTime = RoomTime::all()->where('room_id', request('set_room_destroy'))->where('created_at', '>=', $room->updated_at)->each->delete();
-        return redirect()->route('rooms.index')->with('success', 'RoomTime deleted successfully');
+        RoomTime::all()->where('room_id', request('set_room_destroy'))->where('created_at', '>=', $room->updated_at)->each->delete();
+        return redirect()->route('rooms.index');
     }
 }

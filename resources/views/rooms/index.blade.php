@@ -27,6 +27,9 @@
                 @if ($errors->any())
                     <p class="text-red-600">{{session('errors')->first('errorTime')}}</p>
                 @endif
+                @if (\Session::has('success'))
+                    <p class="text-emerald-600">{!! \Session::get('success') !!}</p>
+                @endif
             </div>
             <form action="{{route('destroy')}}" id="destroyForm" method="POST" class="hidden" name="destroyForm">
                 @csrf
