@@ -66,25 +66,25 @@ class RoomTimeController extends Controller
     {
         $import = new BookingDataImport();
         Excel::import($import, $request->file('booking'));
-
         if($import->data == null){
             return back()->withErrors(['errorBooking'=>'* Invalid file']);
         }
         $request->validate([
             'booking' => 'required|mimes:xlsx,xls,csv'
         ]);
-        $startHour = Carbon::parse($import->data['date'])->addHour(8);
-        $endHour = Carbon::parse($import->data['date'])->addHour(16);
-        $currentHour = $startHour;
-        $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
         foreach($import->data['rooms'] as $room) {
+            $startHour = Carbon::parse($import->data['date'])->addHour(8);
+            $endHour = Carbon::parse($import->data['date'])->addHour(17);
+            $startHour->subDay(45);
+            $endHour->subDay(45);
+            $currentHour = $startHour;
+            $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
             preg_match('/\((.*?)\)/', $room['name'], $matches);
             $roomName = $matches[1];
             $roomTimes = RoomTime::all()->where('room_id', '=', Room::all()->where('name', $roomName)->first()->id)->where('time', '>=', $startHour)->where('time', '<=', $endHour);
-
             $count = 0;
             foreach ($roomTimes as $roomTime) {
-                if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour) {
+                if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour && $count < count($room['bookings'])) {
                     $roomTime->update(['booked' => round($room['bookings'][$count]) == 1]);
                 } else {
                     try{
@@ -98,7 +98,6 @@ class RoomTimeController extends Controller
                 }
             }
         }
-
         return redirect()->route('rooms.index')->with('success', 'Bookings added successfully.');
     }
     public function destroy(RoomTime $room_time)
