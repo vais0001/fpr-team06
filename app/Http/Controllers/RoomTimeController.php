@@ -42,17 +42,9 @@ class RoomTimeController extends Controller
         Room::where('id', request('set_room'))->update(array('updated_at' => now()->subSecond(10)));
 
         $roomTimes = RoomTime::all()->where('room_id', request('set_room'))->where('created_at' ,'>=', $timeCreation);
-        $start_time = $roomTimes->first()->time;
-        $end_time = strval(Carbon::parse($roomTimes->last()->time)->addDay(1));
 
-        $currentHour = $start_time;
+        $currentHour = $roomTimes->first()->time;
         $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
-        foreach ($result->hourly->time as $i => $time) {
-            if ($time < $start_time || $time > $end_time) {
-                unset($result->hourly->time[$i]);
-                unset($result->hourly->temperature_2m[$i]);
-            }
-        }
         $count = key($result->hourly->time);
         foreach ($roomTimes as $roomTime) {
             if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour) {

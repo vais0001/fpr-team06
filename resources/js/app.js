@@ -123,7 +123,6 @@ function loadRoomsImport() {
 
     const tableBody = document.getElementById('tableBody');
 
-    console.log(rooms);
     document.querySelectorAll('.roomContainer').forEach(roomSpecificContainer => {
         roomSpecificContainer.addEventListener('click', function() {
             if(roomSpecificContainer.lastChild.id === 'roomButtonsContainer'){
