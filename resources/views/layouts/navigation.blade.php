@@ -61,6 +61,8 @@
             transform: translateX(0px);
         }
 
+        
+
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Primary Navigation Menu -->
@@ -78,28 +80,13 @@
                     <x-nav-link :href="route('model')" :active="request()->routeIs('model')">
                         {{ __('Model') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.index')">
                         {{ __('Import') }}
                     </x-nav-link>
                 </div>
             </div>
 
-            <div class="flex-shrink-0 flex items-center" id="marginpictures">
-                <a href="#">
-                    <img src="{{ asset('images/user.png') }}" alt="JRCZ-logo" class="block h-10 w-auto fill-current text-gray-600">
-                </a>
-                <a href="#">
-                    <img src="{{ asset('images/bell.png') }}" alt="JRCZ-logo" class="block h-10 w-auto fill-current text-gray-600">
-                </a>
-                <a href="#">
-                    <img src="{{ asset('images/internet.png') }}" alt="JRCZ-logo" class="block h-10 w-auto fill-current text-gray-600">
-                </a>
-                <a href="{{ route('switchLang', 'en') }}">English</a>
-                <a href="{{ route('switchLang', 'nl') }}">Nederlands</a>
-            </div>
+
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -117,23 +104,17 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile')">
-                            {{ __('Language') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('profile')">
-                            {{ __('Theme') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('profile')">
-                            {{ __('My Profile') }}
-                        </x-dropdown-link>
+                        <a class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-blue-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"href="{{ route('switchLang', 'en') }}">English</a>
+                        <a class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-blue-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"href="{{ route('switchLang', 'nl') }}">Nederlands</a>
+                        <a class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-blue-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"href="{{ __('profile') }}">My Profile</a>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <x-dropdown-link :href="route('logout')"
+                            <a class="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 dark:text-blue-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"href="{{ __('Log out') }}"
                                              onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log out') }}
-                            </x-dropdown-link>
+                                Log Out
+                            </a>
                         </form>
                     </x-slot>
                 </x-dropdown>
