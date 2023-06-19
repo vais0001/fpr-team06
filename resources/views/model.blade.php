@@ -203,10 +203,20 @@
                 text-shadow: 1px 1px 5px #707070;
             }
 
+            .modal-dialog {
+                max-width: 1200px; /* or any other value that suits your needs */
+                margin: 1.75rem auto; /* Adjusts vertical and horizontal centering */
+            }
+
         </style>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
@@ -231,18 +241,18 @@
             </div>
 
             <!-- Modal Structure -->
-            <div id="myModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Room Details</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Room Data</h4>
                         </div>
                         <div class="modal-body">
-                            <p id="modal-content">Loading...</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <!-- Add your chart container here -->
+                            <div class="chart-container">
+                                <canvas id="myChartTemp"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>

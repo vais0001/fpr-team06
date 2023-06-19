@@ -107,16 +107,25 @@ class RoomTimeController extends Controller
         return redirect()->route('rooms.index');
     }
 
-    public function getData()
+    public function getData() //used to fetch the data in the app.js roomData array
     {
         $rooms = Room::all();
 
         $data = $rooms->map(function ($room) {
-            $latestRoomTime = $room->roomTime()->latest('id')->first();
+            // Get all the time records for this room
+            $roomTimes = $room->roomTime()->get();
 
+            // Get the latest temperature for this room
+            $latestTemperature = optional($room->roomTime()->latest('id')->first())->temperature;
+
+            // Create an array for this room
             return [
+                'id' => $room->id,
                 'name' => $room->name,
-                'temperature' => optional($latestRoomTime)->temperature,
+                'latestTemperature' => $latestTemperature,
+                'times' => $roomTimes->pluck('time'),
+                'temperatures' => $roomTimes->pluck('temperature'),
+                'co2s' => $roomTimes->pluck('co2'),
             ];
         });
 

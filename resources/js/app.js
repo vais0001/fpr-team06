@@ -225,6 +225,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 
+
 function runModel() {
     let roomData = null; // Global variable for the room temperature data
 
@@ -393,6 +394,8 @@ function runModel() {
         }
     }
 
+    let myChart = null;
+
     function onMouseClick(event) {
         // Calculate mouse position in normalized device coordinates (-1 to +1) for both components
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -404,15 +407,105 @@ function runModel() {
         // Calculate objects intersecting the picking ray
         let intersects = raycaster.intersectObjects(Object.values(rooms));
 
+        // Inside your intersect loop
         for (let i = 0; i < intersects.length; i++) {
-                let roomID = intersects[i].object.customIndex;
+            if (myChart) { // If a chart already exists
+                myChart.destroy(); // Destroy it before creating a new one
+            }
 
-                // Load room data into the modal-content element
-                document.getElementById('modal-content').textContent = JSON.stringify(roomID);
+            let roomID = intersects[i].object.customIndex;
+            let temperatures = 0;
+            let co2s = 0;
+            let times = 0;
 
-                // Display the modal
-                $('#myModal').modal('show');
+
+            for (let i = 0; i < roomData.length; i++) {
+                if (roomData[i].name == roomID) {
+                    temperatures = roomData[i].temperatures; //adds all of the temperatures recorder for the room
+                    co2s = roomData[i].co2s; //adds all of the co2 levels recorder for the room
+                    times = roomData[i].times; //adds all of the time longs for the room
+                }
+            }
+
+            // Generate your chart here using roomDataForCurrentRoom
+            const ctx = document.getElementById('myChartTemp');
+
+            //create the chart
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: times,
+                    datasets: [
+                        {
+                            label: 'Room Temp',
+                            data: temperatures,
+                            borderWidth: 1,
+                            yAxisID: 'y',
+                        },
+                        {
+                            label: 'Room CO2',
+                            data: co2s,
+                            borderWidth: 1,
+                            yAxisID: 'y1',
+                        }
+                    ],
+                },
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                            },
+                        },
+                        y: {
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            min: 14,
+                            max: 28,
+                            ticks: {
+                                stepSize: 2,
+                            },
+                        },
+                        y1: {
+                            display: true,
+                            position: 'left',
+                            beginAtZero: true,
+                            min: 200,
+                            max: 900,
+                            ticks: {
+                                stepSize: 100,
+                            },
+                        },
+                    },
+                    plugins: {
+                        zoom: {
+                            zoom: {
+                                wheel: {
+                                    enabled: true,
+                                },
+                                pinch: {
+                                    enabled: true,
+                                },
+                                pan: {
+                                    enabled: true,
+                                    mode: 'xy',
+                                },
+                                mode: 'xy',
+                            },
+                            limits: {
+                                x: { min: 'original', max: 'original' },
+                                y: { min: 'original', max: 'original' },
+                            },
+                        },
+                    },
+                },
+            });
+
+            $('#myModal').modal('show');
         }
+
     }
 
     function onMouseMove(event) {
@@ -512,7 +605,7 @@ function runModel() {
         let temperatureIcon;
         for (let i = 0; i < roomData.length; i++) {
             if (roomData[i].name == roomId) {
-                temperature = roomData[i].temperature;
+                temperature = roomData[i].latestTemperature;
                 index = i;
             }
         }

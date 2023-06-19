@@ -15,6 +15,7 @@ class RoomController extends Controller
         $rooms = Room::with('roomTime')->get();
         return view('rooms.index', compact('rooms'));
     }
+
     public function create()
     {
         return view('rooms.create');
