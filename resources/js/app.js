@@ -421,8 +421,8 @@ function runModel() {
 
             for (let i = 0; i < roomData.length; i++) {
                 if (roomData[i].name == roomID) {
-                    temperatures = roomData[i].temperatures; //adds all of the temperatures recorder for the room
-                    co2s = roomData[i].co2s; //adds all of the co2 levels recorder for the room
+                    temperatures = roomData[i].temperatures; //adds all of the temperatures recorded for the room
+                    co2s = roomData[i].co2s; //adds all of the co2 levels recorded for the room
                     times = roomData[i].times; //adds all of the time longs for the room
                 }
             }
