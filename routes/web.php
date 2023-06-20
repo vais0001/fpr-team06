@@ -18,9 +18,7 @@ use App\Http\Controllers\LanguageController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [RoomController::class, 'index']);
 
 Route::resource('lang', LanguageController::class);
 Route::get('/lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang')->name('switchLang');
@@ -30,14 +28,10 @@ Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import
 Route::post('rooms/import-bookings', [RoomTimeController::class, 'importBookings'])->name('import-bookings');
 Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
 
-Route::get('/dashboard', function(){
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::get('/model', [RoomTimeController::class, 'showModel'])
     ->middleware(['auth', 'verified'])->name('model');
 
-Route::get('/model-data', [RoomTimeController::class, 'getData']);
+Route::get('/model-data/{roomName}', [RoomTimeController::class, 'getData']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
