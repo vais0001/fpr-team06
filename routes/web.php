@@ -7,6 +7,8 @@ use App\Http\Controllers\RoomTimeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ErrorController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +24,14 @@ use App\Http\Controllers\ErrorController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/user/{user}/make-admin', [UserController::class, 'makeAdmin'])->name('user.make-admin');
+
+Route::get('/admin', function () {
+    return view('admin');
+})->middleware('admin')->name('admin');
+
+Route::get('/admin', [UserController::class, 'someMethod']);
 
 Route::resource('lang', LanguageController::class);
 Route::get('/lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang')->name('switchLang');
