@@ -221,7 +221,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
-                <button class="button-light button" id="button-light1" value="ground">@lang('messages.ground_floor')</button>
+                <button class="button-light button" id="button-light1" value="0">@lang('messages.ground_floor')</button>
                 <button class="button-light button" id="button-light2" value="1">@lang('messages.first_floor')</button>
                 <button class="button-light button" id="button-light3" value="2">@lang('messages.second_floor')</button>
                 <button class="button-light button" id="button-light4" value="3">@lang('messages.third_floor')</button>
@@ -252,6 +252,29 @@
                             <!-- Add your chart container here -->
                             <div class="chart-container">
                                 <canvas id="myChartTemp"></canvas>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="cursor-pointer" id="backData"> < </div>
+                                <div class="flex justify-center items-center gap-1 flex-row">
+                                    <div class="bg-sky-500 text-white rounded px-2 cursor-pointer" id="weekButton">Week</div>
+                                    <div class="bg-sky-500 text-white rounded px-2 cursor-pointer" id="dayButton">Day</div>
+                                    <div class="bg-sky-500 text-white rounded px-2 cursor-pointer" id="hourButton">Hour</div>
+                                </div>
+                                <div class="cursor-pointer" id="nextData"> > </div>
+                            </div>
+                            <div class="flex justify-center items-center flex-column w-full">
+                                <div class="flex justify-center items-center gap-4 flex-row">
+                                    <div>
+                                        <div>Highest Temperature - <span id="highTemp"></span></div>
+                                        <div>Lowest Temperature - <span id="lowTemp"></span></div>
+                                    </div>
+                                    <div>
+                                        <div>Highest Co2 - <span id="highCo2"></span></div>
+                                        <div>Lowest Co2 - <span id="lowCo2"></span></div>
+                                    </div>
+                                </div>
+                                <h2>Energy loss indication</h2>
+                                <div class="flex justify-center items-center h-full flex-wrap gap-2" id="roomsContainer"></div>
                             </div>
                         </div>
                     </div>
