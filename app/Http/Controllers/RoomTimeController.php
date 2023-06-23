@@ -135,4 +135,26 @@ class RoomTimeController extends Controller
         }
         return response()->json($data);
     }
+    public function getCo2Data()
+    {
+        $roomData = [];
+        $rooms = Room::all(); // Retrieve all rooms
+
+        foreach ($rooms as $room) {
+            $roomTimes = $room->roomTime()->orderBy('time', 'DESC')->take(2016)->get();
+
+            $highestCo2Entry = $roomTimes->sortByDesc('co2')->first(); // Retrieve the entry with the highest CO2 level
+
+            if ($highestCo2Entry) {
+                $roomData[] = [
+                    'room_id' => $room->id,
+                    'room_name' => $room->name,
+                    'co2' => $highestCo2Entry->co2,
+                    'timestamp' => $highestCo2Entry->time,
+                ];
+            }
+        }
+
+        return response()->json($roomData);
+    }
 }

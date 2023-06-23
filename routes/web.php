@@ -54,6 +54,8 @@ Route::middleware('auth')->group(function () {
 
 Route::fallback([ErrorController::class, 'notFound']);
 
+Route::get('/model-co2', [RoomTimeController::class, 'getCo2Data']);
+
 
 Route::get('/tempprofilepage')->name('profile');
 
