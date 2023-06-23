@@ -263,6 +263,7 @@
                                 <div class="cursor-pointer" id="nextData"> > </div>
                             </div>
                             <div class="flex justify-center items-center flex-column w-full">
+                                <div id="errorData" class="text-red-600"></div>
                                 <div class="flex justify-center items-center gap-4 flex-row">
                                     <div>
                                         <div>Highest Temperature - <span id="highTemp"></span></div>
