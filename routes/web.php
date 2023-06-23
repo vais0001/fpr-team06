@@ -21,7 +21,9 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', [RoomController::class, 'index']);
+Route::get('/', function () {
+    return view ("auth.login");
+});
 
 Route::get('/user/{user}/make-admin', [UserController::class, 'makeAdmin'])->name('user.make-admin');
 
