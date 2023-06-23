@@ -488,23 +488,28 @@ function runModel() {
 
         const roomsContainer = document.getElementById('roomsContainer');
         roomsContainer.innerHTML = '';
-        for (let i = 0; i < temperatureSliced.length; i+= 12) {
-            if ((temperatureSliced[i] - outsideTempSliced[i] > 3 || temperatureSliced[i] >= 21) && bookingSliced[i] === null && co2Sliced[i] < 450) {
-                const roomContainer = document.createElement('div');
-                roomContainer.id = 'roomContainer';
-                roomContainer.className = 'bg-red-600 rounded p-1';
-                roomsContainer.appendChild(roomContainer);
+        if (temperatureReversedSliced.length === 0) {
+            document.getElementById('errorData').innerHTML = 'No data available';
+        }else{
+            document.getElementById('errorData').innerHTML = '';
+            for (let i = 0; i < temperatureSliced.length; i+= 12) {
+                if ((temperatureSliced[i] - outsideTempSliced[i] > 3 || temperatureSliced[i] >= 21) && bookingSliced[i] === null && co2Sliced[i] < 450) {
+                    const roomContainer = document.createElement('div');
+                    roomContainer.id = 'roomContainer';
+                    roomContainer.className = 'bg-red-600 rounded p-1';
+                    roomsContainer.appendChild(roomContainer);
 
-                const roomTime = document.createElement('div');
-                roomTime.id = 'roomTime';
-                roomTime.className = 'text-white';
-                roomTime.innerHTML = new Date(timeSliced[i]).toLocaleString('en-US', {
-                    month: 'long',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric'
-                });
-                roomContainer.appendChild(roomTime);
+                    const roomTime = document.createElement('div');
+                    roomTime.id = 'roomTime';
+                    roomTime.className = 'text-white';
+                    roomTime.innerHTML = new Date(timeSliced[i]).toLocaleString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric'
+                    });
+                    roomContainer.appendChild(roomTime);
+                }
             }
         }
 
@@ -533,11 +538,11 @@ function runModel() {
         myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: timeReversedSliced,
+                labels: timeSliced,
                 datasets: [
                     {
                         label: 'Room Temp',
-                        data: temperatureReversedSliced,
+                        data: temperatureSliced,
                         borderWidth: 1,
                         yAxisID: 'y',
                         borderColor: 'rgb(0,33,255)',
@@ -545,7 +550,7 @@ function runModel() {
                     },
                     {
                         label: 'Room CO2',
-                        data: co2ReversedSliced,
+                        data: co2Sliced,
                         borderWidth: 1,
                         yAxisID: 'y1',
                         borderColor: 'rgb(255,173,0)',
@@ -553,7 +558,7 @@ function runModel() {
                     },
                     {
                         label: 'Outside Temp',
-                        data: outsideTempReversedSliced,
+                        data: outsideTempSliced,
                         borderWidth: 1,
                         yAxisID: 'y',
                         borderColor: 'rgb(47,196,83)',
@@ -561,7 +566,7 @@ function runModel() {
                     },
                     {
                         label: 'Bookings',
-                        data: bookingReversedSliced,
+                        data: bookingSliced,
                         borderWidth: 1,
                         yAxisID: 'y3',
                         borderColor: 'rgb(243,86,2)',
