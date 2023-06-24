@@ -126,98 +126,99 @@ function loadRoomsImport() {
         url: '/import-data',
         type: 'GET'
     }).done(function(data) {
+
         rooms = data;
-    });
 
-    const tableBody = document.getElementById('tableBody');
+        const tableBody = document.getElementById('tableBody');
 
-    document.querySelectorAll('.roomContainer').forEach(roomSpecificContainer => {
-        roomSpecificContainer.addEventListener('click', function() {
-            if(roomSpecificContainer.lastChild.id === 'roomButtonsContainer'){
-                roomSpecificContainer.lastChild.remove();
-            }
+        document.querySelectorAll('.roomContainer').forEach(roomSpecificContainer => {
+            roomSpecificContainer.addEventListener('click', function () {
+                if (roomSpecificContainer.lastChild.id === 'roomButtonsContainer') {
+                    roomSpecificContainer.lastChild.remove();
+                }
 
-            tableBody.innerHTML = '';
-            if(event.target.id === 'roomName'){
+                tableBody.innerHTML = '';
+                if (event.target.id === 'roomName') {
 
-                const roomNameTable = document.getElementById('roomNameTable');
-                roomNameTable.className = 'text-2xl text-white font-bold dark:hover:text-white visible';
-                roomNameTable.innerHTML = rooms[event.target.parentNode.id-1].name;
+                    const roomNameTable = document.getElementById('roomNameTable');
+                    roomNameTable.className = 'text-2xl text-white font-bold dark:hover:text-white visible';
+                    roomNameTable.innerHTML = rooms[event.target.parentNode.id - 1].name;
 
-                let result = '';
-                rooms[event.target.parentNode.id-1]['room_time'].forEach(room => {
-                    result += `<tr>
-                     <td>${room.id}</td>
-                     <td>${room.time}</td>
-                     <td>${room.co2}</td>
-                     <td>${room.temperature}</td>
-                     <td>${room.outside_temperature}</td>
-                     <td>${room.booked}</td>
-                     </tr>`;
+                    let result = '';
+                    rooms[event.target.parentNode.id - 1]['room_time'].forEach(room => {
+                        result += `<tr>
+                         <td>${room.id}</td>
+                         <td>${room.time}</td>
+                         <td>${room.co2}</td>
+                         <td>${room.temperature}</td>
+                         <td>${room.outside_temperature}</td>
+                         <td>${room.booked}</td>
+                         </tr>`;
+                    });
+
+                    tableBody.innerHTML = result;
+                }
+
+                const roomButtonsContainer = document.createElement('div');
+                roomButtonsContainer.id = 'roomButtonsContainer';
+                roomButtonsContainer.className = 'flex flex-row justify-center absolute';
+                roomButtonsContainer.style.marginLeft = '-65px';
+                roomSpecificContainer.appendChild(roomButtonsContainer);
+
+                const editButton = document.createElement('button');
+                editButton.id = 'editButton';
+                editButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+                editButton.innerHTML = 'Edit';
+                editButton.type = 'submit';
+
+                roomButtonsContainer.appendChild(editButton);
+
+                editButton.addEventListener('click', function () {
+                    const form = document.getElementById('editForm');
+                    form.action = `/rooms/${event.target.parentNode.parentNode.id}/edit`;
+                    form.submit();
                 });
 
-                tableBody.innerHTML = result;
-            }
+                const revertButton = document.createElement('button');
+                revertButton.id = 'revertButton';
+                revertButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+                revertButton.innerHTML = 'Revert';
+                revertButton.type = 'submit';
 
-            const roomButtonsContainer = document.createElement('div');
-            roomButtonsContainer.id = 'roomButtonsContainer';
-            roomButtonsContainer.className = 'flex flex-row justify-center absolute';
-            roomButtonsContainer.style.marginLeft = '-65px';
-            roomSpecificContainer.appendChild(roomButtonsContainer);
+                roomButtonsContainer.appendChild(revertButton);
 
-            const editButton = document.createElement('button');
-            editButton.id = 'editButton';
-            editButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
-            editButton.innerHTML = 'Edit';
-            editButton.type = 'submit';
+                revertButton.addEventListener('click', function () {
+                    document.getElementById('set_room_destroy').value = event.target.parentNode.parentNode.id
+                    document.getElementById('destroyForm').submit();
+                });
 
-            roomButtonsContainer.appendChild(editButton);
+                const importButton = document.createElement('button');
+                importButton.id = 'importButton';
+                importButton.className = 'hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
+                importButton.innerHTML = 'Import';
+                importButton.type = 'submit';
 
-            editButton.addEventListener('click', function () {
-                const form = document.getElementById('editForm');
-                form.action = `/rooms/${event.target.parentNode.parentNode.id}/edit`;
-                form.submit();
-            });
+                importButton.addEventListener('click', function () {
+                    document.getElementById('set_room').value = event.target.parentNode.parentNode.id
+                    if (document.getElementById('room_times').value !== '') {
+                        document.getElementById('importForm').submit();
+                    } else {
+                        const errorContainer = document.getElementById('errorContainer');
+                        errorContainer.innerHTML = '';
+                        const error = document.createElement('p');
+                        error.className = 'text-red-600';
+                        error.innerHTML = '* Please select a file';
+                        errorContainer.appendChild(error);
+                    }
+                });
+                roomButtonsContainer.appendChild(importButton);
 
-            const revertButton = document.createElement('button');
-            revertButton.id = 'revertButton';
-            revertButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
-            revertButton.innerHTML = 'Revert';
-            revertButton.type = 'submit';
-
-            roomButtonsContainer.appendChild(revertButton);
-
-            revertButton.addEventListener('click', function () {
-                document.getElementById('set_room_destroy').value = event.target.parentNode.parentNode.id
-                document.getElementById('destroyForm').submit();
-            });
-
-            const importButton = document.createElement('button');
-            importButton.id = 'importButton';
-            importButton.className = 'hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
-            importButton.innerHTML = 'Import';
-            importButton.type = 'submit';
-
-            importButton.addEventListener('click', function () {
-                document.getElementById('set_room').value = event.target.parentNode.parentNode.id
-                if(document.getElementById('room_times').value !== '') {
-                    document.getElementById('importForm').submit();
-                } else{
-                    const errorContainer = document.getElementById('errorContainer');
-                    errorContainer.innerHTML = '';
-                    const error = document.createElement('p');
-                    error.className = 'text-red-600';
-                    error.innerHTML = '* Please select a file';
-                    errorContainer.appendChild(error);
-                }
-            });
-            roomButtonsContainer.appendChild(importButton);
-
-            roomSpecificContainer.addEventListener('mouseleave', function() {
-                importButton.remove();
-                revertButton.remove();
-                editButton.remove();
-                roomSpecificContainer.firstChild.className = 'text-2xl text-gray-500 font-bold dark:hover:text-white';
+                roomSpecificContainer.addEventListener('mouseleave', function () {
+                    importButton.remove();
+                    revertButton.remove();
+                    editButton.remove();
+                    roomSpecificContainer.firstChild.className = 'text-2xl text-gray-500 font-bold dark:hover:text-white';
+                });
             });
         });
     });
