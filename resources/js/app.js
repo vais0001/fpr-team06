@@ -120,7 +120,14 @@ window.onload = function () {
 
 function loadRoomsImport() {
 
-    const rooms = JSON.parse(document.getElementById('world-map').dataset.maps);
+    let rooms = null;
+
+    $.ajax({
+        url: '/import-data/' + intersects[0].object.customIndex,
+        type: 'GET'
+    }).done(function(data) {
+        rooms = data;
+    });
 
     const tableBody = document.getElementById('tableBody');
 

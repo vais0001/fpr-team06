@@ -36,6 +36,7 @@ Route::get('/admin', [UserController::class, 'someMethod']);
 Route::resource('lang', LanguageController::class);
 Route::get('/lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang')->name('switchLang');
 
+Route::get('rooms/import-data', [RoomTimeController::class, 'importData']);
 Route::resource('rooms', RoomController::class);
 Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import');
 Route::post('rooms/import-bookings', [RoomTimeController::class, 'importBookings'])->name('import-bookings');
