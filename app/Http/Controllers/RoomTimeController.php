@@ -128,7 +128,7 @@ class RoomTimeController extends Controller
             return response()->json([]);
         }
 
-        foreach ($room->roomTime()->get() as $roomTime) {
+        foreach ($roomTimes as $roomTime) {
             $data[] = [
                 'id' => $room->id,
                 'name' => $room->name,
