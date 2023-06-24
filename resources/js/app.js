@@ -123,7 +123,7 @@ function loadRoomsImport() {
     let rooms = null;
 
     $.ajax({
-        url: '/import-data/' + intersects[0].object.customIndex,
+        url: '/import-data',
         type: 'GET'
     }).done(function(data) {
         rooms = data;

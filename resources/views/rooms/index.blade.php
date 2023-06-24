@@ -40,7 +40,6 @@
                 @csrf
             </form>
         </div>
-        <div id="world-map" data-maps='{{ json_encode($rooms) }}'></div>
         <div id="mainContent" class="h-full w-full flex flex-col justify-center items-center mt-5 gap-3">
             @for ($i = 0; $i < 4; $i++)
             <div id="infoContainer" class="h-1/4 w-3/4 flex flex-col justify-center items-center gap-1 mb-5">
