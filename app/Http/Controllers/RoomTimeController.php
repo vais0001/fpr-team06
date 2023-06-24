@@ -122,7 +122,7 @@ class RoomTimeController extends Controller
     {
         $data = [];
         $room = Room::where('name', $roomName)->orderBy('id')->get()->first();
-        $roomTimes = $room->roomTime()->get();
+        $roomTimes = $room->roomTime()->orderBy('id')->get();
 
         if ($roomTimes->isEmpty()) {
             return response()->json([]);
