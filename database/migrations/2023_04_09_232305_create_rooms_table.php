@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('floor');
-            $table->float('temperature');
-            $table->integer('co2');
-            $table->boolean('energyStatus');
+            $table->integer('floor')->default(0);
             $table->timestamps();
         });
     }

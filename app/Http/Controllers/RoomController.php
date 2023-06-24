@@ -2,58 +2,49 @@
 
 namespace App\Http\Controllers;
 
+//use App\Imports\RoomsImport;
 use App\Models\Room;
+use App\Models\RoomTime;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RoomController extends Controller
 {
     public function index()
     {
-        $rooms = Room::all();
+        $rooms = Room::with('roomTime')->get();
         return view('rooms.index', compact('rooms'));
     }
-    public function show($index)
-    {
-        $rooms = Room::all();
-        $selectedRoom = Room::find($index);
-        return view('rooms.show', compact('rooms', 'selectedRoom'));
-    }
+
     public function create()
     {
         return view('rooms.create');
     }
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
+    public function store(Request $request){
+        $request->validate([
             'name' => 'required',
-            'floor' => 'required|integer',
-            'temperature' => 'required|integer',
-            'co2' => 'required|integer',
-            'energyStatus' => 'required|boolean',
+            'floor' => 'required',
         ]);
-
-        $room = new Room([
-            'name' => $validatedData['name'],
-            'floor' => $validatedData['floor'],
-            'temperature' => $validatedData['temperature'],
-            'co2' => $validatedData['co2'],
-            'energyStatus' => $validatedData['energyStatus'],
+        Room::create($request->all());
+        return redirect()->route('rooms.index')->with('success', 'Room created successfully.');
+    }
+    public function edit(Room $room)
+    {
+        $room = Room::find($room->id);
+        return view('rooms.edit', compact('room'));
+    }
+    public function update(Request $request, Room $room)
+    {
+        $request->validate([
+            'name' => 'required',
+            'floor' => 'required',
         ]);
-
-        $room->save();
-
-        return redirect()->route('rooms.index');
+        $room->update($request->all());
+        return redirect()->route('rooms.index')->with('success', 'Room updated successfully');
     }
-    public function edit()
+    public function destroy(Room $room)
     {
-        return view('rooms.edit');
-    }
-    public function update()
-    {
-        return redirect()->route('rooms.index');
-    }
-    public function destroy()
-    {
-        return redirect()->route('rooms.index');
+        $room->delete();
+        return redirect()->route('rooms.index')->with('success', 'Room deleted successfully');
     }
 }

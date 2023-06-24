@@ -7,12 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Room extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'floor',
-        'temperature',
-        'co2',
-        'energyStatus',
+        'updated_at'
     ];
-    use HasFactory;
+
+    public function roomTime()
+    {
+        return $this->hasMany(RoomTime::class);
+    }
 }
