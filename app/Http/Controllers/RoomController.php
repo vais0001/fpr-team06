@@ -12,7 +12,7 @@ class RoomController extends Controller
 {
     public function index()
     {
-        $rooms = Room::with('roomTime')->get();
+        $rooms = Room::with('roomTime')->orderBy('created_at', 'asc')->get();
         return view('rooms.index', compact('rooms'));
     }
 
