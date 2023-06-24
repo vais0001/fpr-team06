@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('room_id');
             $table->dateTime('time');
             $table->integer('co2');
-            $table->float('temperature');
+            $table->integer('temperature');
             $table->integer('outside_temperature')->nullable();
             $table->boolean('booked')->nullable();
             $table->timestamps();
