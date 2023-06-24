@@ -102,7 +102,6 @@ window.onload = function () {
     }
     if(url.includes('model')) {
         runModel();
-        console.log('test');
     }
     getCookie("mode");
     darkMode();
