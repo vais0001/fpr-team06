@@ -54,7 +54,6 @@ Route::middleware('auth')->group(function () {
 
 Route::fallback([ErrorController::class, 'notFound']);
 
-
 Route::get('/tempprofilepage')->name('profile');
 
 require __DIR__.'/auth.php';
