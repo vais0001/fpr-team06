@@ -104,9 +104,6 @@ window.onload = function () {
         runModel();
         console.log('test');
     }
-    if(url.includes('dashboard')) {
-        console.log(myCookieValue);
-    }
     getCookie("mode");
     darkMode();
     if (myCookieValue === "dark") {
@@ -119,44 +116,45 @@ window.onload = function () {
 }
 
 function loadRoomsImport() {
-
     let rooms = null;
 
     $.ajax({
         url: '/import-data',
         type: 'GET'
     }).done(function(data) {
-
         rooms = data;
+        console.log(rooms);
 
         const tableBody = document.getElementById('tableBody');
 
         document.querySelectorAll('.roomContainer').forEach(roomSpecificContainer => {
-            roomSpecificContainer.addEventListener('click', function () {
-                if (roomSpecificContainer.lastChild.id === 'roomButtonsContainer') {
+            roomSpecificContainer.addEventListener('click', function() {
+                if(roomSpecificContainer.lastChild.id === 'roomButtonsContainer'){
                     roomSpecificContainer.lastChild.remove();
                 }
 
                 tableBody.innerHTML = '';
-                if (event.target.id === 'roomName') {
+                if(event.target.id === 'roomName'){
 
                     const roomNameTable = document.getElementById('roomNameTable');
                     roomNameTable.className = 'text-2xl text-white font-bold dark:hover:text-white visible';
-                    roomNameTable.innerHTML = rooms[event.target.parentNode.id - 1].name;
+                    roomNameTable.innerHTML = event.target.innerHTML.toString().replace(/\s/g, "");
 
-                    let result = '';
-                    rooms[event.target.parentNode.id - 1]['room_time'].forEach(room => {
-                        result += `<tr>
-                         <td>${room.id}</td>
-                         <td>${room.time}</td>
-                         <td>${room.co2}</td>
-                         <td>${room.temperature}</td>
-                         <td>${room.outside_temperature}</td>
-                         <td>${room.booked}</td>
-                         </tr>`;
-                    });
+                    if(rooms[event.target.parentNode.id] !== undefined) {
+                        let result = '';
+                        rooms[event.target.parentNode.id].forEach(room => {
+                            result += `<tr>
+                                 <td>${room.id}</td>
+                                 <td>${room.time}</td>
+                                 <td>${room.co2}</td>
+                                 <td>${room.temperature}</td>
+                                 <td>${room.outside_temperature}</td>
+                                 <td>${room.booked}</td>
+                                 </tr>`;
+                        });
 
-                    tableBody.innerHTML = result;
+                        tableBody.innerHTML = result;
+                    }
                 }
 
                 const roomButtonsContainer = document.createElement('div');
@@ -200,9 +198,9 @@ function loadRoomsImport() {
 
                 importButton.addEventListener('click', function () {
                     document.getElementById('set_room').value = event.target.parentNode.parentNode.id
-                    if (document.getElementById('room_times').value !== '') {
+                    if(document.getElementById('room_times').value !== '') {
                         document.getElementById('importForm').submit();
-                    } else {
+                    } else{
                         const errorContainer = document.getElementById('errorContainer');
                         errorContainer.innerHTML = '';
                         const error = document.createElement('p');
@@ -213,7 +211,7 @@ function loadRoomsImport() {
                 });
                 roomButtonsContainer.appendChild(importButton);
 
-                roomSpecificContainer.addEventListener('mouseleave', function () {
+                roomSpecificContainer.addEventListener('mouseleave', function() {
                     importButton.remove();
                     revertButton.remove();
                     editButton.remove();
@@ -221,11 +219,11 @@ function loadRoomsImport() {
                 });
             });
         });
-    });
 
-    document.querySelectorAll('.addContainer').forEach(addContainer => {
-        addContainer.addEventListener('click', function() {
-            document.location.href = `/rooms/create?floor=${event.target.id}`;
+        document.querySelectorAll('.addContainer').forEach(addContainer => {
+            addContainer.addEventListener('click', function() {
+                document.location.href = `/rooms/create?floor=${event.target.id}`;
+            });
         });
     });
 }

@@ -143,8 +143,11 @@ class RoomTimeController extends Controller
         return response()->json($data);
     }
 
-    public function importData(){
+    public function importData()
+    {
         $roomTimes = RoomTime::orderBy('id')->get();
-        return response()->json($roomTimes);
+        $groupedRoomTimes = $roomTimes->groupBy('room_id');
+
+        return response()->json($groupedRoomTimes);
     }
 }
