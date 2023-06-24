@@ -61,7 +61,7 @@
             transform: translateX(0px);
         }
 
-        
+
 
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -81,7 +81,7 @@
                         {{ __('Model') }}
                     </x-nav-link>
                     <x-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.index')">
-                        {{ __('Import') }}
+                        @lang('messages.import')
                     </x-nav-link>
                 </div>
             </div>
