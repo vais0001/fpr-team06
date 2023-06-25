@@ -33,15 +33,14 @@ class RoomTimeController extends Controller
             'room_times' => 'required|mimes:xlsx,xls,csv'
         ]);
         $import = new RoomTimesImport;
-        try{
+        try {
             Excel::import($import, $request->file('room_times'));
-        }catch (\Maatwebsite\Excel\Validators\ValidationException $e)
-        {
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             return back()->withErrors(['errorTime' => '* File has invalid columns. Make sure the file is the correct format. (Column 1: Time, Column 3: CO2, Column 4: Temperature)']);
         }
         Room::where('id', request('set_room'))->update(array('updated_at' => now()->subSecond(10)));
 
-        $roomTimes = RoomTime::all()->where('room_id', request('set_room'))->where('created_at' ,'>=', $timeCreation);
+        $roomTimes = RoomTime::all()->where('room_id', request('set_room'))->where('created_at', '>=', $timeCreation);
 
         $currentHour = $roomTimes->first()->time;
         $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
@@ -49,30 +48,31 @@ class RoomTimeController extends Controller
         foreach ($roomTimes as $roomTime) {
             if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour) {
                 RoomTime::where('id', $roomTime->id)->update(array('outside_temperature' => round($result->hourly->temperature_2m[$count])));
-            }else {
-                try{
+            } else {
+                try {
                     RoomTime::where('id', $roomTime->id)->update(array('outside_temperature' => round($result->hourly->temperature_2m[$count])));
-                    $currentHour =  strval(Carbon::parse($currentHour)->addHour(1));
-                    $nextHour =  strval(Carbon::parse($nextHour)->addHour(1));
+                    $currentHour = strval(Carbon::parse($currentHour)->addHour(1));
+                    $nextHour = strval(Carbon::parse($nextHour)->addHour(1));
                     $count++;
-                }catch (\Exception $e){
+                } catch (\Exception $e) {
                     break;
                 }
             }
         }
         return redirect()->route('rooms.index')->with('success', 'Imported successfully.');
     }
+
     public function importBookings(Request $request): \Illuminate\Http\RedirectResponse
     {
         $import = new BookingDataImport();
         Excel::import($import, $request->file('booking'));
-        if($import->data == null){
-            return back()->withErrors(['errorBooking'=>'* Invalid file']);
+        if ($import->data == null) {
+            return back()->withErrors(['errorBooking' => '* Invalid file']);
         }
         $request->validate([
             'booking' => 'required|mimes:xlsx,xls,csv'
         ]);
-        foreach($import->data['rooms'] as $room) {
+        foreach ($import->data['rooms'] as $room) {
             $startHour = Carbon::parse($import->data['date'])->addHour(8);
             $endHour = Carbon::parse($import->data['date'])->addHour(17);
             $startHour->subDay(45);
@@ -87,12 +87,12 @@ class RoomTimeController extends Controller
                 if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour && $count < count($room['bookings'])) {
                     $roomTime->update(['booked' => round($room['bookings'][$count]) == 1]);
                 } else {
-                    try{
+                    try {
                         $roomTime->update(array('booked' => round($room['bookings'][$count]) == 1));
                         $currentHour = strval(Carbon::parse($currentHour)->addHour(1));
                         $nextHour = strval(Carbon::parse($nextHour)->addHour(1));
                         $count++;
-                    }catch (\Exception $e){
+                    } catch (\Exception $e) {
                         break;
                     }
                 }
@@ -100,6 +100,7 @@ class RoomTimeController extends Controller
         }
         return redirect()->route('rooms.index')->with('success', 'Bookings added successfully.');
     }
+
     public function destroy(RoomTime $room_time)
     {
         $room = Room::find(request('set_room_destroy'));
@@ -107,28 +108,53 @@ class RoomTimeController extends Controller
         return redirect()->route('rooms.index');
     }
 
-    public function getData() //used to fetch the data in the app.js roomData array
+    public function getData($roomName)
     {
-        $rooms = Room::all();
+        $data = [];
+        $room = Room::all()->where('name', $roomName)->first();
+        $roomTimes = $room->roomTime()->get();
 
-        $data = $rooms->map(function ($room) {
-            // Get all the time records for this room
-            $roomTimes = $room->roomTime()->get();
-
-            // Get the latest temperature for this room
-            $latestTemperature = optional($room->roomTime()->latest('id')->first())->temperature;
-
-            // Create an array for this room
-            return [
+        if ($roomTimes->isEmpty()) {
+            return response()->json([]);
+        }
+//
+//        $groupedData = $roomTimes->groupBy(function ($roomTime) {
+//            return $roomTime->time->format('Y-m-d H:00:00');
+//        });
+        foreach ($room->roomTime()->get() as $roomTime) {
+            $data[] = [
                 'id' => $room->id,
                 'name' => $room->name,
-                'latestTemperature' => $latestTemperature,
-                'times' => $roomTimes->pluck('time'),
-                'temperatures' => $roomTimes->pluck('temperature'),
-                'co2s' => $roomTimes->pluck('co2'),
+                'latestTemperature' => $roomTime->temperature,
+                'time' => $roomTime->time,
+                'temperature' => $roomTime->temperature,
+                'co2' => $roomTime->co2,
+                'outside_temperature' => $roomTime->outside_temperature,
+                'booked' => $roomTime->booked,
             ];
-        });
-
+        }
         return response()->json($data);
+    }
+    public function getCo2Data()
+    {
+        $roomData = [];
+        $rooms = Room::all(); // Retrieve all rooms
+
+        foreach ($rooms as $room) {
+            $roomTimes = $room->roomTime()->orderBy('time', 'DESC')->take(2016)->get();
+
+            $highestCo2Entry = $roomTimes->sortByDesc('co2')->first(); // Retrieve the entry with the highest CO2 level
+
+            if ($highestCo2Entry) {
+                $roomData[] = [
+                    'room_id' => $room->id,
+                    'room_name' => $room->name,
+                    'co2' => $highestCo2Entry->co2,
+                    'timestamp' => $highestCo2Entry->time,
+                ];
+            }
+        }
+
+        return response()->json($roomData);
     }
 }

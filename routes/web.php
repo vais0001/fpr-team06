@@ -23,7 +23,7 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view ("auth.login");
 });
 
 Route::get('/user/{user}/make-admin', [UserController::class, 'makeAdmin'])->name('user.make-admin');
@@ -54,14 +54,10 @@ Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import
 Route::post('rooms/import-bookings', [RoomTimeController::class, 'importBookings'])->name('import-bookings');
 Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
 
-Route::get('/dashboard', function(){
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::get('/model', [RoomTimeController::class, 'showModel'])
     ->middleware(['auth', 'verified'])->name('model');
 
-Route::get('/model-data', [RoomTimeController::class, 'getData']);
+Route::get('/model-data/{roomName}', [RoomTimeController::class, 'getData']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -71,6 +67,7 @@ Route::middleware('auth')->group(function () {
 
 Route::fallback([ErrorController::class, 'notFound']);
 
+Route::get('/model-co2', [RoomTimeController::class, 'getCo2Data']);
 
 Route::get('/tempprofilepage')->name('profile');
 
