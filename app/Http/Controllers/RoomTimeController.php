@@ -91,7 +91,7 @@ class RoomTimeController extends Controller
             $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
             preg_match('/\((.*?)\)/', $room['name'], $matches);
             $roomName = $matches[1];
-            $roomTimes = RoomTime::all()->where('room_id', '=', Room::where('name', $roomName)->first()->id)->where('time', '>=', $startHour)->where('time', '<=', $endHour)->orderBy('id')->get();
+            $roomTimes = RoomTime::where('room_id', '=', Room::where('name', $roomName)->first()->id)->where('time', '>=', $startHour)->where('time', '<=', $endHour)->orderBy('id')->get();
             $count = 0;
             foreach ($roomTimes as $roomTime) {
                 if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour && $count < count($room['bookings'])) {
