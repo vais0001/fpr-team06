@@ -4,6 +4,7 @@ import Alpine from 'alpinejs';
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader'
+import {color} from "three/nodes";
 
 window.Alpine = Alpine;
 
@@ -96,8 +97,11 @@ console.log(myCookieValue);
 
 window.onload = function () {
     const url = window.location.href;
-    if(url.includes('rooms')) {
+    if (url.endsWith('rooms')) {
         loadRoomsImport();
+        console.log(myCookieValue);
+    }
+    if(url.includes('create')) {
         console.log(myCookieValue);
     }
     if(url.includes('model')) {
@@ -134,7 +138,7 @@ function loadRoomsImport() {
             if(event.target.id === 'roomName'){
 
                 const roomNameTable = document.getElementById('roomNameTable');
-                roomNameTable.className = 'text-2xl text-white font-bold dark:hover:text-white visible';
+                roomNameTable.className = 'text-2xl text-gray-400 dark:text-white font-bold dark:hover:text-white visible';
                 roomNameTable.innerHTML = rooms[event.target.parentNode.id-1].name;
 
                 let result = '';
@@ -160,7 +164,7 @@ function loadRoomsImport() {
 
             const editButton = document.createElement('button');
             editButton.id = 'editButton';
-            editButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+            editButton.className = 'hover:bg-red-700 dark:text-white font-bold py-2 px-4 rounded';
             editButton.innerHTML = 'Edit';
             editButton.type = 'submit';
 
@@ -174,7 +178,7 @@ function loadRoomsImport() {
 
             const revertButton = document.createElement('button');
             revertButton.id = 'revertButton';
-            revertButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+            revertButton.className = 'hover:bg-red-700 dark:text-white font-bold py-2 px-4 rounded';
             revertButton.innerHTML = 'Revert';
             revertButton.type = 'submit';
 
@@ -187,7 +191,7 @@ function loadRoomsImport() {
 
             const importButton = document.createElement('button');
             importButton.id = 'importButton';
-            importButton.className = 'hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
+            importButton.className = 'hover:bg-blue-700 dark:text-white font-bold py-2 px-4 rounded';
             importButton.innerHTML = 'Import';
             importButton.type = 'submit';
 
@@ -592,6 +596,9 @@ function runModel() {
                         }
                     },
                     y: {
+                        grid: {
+                            color: '#AFAFAF',
+                        },
                         display: true,
                         position: 'right',
                         beginAtZero: true,
@@ -599,9 +606,13 @@ function runModel() {
                         max: 35,
                         ticks: {
                             stepSize: 2,
+                            color: '#AFAFAF',
                         },
                     },
                     y1: {
+                        grid: {
+                            color: '#AFAFAF',
+                        },
                         display: true,
                         position: 'left',
                         beginAtZero: true,
@@ -609,9 +620,13 @@ function runModel() {
                         max: 900,
                         ticks: {
                             stepSize: 100,
+                            color: '#AFAFAF',
                         },
                     },
                     y3: {
+                        grid: {
+                            color: '#AFAFAF',
+                        },
                         display: false,
                         position: 'left',
                         beginAtZero: true,
@@ -619,6 +634,7 @@ function runModel() {
                         max: 10,
                         ticks: {
                             stepSize: 1,
+                            color: '#AFAFAF',
                         }
                     }
                 },
