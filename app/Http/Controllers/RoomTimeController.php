@@ -42,6 +42,16 @@ class RoomTimeController extends Controller
 
         $roomTimes = RoomTime::all()->where('room_id', request('set_room'))->where('created_at', '>=', $timeCreation);
 
+        $start_time = $roomTimes->first()->time;
+        $end_time = strval(Carbon::parse($roomTimes->last()->time)->addDay(1));
+
+        foreach ($result->hourly->time as $i => $time) {
+            if ($time < $start_time || $time > $end_time) {
+                unset($result->hourly->time[$i]);
+                unset($result->hourly->temperature_2m[$i]);
+            }
+        }
+
         $currentHour = $roomTimes->first()->time;
         $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
         $count = key($result->hourly->time);
@@ -81,7 +91,7 @@ class RoomTimeController extends Controller
             $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
             preg_match('/\((.*?)\)/', $room['name'], $matches);
             $roomName = $matches[1];
-            $roomTimes = RoomTime::all()->where('room_id', '=', Room::all()->where('name', $roomName)->first()->id)->where('time', '>=', $startHour)->where('time', '<=', $endHour);
+            $roomTimes = RoomTime::where('room_id', '=', Room::where('name', $roomName)->first()->id)->where('time', '>=', $startHour)->where('time', '<=', $endHour)->orderBy('id')->get();
             $count = 0;
             foreach ($roomTimes as $roomTime) {
                 if ($roomTime->time >= $currentHour && $roomTime->time < $nextHour && $count < count($room['bookings'])) {
@@ -111,17 +121,14 @@ class RoomTimeController extends Controller
     public function getData($roomName)
     {
         $data = [];
-        $room = Room::all()->where('name', $roomName)->first();
-        $roomTimes = $room->roomTime()->get();
+        $room = Room::where('name', $roomName)->orderBy('id')->get()->first();
+        $roomTimes = $room->roomTime()->orderBy('id')->get();
 
         if ($roomTimes->isEmpty()) {
             return response()->json([]);
         }
-//
-//        $groupedData = $roomTimes->groupBy(function ($roomTime) {
-//            return $roomTime->time->format('Y-m-d H:00:00');
-//        });
-        foreach ($room->roomTime()->get() as $roomTime) {
+
+        foreach ($roomTimes as $roomTime) {
             $data[] = [
                 'id' => $room->id,
                 'name' => $room->name,
@@ -135,7 +142,7 @@ class RoomTimeController extends Controller
         }
         return response()->json($data);
     }
-    public function getCo2Data()
+    public function getCo2Data(): \Illuminate\Http\JsonResponse
     {
         $roomData = [];
         $rooms = Room::all(); // Retrieve all rooms
@@ -156,5 +163,12 @@ class RoomTimeController extends Controller
         }
 
         return response()->json($roomData);
+    }
+    public function importData(): \Illuminate\Http\JsonResponse
+    {
+        $roomTimes = RoomTime::orderBy('id')->get();
+        $groupedRoomTimes = $roomTimes->groupBy('room_id');
+
+        return response()->json($groupedRoomTimes);
     }
 }
