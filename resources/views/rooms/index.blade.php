@@ -59,20 +59,20 @@
                         @endif
                     @endforeach
                         <div id="addRoom_{{$i}}"
-                             class="dark:bg-gray-800 rounded-md p-1 hover:bg-gray-200 dark:hover:bg-gray-700 addContainer">
+                             class="bg-gray-50 dark:bg-gray-800 rounded-md p-1 hover:bg-gray-200 dark:hover:bg-gray-700 addContainer">
                             <h1 id="{{$i}}" class="text-2xl text-gray-500 font-bold dark:hover:text-white text-center pl-2 pr-2">+</h1>
                         </div>
                 </div>
             </div>
             @endfor
             <div id="tableContainer">
-                <div class="flex justify-center items-center">
+                <div class="flex justify-center items-center text-black">
                     <h2 id="roomNameTable"></h2>
                 </div>
 
                 <table class="table-auto w-full text-white text-center">
                     <thead>
-                        <tr class="px-4 py-2 text-white text-center">
+                        <tr class="px-4 py-2 dark:text-white text-black text-center">
                             <th class="px-4 py-2">ID</th>
                             <th class="px-4 py-2">@lang('messages.time') </th>
                             <th class="px-4 py-2">@lang('messages.co2')</th>
