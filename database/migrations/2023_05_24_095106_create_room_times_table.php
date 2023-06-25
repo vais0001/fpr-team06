@@ -16,11 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('room_id');
             $table->dateTime('time');
             $table->integer('co2');
-            $table->integer('temperature');
+            $table->float('temperature');
             $table->integer('outside_temperature')->nullable();
             $table->boolean('booked')->nullable();
             $table->timestamps();
-
 
             $table->foreign('room_id')->references('id')->on('rooms')->onUpdate('cascade')->onDelete('cascade');
         });
