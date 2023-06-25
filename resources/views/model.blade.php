@@ -208,6 +208,27 @@
                 margin: 1.75rem auto; /* Adjusts vertical and horizontal centering */
             }
 
+            .tooltip-light {
+                border: black solid 1px;
+                background-color: white;
+                border-radius: 5px;
+                position: absolute;
+                pointer-events: none;
+                padding: 10px;
+            }
+
+            .tooltip-dark {
+                border: 1px;
+                background-color: black;
+                border-radius: 5px;
+                color: white;
+                display: none;
+                position: absolute;
+                pointer-events: none;
+                padding: 10px;
+            }
+
+
         </style>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -220,7 +241,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <div id="tooltip" style="display: none; position: absolute; pointer-events: none; padding: 10px; background-color: rgba(0,0,0,0.7); color: #fff; border-radius: 5px;">
+        <div class="tooltip-light" id="tooltip">
             Tooltip text
         </div>
 

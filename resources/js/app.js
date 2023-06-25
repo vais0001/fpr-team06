@@ -55,6 +55,7 @@ function turnDark() {
     document.getElementById('button-light4').className = "button-dark";
     document.querySelector('.widget-light').className = "widget-dark";
     document.querySelector('.weather-status').style.color = '#fff';
+    document.querySelector('.tooltip-light').className = "tooltip-dark";
     setRenderColor("#0E1A2B");
 }
 /**
@@ -69,6 +70,7 @@ function turnLight() {
     document.getElementById('button-light4').className = "button-light";
     document.querySelector('.widget-dark').className = "widget-light";
     document.querySelector('.weather-status').style.color = 'black';
+    document.querySelector('.tooltip-dark').className = "tooltip-light";
     setRenderColor("#A3ABBD");
 }
 /**
