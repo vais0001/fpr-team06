@@ -92,20 +92,16 @@ function getCookie(cname) {
 }
 
 const myCookieValue = getCookie("mode");
-console.log(myCookieValue);
 
 window.onload = function () {
     const url = window.location.href;
     if(url.includes('rooms')) {
         loadRoomsImport();
-        console.log(myCookieValue);
     }
     if(url.includes('model')) {
         runModel();
-        console.log('test');
     }
     if(url.includes('dashboard')) {
-        console.log(myCookieValue);
     }
     getCookie("mode");
     darkMode();
@@ -256,18 +252,46 @@ function runModel() {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
+    let errorDiv = null;
+
     const fbxLoader = new FBXLoader()
     fbxLoader.load(
         '3D-models/0_floor.fbx',
         (object) => {
-
-            scene.add(object)
+            scene.add(object);
             changeCameraDistance(0);
             changeCameraAngle(0);
             loadIcons(0); // loads temperature icons for the ground floor
-            object.name = 'LoadedFloor'
+            object.name = 'LoadedFloor';
+
+            // Remove the error message if it exists
+            if (errorDiv) {
+                errorDiv.remove();
+                errorDiv = null;
+            }
         },
-    )
+        undefined,
+        (error) => {
+            // Only create a new errorDiv if it doesn't already exist
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.style.position = 'absolute';
+                errorDiv.style.left = '50%';
+                errorDiv.style.top = '50%';
+                errorDiv.style.transform = 'translate(-50%, -50%)';
+                errorDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                errorDiv.style.color = '#fff';
+                errorDiv.style.padding = '10px';
+                errorDiv.style.borderRadius = '5px';
+                errorDiv.style.textAlign = 'center';
+                document.body.appendChild(errorDiv);
+            }
+
+            // Set or update the error message
+            errorDiv.textContent = 'There has been an error while trying to load the building model. Try refreshing the website.';
+        }
+    );
+
 
     //to get the value of a button
     const buttons = document.querySelectorAll('.button');
@@ -285,8 +309,33 @@ function runModel() {
             `3D-models/${this.value}_floor.fbx`,
             (object) => {
                 scene.add(object)
-                console.log(this.value);
                 object.name = 'LoadedFloor'
+
+                // Remove the error message if it exists
+                if (errorDiv) {
+                    errorDiv.remove();
+                    errorDiv = null;
+                }
+            },
+            undefined,
+            (error) => {
+                // Only create a new errorDiv if it doesn't already exist
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.style.position = 'absolute';
+                    errorDiv.style.left = '50%';
+                    errorDiv.style.top = '50%';
+                    errorDiv.style.transform = 'translate(-50%, -50%)';
+                    errorDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                    errorDiv.style.color = '#fff';
+                    errorDiv.style.padding = '10px';
+                    errorDiv.style.borderRadius = '5px';
+                    errorDiv.style.textAlign = 'center';
+                    document.body.appendChild(errorDiv);
+                }
+
+                // Set or update the error message
+                errorDiv.textContent = 'There has been an error while trying to load the building model. Try refreshing the website.';
             }
         )
     }
@@ -658,9 +707,16 @@ function runModel() {
         if (intersects.length > 0) {
             // If the mouse hovers over the 3D object, change cursor to pointer
             document.body.style.cursor = 'pointer';
+
+            let tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'block';
+            tooltip.style.left = (event.clientX + 10) + 'px';
+            tooltip.style.top = (event.clientY + 20) + 'px';
+            tooltip.textContent = intersects[0].object.customIndex;
         } else {
             // When the mouse isn't hovering over the object, revert the cursor
             document.body.style.cursor = 'auto';
+            document.getElementById('tooltip').style.display = 'none';
         }
     }
 
@@ -747,33 +803,11 @@ function runModel() {
     // const coldMaterial = new THREE.SpriteMaterial({map: coldTemp, color: 0xffffff});
 
     function createRoom(roomId, xPosition, yPosition, zPosition) {
-        // let temperature;
-        // let index;
-        // let temperatureIcon;
-        // for (let i = 0; i < roomData.length; i++) {
-        //     if (roomData[i].name == roomId) {
-        //         temperature = roomData[i].latestTemperature;
-        //         index = i;
-        //     }
-        //
-        //
-        // if (temperature >= 18.5 && temperature <= 19.5 || temperature == null) {
-        //     temperatureIcon = normalMaterial; //If the temperature is around 19 degrees and if there is no temperature assigned to a room
-        // }
-        //
-        // if (temperature > 19.5) {
-        //     temperatureIcon = hotMaterial; //if the temperature is higher than 19 degrees
-        // }
-        //
-        // if (temperature < 18.5 && temperature != null) {
-        //     temperatureIcon = coldMaterial; //if the temperature is below 19 degrees
-        // }
         const room = new THREE.Sprite( normalMaterial )
         room.scale.set(100, 200, 1)
         room.position.set(xPosition, yPosition, zPosition)
         room.customIndex = roomId
         room.name = 'room'
-        // room.index = index;
         rooms.push( room )
         scene.add( room )
     }
