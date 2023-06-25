@@ -10,6 +10,7 @@ use App\Http\Controllers\ErrorController;
 use App\Http\Controllers\UserController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,12 +32,24 @@ Route::get('/admin', function () {
     return view('admin');
 })->middleware('admin')->name('admin');
 
+Route::resource('rooms', RoomController::class);
 Route::get('/admin', [UserController::class, 'someMethod']);
+
+Route::get('/rooms', function () {
+    return view('rooms.index');
+})->middleware('auth')->name('rooms');
+use App\Models\Room; // Make sure to import your Room model at the top
+
+Route::get('/rooms', function () {
+    $rooms = Room::all();
+    return view('rooms.index', ['rooms' => $rooms]);
+})->middleware('auth', 'admin')->name('rooms.index');
+
 
 Route::resource('lang', LanguageController::class);
 Route::get('/lang/{lang}', 'App\Http\Controllers\LanguageController@switchLang')->name('switchLang');
 
-Route::resource('rooms', RoomController::class);
+
 Route::post('rooms/import', [RoomTimeController::class, 'import'])->name('import');
 Route::post('rooms/import-bookings', [RoomTimeController::class, 'importBookings'])->name('import-bookings');
 Route::delete('destroy', [RoomTimeController::class, 'destroy'])->name('destroy');
@@ -60,5 +73,8 @@ Route::fallback([ErrorController::class, 'notFound']);
 
 
 Route::get('/tempprofilepage')->name('profile');
+
+
+
 
 require __DIR__.'/auth.php';
