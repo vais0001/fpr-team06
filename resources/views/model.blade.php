@@ -226,6 +226,8 @@
                 <button class="button-light button" id="button-light3" value="2">@lang('messages.second_floor')</button>
                 <button class="button-light button" id="button-light4" value="3">@lang('messages.third_floor')</button>
             </div>
+            <div class="fixed top-16 m-2 bg-orange-600 rounded" id="co2-danger"></div>
+            </div>
             {{--Weather Widget--}}
             <div class="outside-temperature-container">
                 <div class="widget-light">
