@@ -848,5 +848,21 @@ function runModel() {
         renderer.render(scene, camera)
     }
 
-    animate()
+    animate();
+
+    let co2data = null;
+    $.ajax({
+        url: '/model-co2/',
+        type: 'GET'
+    }).done(function(data) {
+        co2data = data
+
+        const co2container = document.getElementById('co2-danger');
+        for (let i = 0; i < co2data.length; i++) {
+            const dangerRoom = document.createElement('div');
+            dangerRoom.className = 'bg-orange-600 text-white p-2 rounded-lg mb-2';
+            dangerRoom.innerHTML = `${co2data[i].room_name} - ${co2data[i].co2} ppm`;
+            co2container.appendChild(dangerRoom);
+        }
+    });
 }

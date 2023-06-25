@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-start items-center flex-row gap-4">
             <h2 class="text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Import') }}
+                @lang('messages.import')
             </h2>
             <div class="flex justify-end items-center flex-grow flex-row">
                 <form class="text-gray-400" action="{{route('import-bookings')}}" id="importBookingForm" method="POST" enctype="multipart/form-data" name="importBookingForm">
@@ -45,7 +45,7 @@
             @for ($i = 0; $i < 4; $i++)
             <div id="infoContainer" class="h-1/4 w-3/4 flex flex-col justify-center items-center gap-1 mb-5">
                 <div id="floorContainer_0" class="flex justify-center items-center">
-                    <h1 id="floorName" class="text-2xl text-gray-400 dark:text-white semi-bold">Floor {{$i}}</h1>
+                    <h1 id="floorName" class="text-2xl text-gray-400 dark:text-white semi-bold">@lang('floor') {{$i}}</h1>
                 </div>
                 <div id="roomContainer" class="flex flex-wrap flex-row gap-4">
                     @foreach($rooms as $room)
@@ -69,15 +69,16 @@
                 <div class="flex justify-center items-center text-black">
                     <h2 id="roomNameTable"></h2>
                 </div>
+
                 <table class="table-auto w-full text-white text-center">
                     <thead>
                         <tr class="px-4 py-2 dark:text-white text-black text-center">
                             <th class="px-4 py-2">ID</th>
-                            <th class="px-4 py-2">Time</th>
-                            <th class="px-4 py-2">Co2</th>
-                            <th class="px-4 py-2">Temperature</th>
-                            <th class="px-4 py-2">Outside Temp</th>
-                            <th class="px-4 py-2">Booked</th>
+                            <th class="px-4 py-2">@lang('messages.time') </th>
+                            <th class="px-4 py-2">@lang('messages.co2')</th>
+                            <th class="px-4 py-2">@lang('messages.temperature') </th>
+                            <th class="px-4 py-2">@lang('messages.outside_temperature')</th>
+                            <th class="px-4 py-2">@lang('messages.temperature')</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -86,4 +87,5 @@
             </div>
         </div>
     </x-slot>
+
 </x-app-layout>
