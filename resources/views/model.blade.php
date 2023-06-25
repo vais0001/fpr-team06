@@ -219,11 +219,6 @@
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <div id="tooltip" style="display: none; position: absolute; pointer-events: none; padding: 10px; background-color: rgba(0,0,0,0.7); color: #fff; border-radius: 5px;">
-            Tooltip text
-        </div>
-
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
                 <button class="button-light button" id="button-light1" value="0">@lang('messages.ground_floor')</button>
