@@ -17,6 +17,7 @@
         </div>
     </x-slot>
     <x-slot name="slot">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <div class="flex justify-center items-center m-auto flex-col text-gray-400 border-200">
             <form class="flex justify-center items-center flex-row gap-4" action="{{route('import')}}" id="importForm" method="POST" enctype="multipart/form-data" name="importForm">
                 @csrf
@@ -78,7 +79,7 @@
                             <th class="px-4 py-2">@lang('messages.co2')</th>
                             <th class="px-4 py-2">@lang('messages.temperature') </th>
                             <th class="px-4 py-2">@lang('messages.outside_temperature')</th>
-                            <th class="px-4 py-2">@lang('messages.temperature')</th>
+                            <th class="px-4 py-2">@lang('messages.booked')</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
