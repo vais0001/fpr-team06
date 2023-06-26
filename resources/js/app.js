@@ -40,7 +40,6 @@ function darkMode() {
             setCookie("light");
             turnLight();
         }
-        console.log(document.getElementById('checkbox').checked);
     });
 }
 /**
@@ -106,6 +105,7 @@ window.onload = function () {
     }
     if(url.includes('model')) {
         runModel();
+        co2warning();
     }
     getCookie("mode");
     darkMode();
@@ -126,7 +126,6 @@ function loadRoomsImport() {
         type: 'GET'
     }).done(function(data) {
         rooms = data;
-        console.log(rooms);
 
         const tableBody = document.getElementById('tableBody');
 
@@ -858,7 +857,9 @@ function runModel() {
     }
 
     animate();
+}
 
+function co2warning () {
     let co2data = null;
     $.ajax({
         url: '/model-co2/',
@@ -868,10 +869,12 @@ function runModel() {
 
         const co2container = document.getElementById('co2-danger');
         for (let i = 0; i < co2data.length; i++) {
-            const dangerRoom = document.createElement('div');
-            dangerRoom.className = 'bg-orange-600 text-white p-2 rounded-lg mb-2';
-            dangerRoom.innerHTML = `${co2data[i].room_name} - ${co2data[i].co2} ppm`;
-            co2container.appendChild(dangerRoom);
+            if (co2data[i].co2 > 800) {
+                const dangerRoom = document.createElement('div');
+                dangerRoom.className = 'bg-orange-600 text-white p-2 rounded-lg mb-2';
+                dangerRoom.innerHTML = `${co2data[i].room_name} - ${co2data[i].co2} ppm`;
+                co2container.appendChild(dangerRoom);
+            }
         }
     });
 }
