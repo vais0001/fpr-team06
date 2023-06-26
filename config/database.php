@@ -65,7 +65,20 @@ return [
             ]) : [],
         ],
 
-
+        'pgsql' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            'host' => $DATABASE_URL["host"] ?? null,
+            'port' => $DATABASE_URL["port"] ?? null,
+            'database' => isset($DATABASE_URL["path"]) ? ltrim($DATABASE_URL["path"], "/") : null,
+            'username' => $DATABASE_URL["user"] ?? null,
+            'password' => $DATABASE_URL["pass"] ?? null,
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

@@ -4,6 +4,7 @@ import Alpine from 'alpinejs';
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 import {FBXLoader} from 'three/examples/jsm/loaders/FBXLoader'
+import {color} from "three/nodes";
 
 window.Alpine = Alpine;
 
@@ -39,7 +40,6 @@ function darkMode() {
             setCookie("light");
             turnLight();
         }
-        console.log(document.getElementById('checkbox').checked);
     });
 }
 /**
@@ -54,6 +54,7 @@ function turnDark() {
     document.getElementById('button-light4').className = "button-dark";
     document.querySelector('.widget-light').className = "widget-dark";
     document.querySelector('.weather-status').style.color = '#fff';
+    document.querySelector('.tooltip-light').className = "tooltip-dark";
     setRenderColor("#0E1A2B");
 }
 /**
@@ -68,6 +69,7 @@ function turnLight() {
     document.getElementById('button-light4').className = "button-light";
     document.querySelector('.widget-dark').className = "widget-light";
     document.querySelector('.weather-status').style.color = 'black';
+    document.querySelector('.tooltip-dark').className = "tooltip-light";
     setRenderColor("#A3ABBD");
 }
 /**
@@ -92,20 +94,18 @@ function getCookie(cname) {
 }
 
 const myCookieValue = getCookie("mode");
-console.log(myCookieValue);
 
 window.onload = function () {
     const url = window.location.href;
-    if(url.includes('rooms')) {
+    if (url.endsWith('rooms')) {
         loadRoomsImport();
+    }
+    if(url.includes('create')) {
         console.log(myCookieValue);
     }
     if(url.includes('model')) {
         runModel();
-        console.log('test');
-    }
-    if(url.includes('dashboard')) {
-        console.log(myCookieValue);
+        co2warning();
     }
     getCookie("mode");
     darkMode();
@@ -119,105 +119,113 @@ window.onload = function () {
 }
 
 function loadRoomsImport() {
+    let rooms = null;
 
-    const rooms = JSON.parse(document.getElementById('world-map').dataset.maps);
+    $.ajax({
+        url: '/import-data',
+        type: 'GET'
+    }).done(function(data) {
+        rooms = data;
 
-    const tableBody = document.getElementById('tableBody');
+        const tableBody = document.getElementById('tableBody');
 
-    document.querySelectorAll('.roomContainer').forEach(roomSpecificContainer => {
-        roomSpecificContainer.addEventListener('click', function() {
-            if(roomSpecificContainer.lastChild.id === 'roomButtonsContainer'){
-                roomSpecificContainer.lastChild.remove();
-            }
+        document.querySelectorAll('.roomContainer').forEach(roomSpecificContainer => {
+            roomSpecificContainer.addEventListener('click', function() {
+                if(roomSpecificContainer.lastChild.id === 'roomButtonsContainer'){
+                    roomSpecificContainer.lastChild.remove();
+                }
 
-            tableBody.innerHTML = '';
-            if(event.target.id === 'roomName'){
+                tableBody.innerHTML = '';
+                if(event.target.id === 'roomName'){
 
-                const roomNameTable = document.getElementById('roomNameTable');
-                roomNameTable.className = 'text-2xl text-white font-bold dark:hover:text-white visible';
-                roomNameTable.innerHTML = rooms[event.target.parentNode.id-1].name;
+                    const roomNameTable = document.getElementById('roomNameTable');
+                    roomNameTable.className = 'text-2xl text-white font-bold dark:hover:text-white visible';
+                    roomNameTable.innerHTML = event.target.innerHTML.toString().replace(/\s/g, "");
 
-                let result = '';
-                rooms[event.target.parentNode.id-1]['room_time'].forEach(room => {
-                    result += `<tr>
-                     <td>${room.id}</td>
-                     <td>${room.time}</td>
-                     <td>${room.co2}</td>
-                     <td>${room.temperature}</td>
-                     <td>${room.outside_temperature}</td>
-                     <td>${room.booked}</td>
-                     </tr>`;
+                    if(rooms[event.target.parentNode.id] !== undefined) {
+                        let result = '';
+                        rooms[event.target.parentNode.id].forEach(room => {
+                            result += `<tr>
+                                 <td>${room.id}</td>
+                                 <td>${room.time}</td>
+                                 <td>${room.co2}</td>
+                                 <td>${room.temperature}</td>
+                                 <td>${room.outside_temperature}</td>
+                                 <td>${room.booked}</td>
+                                 </tr>`;
+                        });
+
+                        tableBody.innerHTML = result;
+                    }
+                }
+
+                const roomButtonsContainer = document.createElement('div');
+                roomButtonsContainer.id = 'roomButtonsContainer';
+                roomButtonsContainer.className = 'flex flex-row justify-center absolute';
+                roomButtonsContainer.style.marginLeft = '-65px';
+                roomSpecificContainer.appendChild(roomButtonsContainer);
+
+                const editButton = document.createElement('button');
+                editButton.id = 'editButton';
+                editButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+                editButton.innerHTML = 'Edit';
+                editButton.type = 'submit';
+
+                roomButtonsContainer.appendChild(editButton);
+
+                editButton.addEventListener('click', function () {
+                    const form = document.getElementById('editForm');
+                    form.action = `/rooms/${event.target.parentNode.parentNode.id}/edit`;
+                    form.submit();
                 });
 
-                tableBody.innerHTML = result;
-            }
+                const revertButton = document.createElement('button');
+                revertButton.id = 'revertButton';
+                revertButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
+                revertButton.innerHTML = 'Revert';
+                revertButton.type = 'submit';
 
-            const roomButtonsContainer = document.createElement('div');
-            roomButtonsContainer.id = 'roomButtonsContainer';
-            roomButtonsContainer.className = 'flex flex-row justify-center absolute';
-            roomButtonsContainer.style.marginLeft = '-65px';
-            roomSpecificContainer.appendChild(roomButtonsContainer);
+                roomButtonsContainer.appendChild(revertButton);
 
-            const editButton = document.createElement('button');
-            editButton.id = 'editButton';
-            editButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
-            editButton.innerHTML = 'Edit';
-            editButton.type = 'submit';
+                revertButton.addEventListener('click', function () {
+                    document.getElementById('set_room_destroy').value = event.target.parentNode.parentNode.id
+                    document.getElementById('destroyForm').submit();
+                });
 
-            roomButtonsContainer.appendChild(editButton);
+                const importButton = document.createElement('button');
+                importButton.id = 'importButton';
+                importButton.className = 'hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
+                importButton.innerHTML = 'Import';
+                importButton.type = 'submit';
 
-            editButton.addEventListener('click', function () {
-                const form = document.getElementById('editForm');
-                form.action = `/rooms/${event.target.parentNode.parentNode.id}/edit`;
-                form.submit();
-            });
+                importButton.addEventListener('click', function () {
+                    document.getElementById('set_room').value = event.target.parentNode.parentNode.id
+                    if(document.getElementById('room_times').value !== '') {
+                        document.getElementById('importForm').submit();
+                    } else{
+                        const errorContainer = document.getElementById('errorContainer');
+                        errorContainer.innerHTML = '';
+                        const error = document.createElement('p');
+                        error.className = 'text-red-600';
+                        error.innerHTML = '* Please select a file';
+                        errorContainer.appendChild(error);
+                    }
+                });
+                roomButtonsContainer.appendChild(importButton);
 
-            const revertButton = document.createElement('button');
-            revertButton.id = 'revertButton';
-            revertButton.className = 'hover:bg-red-700 text-white font-bold py-2 px-4 rounded';
-            revertButton.innerHTML = 'Revert';
-            revertButton.type = 'submit';
-
-            roomButtonsContainer.appendChild(revertButton);
-
-            revertButton.addEventListener('click', function () {
-                document.getElementById('set_room_destroy').value = event.target.parentNode.parentNode.id
-                document.getElementById('destroyForm').submit();
-            });
-
-            const importButton = document.createElement('button');
-            importButton.id = 'importButton';
-            importButton.className = 'hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
-            importButton.innerHTML = 'Import';
-            importButton.type = 'submit';
-
-            importButton.addEventListener('click', function () {
-                document.getElementById('set_room').value = event.target.parentNode.parentNode.id
-                if(document.getElementById('room_times').value !== '') {
-                    document.getElementById('importForm').submit();
-                } else{
-                    const errorContainer = document.getElementById('errorContainer');
-                    errorContainer.innerHTML = '';
-                    const error = document.createElement('p');
-                    error.className = 'text-red-600';
-                    error.innerHTML = '* Please select a file';
-                    errorContainer.appendChild(error);
-                }
-            });
-            roomButtonsContainer.appendChild(importButton);
-
-            roomSpecificContainer.addEventListener('mouseleave', function() {
-                importButton.remove();
-                revertButton.remove();
-                editButton.remove();
-                roomSpecificContainer.firstChild.className = 'text-2xl text-gray-500 font-bold dark:hover:text-white';
+                roomSpecificContainer.addEventListener('mouseleave', function() {
+                    importButton.remove();
+                    revertButton.remove();
+                    editButton.remove();
+                    roomSpecificContainer.firstChild.className = 'text-2xl text-gray-500 font-bold dark:hover:text-white';
+                });
             });
         });
-    });
 
-    document.querySelectorAll('.addContainer').forEach(addContainer => {
-        addContainer.addEventListener('click', function() {
-            document.location.href = `/rooms/create?floor=${event.target.id}`;
+        document.querySelectorAll('.addContainer').forEach(addContainer => {
+            addContainer.addEventListener('click', function() {
+                document.location.href = `/rooms/create?floor=${event.target.id}`;
+            });
         });
     });
 }
@@ -256,18 +264,46 @@ function runModel() {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
+    let errorDiv = null;
+
     const fbxLoader = new FBXLoader()
     fbxLoader.load(
         '3D-models/0_floor.fbx',
         (object) => {
-
-            scene.add(object)
+            scene.add(object);
             changeCameraDistance(0);
             changeCameraAngle(0);
             loadIcons(0); // loads temperature icons for the ground floor
-            object.name = 'LoadedFloor'
+            object.name = 'LoadedFloor';
+
+            // Remove the error message if it exists
+            if (errorDiv) {
+                errorDiv.remove();
+                errorDiv = null;
+            }
         },
-    )
+        undefined,
+        (error) => {
+            // Only create a new errorDiv if it doesn't already exist
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.style.position = 'absolute';
+                errorDiv.style.left = '50%';
+                errorDiv.style.top = '50%';
+                errorDiv.style.transform = 'translate(-50%, -50%)';
+                errorDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                errorDiv.style.color = '#fff';
+                errorDiv.style.padding = '10px';
+                errorDiv.style.borderRadius = '5px';
+                errorDiv.style.textAlign = 'center';
+                document.body.appendChild(errorDiv);
+            }
+
+            // Set or update the error message
+            errorDiv.textContent = 'There has been an error while trying to load the building model. Try refreshing the website.';
+        }
+    );
+
 
     //to get the value of a button
     const buttons = document.querySelectorAll('.button');
@@ -285,8 +321,33 @@ function runModel() {
             `3D-models/${this.value}_floor.fbx`,
             (object) => {
                 scene.add(object)
-                console.log(this.value);
                 object.name = 'LoadedFloor'
+
+                // Remove the error message if it exists
+                if (errorDiv) {
+                    errorDiv.remove();
+                    errorDiv = null;
+                }
+            },
+            undefined,
+            (error) => {
+                // Only create a new errorDiv if it doesn't already exist
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.style.position = 'absolute';
+                    errorDiv.style.left = '50%';
+                    errorDiv.style.top = '50%';
+                    errorDiv.style.transform = 'translate(-50%, -50%)';
+                    errorDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                    errorDiv.style.color = '#fff';
+                    errorDiv.style.padding = '10px';
+                    errorDiv.style.borderRadius = '5px';
+                    errorDiv.style.textAlign = 'center';
+                    document.body.appendChild(errorDiv);
+                }
+
+                // Set or update the error message
+                errorDiv.textContent = 'There has been an error while trying to load the building model. Try refreshing the website.';
             }
         )
     }
@@ -545,7 +606,7 @@ function runModel() {
                         data: temperatureSliced,
                         borderWidth: 1,
                         yAxisID: 'y',
-                        borderColor: 'rgb(0,33,255)',
+                        borderColor: 'rgb(60,83,255)',
                         backgroundColor: 'rgba(0,33,255,0.1)',
                     },
                     {
@@ -578,6 +639,11 @@ function runModel() {
                 responsive: true,
                 scales: {
                     x: {
+                        grid: {
+                            color: '#7c7c7c',
+                            drawBorder: false,
+                            borderDash: [6, 4],
+                        },
                         type: 'time',
                         time: {
                             unit: chartUnit,
@@ -592,6 +658,11 @@ function runModel() {
                         }
                     },
                     y: {
+                        grid: {
+                            color: '#7c7c7c',
+                            drawBorder: false,
+                            borderDash: [6, 4],
+                        },
                         display: true,
                         position: 'right',
                         beginAtZero: true,
@@ -599,9 +670,15 @@ function runModel() {
                         max: 35,
                         ticks: {
                             stepSize: 2,
+                            color: '#7c7c7c',
                         },
                     },
                     y1: {
+                        grid: {
+                            color: '#7c7c7c',
+                            drawBorder: false,
+                            borderDash: [6, 4],
+                        },
                         display: true,
                         position: 'left',
                         beginAtZero: true,
@@ -609,9 +686,15 @@ function runModel() {
                         max: 900,
                         ticks: {
                             stepSize: 100,
+                            color: '#7c7c7c',
                         },
                     },
                     y3: {
+                        grid: {
+                            color: '#7c7c7c',
+                            drawBorder: false,
+                            borderDash: [6, 4],
+                        },
                         display: false,
                         position: 'left',
                         beginAtZero: true,
@@ -619,6 +702,7 @@ function runModel() {
                         max: 10,
                         ticks: {
                             stepSize: 1,
+                            color: '#7c7c7c',
                         }
                     }
                 },
@@ -658,9 +742,16 @@ function runModel() {
         if (intersects.length > 0) {
             // If the mouse hovers over the 3D object, change cursor to pointer
             document.body.style.cursor = 'pointer';
+
+            let tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'block';
+            tooltip.style.left = (event.clientX + 10) + 'px';
+            tooltip.style.top = (event.clientY + 20) + 'px';
+            tooltip.textContent = intersects[0].object.customIndex;
         } else {
             // When the mouse isn't hovering over the object, revert the cursor
             document.body.style.cursor = 'auto';
+            document.getElementById('tooltip').style.display = 'none';
         }
     }
 
@@ -747,33 +838,11 @@ function runModel() {
     // const coldMaterial = new THREE.SpriteMaterial({map: coldTemp, color: 0xffffff});
 
     function createRoom(roomId, xPosition, yPosition, zPosition) {
-        // let temperature;
-        // let index;
-        // let temperatureIcon;
-        // for (let i = 0; i < roomData.length; i++) {
-        //     if (roomData[i].name == roomId) {
-        //         temperature = roomData[i].latestTemperature;
-        //         index = i;
-        //     }
-        //
-        //
-        // if (temperature >= 18.5 && temperature <= 19.5 || temperature == null) {
-        //     temperatureIcon = normalMaterial; //If the temperature is around 19 degrees and if there is no temperature assigned to a room
-        // }
-        //
-        // if (temperature > 19.5) {
-        //     temperatureIcon = hotMaterial; //if the temperature is higher than 19 degrees
-        // }
-        //
-        // if (temperature < 18.5 && temperature != null) {
-        //     temperatureIcon = coldMaterial; //if the temperature is below 19 degrees
-        // }
         const room = new THREE.Sprite( normalMaterial )
         room.scale.set(100, 200, 1)
         room.position.set(xPosition, yPosition, zPosition)
         room.customIndex = roomId
         room.name = 'room'
-        // room.index = index;
         rooms.push( room )
         scene.add( room )
     }
@@ -799,7 +868,9 @@ function runModel() {
     }
 
     animate();
+}
 
+function co2warning () {
     let co2data = null;
     $.ajax({
         url: '/model-co2/',
@@ -809,10 +880,12 @@ function runModel() {
 
         const co2container = document.getElementById('co2-danger');
         for (let i = 0; i < co2data.length; i++) {
-            const dangerRoom = document.createElement('div');
-            dangerRoom.className = 'bg-orange-600 text-white p-2 rounded-lg mb-2';
-            dangerRoom.innerHTML = `${co2data[i].room_name} - ${co2data[i].co2} ppm`;
-            co2container.appendChild(dangerRoom);
+            if (co2data[i].co2 > 800) {
+                const dangerRoom = document.createElement('div');
+                dangerRoom.className = 'bg-orange-600 text-white p-2 rounded-lg mb-2';
+                dangerRoom.innerHTML = `${co2data[i].room_name} - ${co2data[i].co2} ppm`;
+                co2container.appendChild(dangerRoom);
+            }
         }
     });
 }

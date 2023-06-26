@@ -21,8 +21,8 @@ class RoomTimesImport implements ToModel, WithStartRow, WithValidation
         return new RoomTime([
             'room_id' => request('set_room'),
             'time' => $row[0],
-            'co2' => $row[2],
-            'temperature' => $row[3],
+            'co2' => round($row[2]),
+            'temperature' => round($row[3]),
         ]);
     }
     public function startRow(): int

@@ -208,6 +208,27 @@
                 margin: 1.75rem auto; /* Adjusts vertical and horizontal centering */
             }
 
+            .tooltip-light {
+                border: black solid 1px;
+                background-color: white;
+                border-radius: 5px;
+                position: absolute;
+                pointer-events: none;
+                padding: 10px;
+            }
+
+            .tooltip-dark {
+                border: 1px;
+                background-color: black;
+                border-radius: 5px;
+                color: white;
+                display: none;
+                position: absolute;
+                pointer-events: none;
+                padding: 10px;
+            }
+
+
         </style>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -219,6 +240,11 @@
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <div class="tooltip-light" id="tooltip">
+            Tooltip text
+        </div>
+
         <div id="model" class="antialiased d-flex flex-column">
             <div class="button-container">
                 <button class="button-light button" id="button-light1" value="0">@lang('messages.ground_floor')</button>
@@ -245,15 +271,15 @@
             <!-- Modal Structure -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                    <div class="modal-content dark:bg-slate-800">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Room Data</h4>
+                            <button type="button" class="close dark:text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title dark:text-white" id="myModalLabel">Room Data</h4>
                         </div>
                         <div class="modal-body">
                             <!-- Add your chart container here -->
                             <div class="chart-container">
-                                <canvas id="myChartTemp"></canvas>
+                                <canvas class="" id="myChartTemp"></canvas>
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="cursor-pointer" id="backData"> < </div>
@@ -266,7 +292,7 @@
                             </div>
                             <div class="flex justify-center items-center flex-column w-full">
                                 <div id="errorData" class="text-red-600"></div>
-                                <div class="flex justify-center items-center gap-4 flex-row">
+                                <div class="flex justify-center items-center gap-4 flex-row dark:text-white">
                                     <div>
                                         <div>Highest Temperature - <span id="highTemp"></span></div>
                                         <div>Lowest Temperature - <span id="lowTemp"></span></div>
@@ -276,13 +302,12 @@
                                         <div>Lowest Co2 - <span id="lowCo2"></span></div>
                                     </div>
                                 </div>
-                                <h2>Energy loss indication</h2>
+                                <h2 class="dark:text-white">Energy loss indication</h2>
                                 <div class="flex justify-center items-center h-full flex-wrap gap-2" id="roomsContainer"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </x-slot>
 </x-app-layout>
