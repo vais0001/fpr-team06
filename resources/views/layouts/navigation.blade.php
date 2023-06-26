@@ -80,9 +80,14 @@
                     <x-nav-link :href="route('model')" :active="request()->routeIs('model')">
                         {{ __('Model') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.index')">
-                        @lang('messages.import')
-                    </x-nav-link>
+                    @auth
+                        @if (auth()->user()->is_admin)
+                            <x-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.index')">
+                                @lang('messages.import')
+                            </x-nav-link>
+                        @endif
+                    @endauth
+
                 </div>
             </div>
 
