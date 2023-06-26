@@ -243,7 +243,7 @@
             <!-- Modal Structure -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content dark:bg-black">
+                    <div class="modal-content dark:bg-slate-800">
                         <div class="modal-header">
                             <button type="button" class="close dark:text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title dark:text-white" id="myModalLabel">Room Data</h4>
