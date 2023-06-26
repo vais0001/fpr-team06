@@ -82,7 +82,7 @@
                             <th class="px-4 py-2">@lang('messages.booked')</th>
                         </tr>
                     </thead>
-                    <tbody id="tableBody">
+                    <tbody class="text-black dark:text-white" id="tableBody">
                     </tbody>
                 </table>
             </div>

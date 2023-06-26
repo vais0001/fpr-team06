@@ -606,7 +606,7 @@ function runModel() {
                         data: temperatureSliced,
                         borderWidth: 1,
                         yAxisID: 'y',
-                        borderColor: 'rgb(0,33,255)',
+                        borderColor: 'rgb(60,83,255)',
                         backgroundColor: 'rgba(0,33,255,0.1)',
                     },
                     {
@@ -639,6 +639,11 @@ function runModel() {
                 responsive: true,
                 scales: {
                     x: {
+                        grid: {
+                            color: '#7c7c7c',
+                            drawBorder: false,
+                            borderDash: [6, 4],
+                        },
                         type: 'time',
                         time: {
                             unit: chartUnit,
@@ -654,7 +659,9 @@ function runModel() {
                     },
                     y: {
                         grid: {
-                            color: '#AFAFAF',
+                            color: '#7c7c7c',
+                            drawBorder: false,
+                            borderDash: [6, 4],
                         },
                         display: true,
                         position: 'right',
@@ -663,12 +670,14 @@ function runModel() {
                         max: 35,
                         ticks: {
                             stepSize: 2,
-                            color: '#AFAFAF',
+                            color: '#7c7c7c',
                         },
                     },
                     y1: {
                         grid: {
-                            color: '#AFAFAF',
+                            color: '#7c7c7c',
+                            drawBorder: false,
+                            borderDash: [6, 4],
                         },
                         display: true,
                         position: 'left',
@@ -677,12 +686,14 @@ function runModel() {
                         max: 900,
                         ticks: {
                             stepSize: 100,
-                            color: '#AFAFAF',
+                            color: '#7c7c7c',
                         },
                     },
                     y3: {
                         grid: {
-                            color: '#AFAFAF',
+                            color: '#7c7c7c',
+                            drawBorder: false,
+                            borderDash: [6, 4],
                         },
                         display: false,
                         position: 'left',
@@ -691,7 +702,7 @@ function runModel() {
                         max: 10,
                         ticks: {
                             stepSize: 1,
-                            color: '#AFAFAF',
+                            color: '#7c7c7c',
                         }
                     }
                 },
