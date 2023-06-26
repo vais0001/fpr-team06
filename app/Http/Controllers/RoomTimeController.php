@@ -85,8 +85,6 @@ class RoomTimeController extends Controller
         foreach ($import->data['rooms'] as $room) {
             $startHour = Carbon::parse($import->data['date'])->addHour(8);
             $endHour = Carbon::parse($import->data['date'])->addHour(17);
-            $startHour->subDay(45);
-            $endHour->subDay(45);
             $currentHour = $startHour;
             $nextHour = strval(Carbon::parse($currentHour)->addHour(1));
             preg_match('/\((.*?)\)/', $room['name'], $matches);
