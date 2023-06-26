@@ -9,10 +9,10 @@
             <form class="w-3/4" method="POST" action="{{route('rooms.store')}}" id="createForm">
                 @csrf
                 <div class="mb-6">
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Base input</label>
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Room</label>
                     <input placeholder="RC0000" type="text" id="name" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
-                <label for="floor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select your country</label>
+                <label for="floor" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select the floor</label>
                 <select id="floor" name="floor" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="0" @if(Request::get('floor') === "0") selected @endif>Floor 0</option>
                     <option value="1" @if(Request::get('floor') === "1") selected @endif>Floor 1</option>
